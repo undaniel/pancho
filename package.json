@@ -1,0 +1,108 @@
+{
+  "name": "pancho",
+  "displayName": "Pancho",
+  "description": "Limpia y formatea texto como Notepad++",
+  "version": "1.0.0",
+  "publisher": "pancho",
+  "main": "./dist/extension.js",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "contributes": {
+    "submenus": [
+      {
+        "id": "panchoMenu",
+        "label": "Pancho"
+      }
+    ],
+    "commands": [
+      {
+        "command": "pancho.cleanWhitespace",
+        "title": "Limpiar espacios en blanco"
+      },
+      {
+        "command": "pancho.cleanLineEndings",
+        "title": "Limpiar saltos de línea"
+      },
+      {
+        "command": "pancho.convertTabsToSpaces",
+        "title": "Convertir tabs a espacios"
+      },
+      {
+        "command": "pancho.convertSpacesToTabs",
+        "title": "Convertir espacios a tabs"
+      },
+      {
+        "command": "pancho.toUpperCase",
+        "title": "Convertir a MAYÚSCULAS"
+      },
+      {
+        "command": "pancho.toLowerCase",
+        "title": "Convertir a minúsculas"
+      },
+      {
+        "command": "pancho.toTitleCase",
+        "title": "Convertir a Título"
+      },
+      {
+        "command": "pancho.trimLines",
+        "title": "Recortar líneas"
+      },
+      {
+        "command": "pancho.lineEndingsToSpaces",
+        "title": "Convertir saltos de línea a espacios"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "submenu": "panchoMenu"
+        }
+      ],
+      "panchoMenu": [
+        {
+          "command": "pancho.cleanWhitespace"
+        },
+        {
+          "command": "pancho.cleanLineEndings"
+        },
+        {
+          "command": "pancho.convertTabsToSpaces"
+        },
+        {
+          "command": "pancho.convertSpacesToTabs"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.toUpperCase"
+        },
+        {
+          "command": "pancho.toLowerCase"
+        },
+        {
+          "command": "pancho.toTitleCase"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.trimLines"
+        },
+        {
+          "command": "pancho.lineEndingsToSpaces"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.80.0",
+    "typescript": "^5.0.0"
+  }
+}
