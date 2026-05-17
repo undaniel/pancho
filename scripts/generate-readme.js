@@ -15,6 +15,25 @@ const submenuMap = {
             'pancho.lineEndingsToSpaces',
         ]
     },
+    panchoLineas: {
+        name: 'Líneas',
+        commands: [
+            'pancho.removeDuplicateLines',
+            'pancho.sortAscending',
+            'pancho.sortDescending',
+            'pancho.reverseLines',
+            'pancho.joinLines',
+            'pancho.removeEmptyLines',
+        ]
+    },
+    panchoEOL: {
+        name: 'Fin de línea',
+        commands: [
+            'pancho.toWindowsEOL',
+            'pancho.toUnixEOL',
+            'pancho.toMacEOL',
+        ]
+    },
     panchoTabulaciones: {
         name: 'Tabulaciones',
         commands: [
@@ -148,8 +167,11 @@ pancho/
 │   │   ├── case.ts
 │   │   ├── comments.ts
 │   │   ├── dateTime.ts
+│   │   ├── eol.ts
+│   │   ├── lines.ts
 │   │   ├── lineEndings.ts
 │   │   ├── lineUtils.ts
+│   │   ├── spaces.ts
 │   │   ├── tabs.ts
 │   │   └── whitespace.ts
 │   ├── utils/

@@ -8,6 +8,8 @@ import { tabsToSpaces, spacesToTabs, increaseIndent, decreaseIndent } from '../t
 import { trimLines } from '../transforms/lineUtils';
 import { formatShortDateTime, formatLongDateTime, formatCustomDateTime } from '../transforms/dateTime';
 import { commentLine, uncommentLine, commentBlock, uncommentBlock } from '../transforms/comments';
+import { removeDuplicateLines, sortLinesAscending, sortLinesDescending, reverseLines, joinLines, removeEmptyLines } from '../transforms/lines';
+import { toWindowsEOL, toUnixEOL, toMacEOL } from '../transforms/eol';
 
 export function registerAllCommands(context: vscode.ExtensionContext): void {
     registerTextCommand(context, {
@@ -98,5 +100,50 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
     registerTextCommand(context, {
         command: Commands.UNCOMMENT_BLOCK,
         transform: (text) => uncommentBlock(text),
+    });
+
+    registerTextCommand(context, {
+        command: Commands.REMOVE_DUPLICATE_LINES,
+        transform: (text) => removeDuplicateLines(text),
+    });
+
+    registerTextCommand(context, {
+        command: Commands.SORT_ASCENDING,
+        transform: (text) => sortLinesAscending(text),
+    });
+
+    registerTextCommand(context, {
+        command: Commands.SORT_DESCENDING,
+        transform: (text) => sortLinesDescending(text),
+    });
+
+    registerTextCommand(context, {
+        command: Commands.REVERSE_LINES,
+        transform: (text) => reverseLines(text),
+    });
+
+    registerTextCommand(context, {
+        command: Commands.JOIN_LINES,
+        transform: (text) => joinLines(text),
+    });
+
+    registerTextCommand(context, {
+        command: Commands.REMOVE_EMPTY_LINES,
+        transform: (text) => removeEmptyLines(text),
+    });
+
+    registerTextCommand(context, {
+        command: Commands.TO_WINDOWS_EOL,
+        transform: (text) => toWindowsEOL(text),
+    });
+
+    registerTextCommand(context, {
+        command: Commands.TO_UNIX_EOL,
+        transform: (text) => toUnixEOL(text),
+    });
+
+    registerTextCommand(context, {
+        command: Commands.TO_MAC_EOL,
+        transform: (text) => toMacEOL(text),
     });
 }

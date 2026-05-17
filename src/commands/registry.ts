@@ -17,6 +17,15 @@ export const Commands = {
     UNCOMMENT_LINE: 'pancho.uncommentLine',
     COMMENT_BLOCK: 'pancho.commentBlock',
     UNCOMMENT_BLOCK: 'pancho.uncommentBlock',
+    REMOVE_DUPLICATE_LINES: 'pancho.removeDuplicateLines',
+    SORT_ASCENDING: 'pancho.sortAscending',
+    SORT_DESCENDING: 'pancho.sortDescending',
+    REVERSE_LINES: 'pancho.reverseLines',
+    JOIN_LINES: 'pancho.joinLines',
+    REMOVE_EMPTY_LINES: 'pancho.removeEmptyLines',
+    TO_WINDOWS_EOL: 'pancho.toWindowsEOL',
+    TO_UNIX_EOL: 'pancho.toUnixEOL',
+    TO_MAC_EOL: 'pancho.toMacEOL',
 } as const;
 
 export type CommandName = typeof Commands[keyof typeof Commands];
@@ -45,4 +54,13 @@ export const CommandList: Command[] = [
     { name: Commands.UNCOMMENT_LINE, title: 'Descomentar línea' },
     { name: Commands.COMMENT_BLOCK, title: 'Comentar bloque' },
     { name: Commands.UNCOMMENT_BLOCK, title: 'Descomentar bloque' },
+    { name: Commands.REMOVE_DUPLICATE_LINES, title: 'Eliminar líneas duplicadas' },
+    { name: Commands.SORT_ASCENDING, title: 'Ordenar A-Z' },
+    { name: Commands.SORT_DESCENDING, title: 'Ordenar Z-A' },
+    { name: Commands.REVERSE_LINES, title: 'Revertir líneas' },
+    { name: Commands.JOIN_LINES, title: 'Unir líneas' },
+    { name: Commands.REMOVE_EMPTY_LINES, title: 'Eliminar líneas vacías' },
+    { name: Commands.TO_WINDOWS_EOL, title: 'Convertir a Windows (CRLF)' },
+    { name: Commands.TO_UNIX_EOL, title: 'Convertir a Unix (LF)' },
+    { name: Commands.TO_MAC_EOL, title: 'Convertir a Mac (CR)' },
 ];

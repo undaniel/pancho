@@ -22,6 +22,14 @@
         "label": "Operaciones de limpieza"
       },
       {
+        "id": "panchoLineas",
+        "label": "Líneas"
+      },
+      {
+        "id": "panchoEOL",
+        "label": "Fin de línea"
+      },
+      {
         "id": "panchoTabulaciones",
         "label": "Tabulaciones"
       },
@@ -106,6 +114,42 @@
       {
         "command": "pancho.uncommentBlock",
         "title": "Descomentar bloque"
+      },
+      {
+        "command": "pancho.removeDuplicateLines",
+        "title": "Eliminar líneas duplicadas"
+      },
+      {
+        "command": "pancho.sortAscending",
+        "title": "Ordenar A-Z"
+      },
+      {
+        "command": "pancho.sortDescending",
+        "title": "Ordenar Z-A"
+      },
+      {
+        "command": "pancho.reverseLines",
+        "title": "Revertir líneas"
+      },
+      {
+        "command": "pancho.joinLines",
+        "title": "Unir líneas"
+      },
+      {
+        "command": "pancho.removeEmptyLines",
+        "title": "Eliminar líneas vacías"
+      },
+      {
+        "command": "pancho.toWindowsEOL",
+        "title": "Convertir a Windows (CRLF)"
+      },
+      {
+        "command": "pancho.toUnixEOL",
+        "title": "Convertir a Unix (LF)"
+      },
+      {
+        "command": "pancho.toMacEOL",
+        "title": "Convertir a Mac (CR)"
       }
     ],
     "menus": {
@@ -118,6 +162,14 @@
         {
           "submenu": "panchoOperaciones",
           "label": "Operaciones de limpieza"
+        },
+        {
+          "submenu": "panchoLineas",
+          "label": "Líneas"
+        },
+        {
+          "submenu": "panchoEOL",
+          "label": "Fin de línea"
         },
         {
           "submenu": "panchoTabulaciones",
@@ -155,6 +207,38 @@
         },
         {
           "command": "pancho.lineEndingsToSpaces"
+        }
+      ],
+      "panchoLineas": [
+        {
+          "command": "pancho.removeDuplicateLines"
+        },
+        {
+          "command": "pancho.sortAscending"
+        },
+        {
+          "command": "pancho.sortDescending"
+        },
+        {
+          "command": "pancho.reverseLines"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.joinLines"
+        },
+        {
+          "command": "pancho.removeEmptyLines"
+        }
+      ],
+      "panchoEOL": [
+        {
+          "command": "pancho.toWindowsEOL"
+        },
+        {
+          "command": "pancho.toUnixEOL"
+        },
+        {
+          "command": "pancho.toMacEOL"
         }
       ],
       "panchoTabulaciones": [

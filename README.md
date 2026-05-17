@@ -18,9 +18,11 @@
 > Lista de comandos disponible en el menú contextual
 
 1. [Operaciones de limpieza](#operaciones-de-limpieza)
-2. [Tabulaciones](#tabulaciones)
-3. [Insertar](#insertar)
-4. [Comentar / Descomentar](#comentar-descomentar)
+2. [Líneas](#l-neas)
+3. [Fin de línea](#fin-de-l-nea)
+4. [Tabulaciones](#tabulaciones)
+5. [Insertar](#insertar)
+6. [Comentar / Descomentar](#comentar-descomentar)
 
 ---
 
@@ -42,7 +44,38 @@
 
 ---
 
-## 2. Tabulaciones
+## 2. Líneas
+<details>
+<summary>Ver comandos</summary>
+
+| Comando | Función |
+|---------|----------|
+| `pancho.removeDuplicateLines` | Eliminar líneas duplicadas |
+| `pancho.sortAscending` | Ordenar A-Z |
+| `pancho.sortDescending` | Ordenar Z-A |
+| `pancho.reverseLines` | Revertir líneas |
+| `pancho.joinLines` | Unir líneas |
+| `pancho.removeEmptyLines` | Eliminar líneas vacías |
+
+</details>
+
+---
+
+## 3. Fin de línea
+<details>
+<summary>Ver comandos</summary>
+
+| Comando | Función |
+|---------|----------|
+| `pancho.toWindowsEOL` | Convertir a Windows (CRLF) |
+| `pancho.toUnixEOL` | Convertir a Unix (LF) |
+| `pancho.toMacEOL` | Convertir a Mac (CR) |
+
+</details>
+
+---
+
+## 4. Tabulaciones
 <details>
 <summary>Ver comandos</summary>
 
@@ -57,7 +90,7 @@
 
 ---
 
-## 3. Insertar
+## 5. Insertar
 <details>
 <summary>Ver comandos</summary>
 
@@ -71,7 +104,7 @@
 
 ---
 
-## 4. Comentar / Descomentar
+## 6. Comentar / Descomentar
 <details>
 <summary>Ver comandos</summary>
 
@@ -100,8 +133,11 @@ pancho/
 │   │   ├── case.ts
 │   │   ├── comments.ts
 │   │   ├── dateTime.ts
+│   │   ├── eol.ts
+│   │   ├── lines.ts
 │   │   ├── lineEndings.ts
 │   │   ├── lineUtils.ts
+│   │   ├── spaces.ts
 │   │   ├── tabs.ts
 │   │   └── whitespace.ts
 │   ├── utils/
@@ -141,5 +177,5 @@ pancho/
 ---
 
 <div align="center">
-  <p>Hecho con ❤️ para desarrolladores</p>
+  <p>Hecho con ❤️ para panchos</p>
 </div>
