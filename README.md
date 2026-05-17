@@ -27,8 +27,9 @@
 8. [Formateo](#formateo)
 9. [Hash y binario](#hash-y-binario)
 10. [Insertar](#insertar)
-11. [Desarrolladores](#desarrolladores)
-12. [Escapar](#escapar)
+11. [Comentar / Descomentar](#comentar-descomentar)
+12. [Desarrolladores](#desarrolladores)
+13. [Escapar](#escapar)
 
 
 ---
@@ -204,7 +205,22 @@
 
 ---
 
-## 11. Desarrolladores
+## 11. Comentar / Descomentar
+<details>
+<summary>Ver comandos</summary>
+
+| Comando | Función |
+|---------|----------|
+| `pancho.commentLine` | Comentar línea |
+| `pancho.uncommentLine` | Descomentar línea |
+| `pancho.commentBlock` | Comentar bloque |
+| `pancho.uncommentBlock` | Descomentar bloque |
+
+</details>
+
+---
+
+## 12. Desarrolladores
 <details>
 <summary>Ver comandos</summary>
 
@@ -222,7 +238,7 @@
 
 ---
 
-## 12. Escapar
+## 13. Escapar
 <details>
 <summary>Ver comandos</summary>
 
