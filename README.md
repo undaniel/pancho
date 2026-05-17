@@ -1,7 +1,7 @@
 # Pancho - VS Code Extension
 
 <div align="center">
-  <img src="pancho.png" alt="Pancho" width="200"/>
+  <img src="pancho.webp" alt="Pancho" width="200"/>
   <p>
     <strong>Extensión para limpiar y formatear texto como Notepad++</strong>
   </p>
