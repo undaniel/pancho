@@ -25,6 +25,13 @@ El menú contextual de Pancho tiene los siguientes submenús:
 | `pancho.increaseIndent` | Aumentar indentación |
 | `pancho.decreaseIndent` | Disminuir indentación |
 
+### Insertar
+| Comando | Función |
+|---------|---------|
+| `pancho.insertShortTime` | Fecha y hora corta (16/5/2026 8:56 p.m.) |
+| `pancho.insertLongTime` | Fecha y hora larga (sábado, 16 de mayo de 2026 8:56 p.m.) |
+| `pancho.insertDateTime` | FechaHora (2026-05-16 20:56:51) |
+
 ## Estructura del proyecto
 
 ```

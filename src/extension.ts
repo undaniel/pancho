@@ -123,6 +123,15 @@ function decreaseIndent(text: string, tabSize: number = 4): string {
     }).join('\n');
 }
 
+function insertAtCursor(text: string): void {
+    const editor = getEditor();
+    if (!editor) return;
+    const position = editor.selection.active;
+    editor.edit(editBuilder => {
+        editBuilder.insert(position, text);
+    });
+}
+
 export function activate(context: vscode.ExtensionContext) {
     vscode.window.showInformationMessage('Pancho extension activated!');
     console.log('[Pancho] Extension activating...');
@@ -248,6 +257,30 @@ export function activate(context: vscode.ExtensionContext) {
             replaceDocumentText(text => decreaseIndent(text, tabSize));
         }
     });
-}
 
-export function deactivate() {}
+    registerCommand('pancho.insertShortTime', () => {
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        const timeStr = now.toLocaleTimeString('es-ES', { hour: 'numeric', minute: '2-digit' });
+        insertAtCursor(`${dateStr} ${timeStr}`);
+    });
+
+    registerCommand('pancho.insertLongTime', () => {
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        const timeStr = now.toLocaleTimeString('es-ES', { hour: 'numeric', minute: '2-digit' });
+        insertAtCursor(`${dateStr} ${timeStr}`);
+    });
+
+    registerCommand('pancho.insertDateTime', () => {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const dateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        insertAtCursor(dateTime);
+    });
+}

@@ -24,6 +24,10 @@
       {
         "id": "panchoTabulaciones",
         "label": "Tabulaciones"
+      },
+      {
+        "id": "panchoInsertar",
+        "label": "Insertar"
       }
     ],
     "commands": [
@@ -70,6 +74,18 @@
       {
         "command": "pancho.decreaseIndent",
         "title": "Disminuir indentación"
+      },
+      {
+        "command": "pancho.insertShortTime",
+        "title": "Fecha y hora corta"
+      },
+      {
+        "command": "pancho.insertLongTime",
+        "title": "Fecha y hora larga"
+      },
+      {
+        "command": "pancho.insertDateTime",
+        "title": "Fecha y hora (dd-MM-yyyy hh:mm:ss)"
       }
     ],
     "menus": {
@@ -86,6 +102,10 @@
         {
           "submenu": "panchoTabulaciones",
           "label": "Tabulaciones"
+        },
+        {
+          "submenu": "panchoInsertar",
+          "label": "Insertar"
         }
       ],
       "panchoOperaciones": [
@@ -126,6 +146,17 @@
         },
         {
           "command": "pancho.decreaseIndent"
+        }
+      ],
+      "panchoInsertar": [
+        {
+          "command": "pancho.insertShortTime"
+        },
+        {
+          "command": "pancho.insertLongTime"
+        },
+        {
+          "command": "pancho.insertDateTime"
         }
       ]
     }
