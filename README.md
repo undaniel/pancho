@@ -2,24 +2,33 @@
 
 Extensión para limpiar y formatear texto como Notepad++.
 
-## Comandos disponibles
+## Menú Pancho
 
+El menú contextual de Pancho tiene los siguientes submenús:
+
+### Operaciones de limpieza
 | Comando | Función |
 |---------|---------|
 | `pancho.cleanWhitespace` | Limpiar espacios duplicados, tabs y líneas vacías |
 | `pancho.cleanLineEndings` | Limpiar saltos de línea Windows (^M) y caracteres especiales |
-| `pancho.convertTabsToSpaces` | Convertir tabs a espacios |
-| `pancho.convertSpacesToTabs` | Convertir espacios a tabs |
-| `pancho.lineEndingsToSpaces` | Convertir saltos de línea a espacios |
 | `pancho.toUpperCase` | Convertir a MAYÚSCULAS |
 | `pancho.toLowerCase` | Convertir a minúsculas |
 | `pancho.toTitleCase` | Convertir a Título |
 | `pancho.trimLines` | Recortar espacios al inicio y final de cada línea |
+| `pancho.lineEndingsToSpaces` | Convertir saltos de línea a espacios |
+
+### Tabulaciones
+| Comando | Función |
+|---------|---------|
+| `pancho.convertTabsToSpaces` | Convertir tabs a espacios |
+| `pancho.convertSpacesToTabs` | Convertir espacios a tabs |
+| `pancho.increaseIndent` | Aumentar indentación |
+| `pancho.decreaseIndent` | Disminuir indentación |
 
 ## Estructura del proyecto
 
 ```
-pancho-extension/
+pancho/
 ├── src/
 │   └── extension.ts      # Código principal de la extensión
 ├── dist/                  # Archivos compilados (no editar)
@@ -33,12 +42,11 @@ pancho-extension/
 
 1. Agregar el comando en `package.json`:
    - En `contributes.commands` con `command` y `title`
-   - En `contributes.menus.panchoMenu` con el `command`
+   - En `contributes.menus` según el submenú correspondiente (`panchoOperaciones` o `panchoTabulaciones`)
 
 2. Agregar la función en `src/extension.ts`:
    - Crear función de transformación de texto
    - Registrar el comando con `registerCommand`
-   - Agregar `when` clause si necesita controlar cuándo aparece
 
 3. Compilar con `npm run compile`
 

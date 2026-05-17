@@ -16,6 +16,14 @@
       {
         "id": "panchoMenu",
         "label": "Pancho"
+      },
+      {
+        "id": "panchoOperaciones",
+        "label": "Operaciones de limpieza"
+      },
+      {
+        "id": "panchoTabulaciones",
+        "label": "Tabulaciones"
       }
     ],
     "commands": [
@@ -54,6 +62,14 @@
       {
         "command": "pancho.lineEndingsToSpaces",
         "title": "Convertir saltos de línea a espacios"
+      },
+      {
+        "command": "pancho.increaseIndent",
+        "title": "Aumentar indentación"
+      },
+      {
+        "command": "pancho.decreaseIndent",
+        "title": "Disminuir indentación"
       }
     ],
     "menus": {
@@ -64,16 +80,20 @@
       ],
       "panchoMenu": [
         {
+          "submenu": "panchoOperaciones",
+          "label": "Operaciones de limpieza"
+        },
+        {
+          "submenu": "panchoTabulaciones",
+          "label": "Tabulaciones"
+        }
+      ],
+      "panchoOperaciones": [
+        {
           "command": "pancho.cleanWhitespace"
         },
         {
           "command": "pancho.cleanLineEndings"
-        },
-        {
-          "command": "pancho.convertTabsToSpaces"
-        },
-        {
-          "command": "pancho.convertSpacesToTabs"
         },
         {
           "separator": "before",
@@ -91,6 +111,21 @@
         },
         {
           "command": "pancho.lineEndingsToSpaces"
+        }
+      ],
+      "panchoTabulaciones": [
+        {
+          "command": "pancho.convertTabsToSpaces"
+        },
+        {
+          "command": "pancho.convertSpacesToTabs"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.increaseIndent"
+        },
+        {
+          "command": "pancho.decreaseIndent"
         }
       ]
     }

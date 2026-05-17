@@ -108,6 +108,21 @@ function lineEndingsToSpaces(text: string): string {
     return text.replace(/\r?\n|\r/g, ' ');
 }
 
+function increaseIndent(text: string, tabSize: number = 4): string {
+    const indent = ' '.repeat(tabSize);
+    return text.split('\n').map(line => indent + line).join('\n');
+}
+
+function decreaseIndent(text: string, tabSize: number = 4): string {
+    const indent = ' '.repeat(tabSize);
+    return text.split('\n').map(line => {
+        if (line.startsWith(indent)) {
+            return line.substring(tabSize);
+        }
+        return line;
+    }).join('\n');
+}
+
 export function activate(context: vscode.ExtensionContext) {
     vscode.window.showInformationMessage('Pancho extension activated!');
     console.log('[Pancho] Extension activating...');
@@ -209,6 +224,28 @@ export function activate(context: vscode.ExtensionContext) {
             replaceSelection(lineEndingsToSpaces(selection));
         } else {
             replaceDocumentText(lineEndingsToSpaces);
+        }
+    });
+
+    registerCommand('pancho.increaseIndent', () => {
+        const editor = getEditor();
+        const tabSize = (editor?.options.tabSize as number) ?? 4;
+        const selection = getSelection();
+        if (selection !== undefined && selection.length > 0) {
+            replaceSelection(increaseIndent(selection, tabSize));
+        } else {
+            replaceDocumentText(text => increaseIndent(text, tabSize));
+        }
+    });
+
+    registerCommand('pancho.decreaseIndent', () => {
+        const editor = getEditor();
+        const tabSize = (editor?.options.tabSize as number) ?? 4;
+        const selection = getSelection();
+        if (selection !== undefined && selection.length > 0) {
+            replaceSelection(decreaseIndent(selection, tabSize));
+        } else {
+            replaceDocumentText(text => decreaseIndent(text, tabSize));
         }
     });
 }
