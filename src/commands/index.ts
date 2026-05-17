@@ -7,6 +7,7 @@ import { toUpper, toLower, toTitleCase } from '../transforms/case';
 import { tabsToSpaces, spacesToTabs, increaseIndent, decreaseIndent } from '../transforms/tabs';
 import { trimLines } from '../transforms/lineUtils';
 import { formatShortDateTime, formatLongDateTime, formatCustomDateTime } from '../transforms/dateTime';
+import { commentLine, uncommentLine, commentBlock, uncommentBlock } from '../transforms/comments';
 
 export function registerAllCommands(context: vscode.ExtensionContext): void {
     registerTextCommand(context, {
@@ -77,5 +78,25 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
     registerInsertCommand(context, {
         command: Commands.INSERT_DATE_TIME,
         insert: formatCustomDateTime,
+    });
+
+    registerTextCommand(context, {
+        command: Commands.COMMENT_LINE,
+        transform: (text) => commentLine(text),
+    });
+
+    registerTextCommand(context, {
+        command: Commands.UNCOMMENT_LINE,
+        transform: (text) => uncommentLine(text),
+    });
+
+    registerTextCommand(context, {
+        command: Commands.COMMENT_BLOCK,
+        transform: (text) => commentBlock(text),
+    });
+
+    registerTextCommand(context, {
+        command: Commands.UNCOMMENT_BLOCK,
+        transform: (text) => uncommentBlock(text),
     });
 }

@@ -13,6 +13,10 @@ export const Commands = {
     INSERT_SHORT_TIME: 'pancho.insertShortTime',
     INSERT_LONG_TIME: 'pancho.insertLongTime',
     INSERT_DATE_TIME: 'pancho.insertDateTime',
+    COMMENT_LINE: 'pancho.commentLine',
+    UNCOMMENT_LINE: 'pancho.uncommentLine',
+    COMMENT_BLOCK: 'pancho.commentBlock',
+    UNCOMMENT_BLOCK: 'pancho.uncommentBlock',
 } as const;
 
 export type CommandName = typeof Commands[keyof typeof Commands];
@@ -36,5 +40,9 @@ export const CommandList: Command[] = [
     { name: Commands.DECREASE_INDENT, title: 'Disminuir indentación' },
     { name: Commands.INSERT_SHORT_TIME, title: 'Fecha y hora corta' },
     { name: Commands.INSERT_LONG_TIME, title: 'Fecha y hora larga' },
-    { name: Commands.INSERT_DATE_TIME, title: 'FechaHora (2026-05-16 20:56:51)' },
+    { name: Commands.INSERT_DATE_TIME, title: 'Fecha y hora (dd-MM-yyyy hh:mm:ss)' },
+    { name: Commands.COMMENT_LINE, title: 'Comentar línea' },
+    { name: Commands.UNCOMMENT_LINE, title: 'Descomentar línea' },
+    { name: Commands.COMMENT_BLOCK, title: 'Comentar bloque' },
+    { name: Commands.UNCOMMENT_BLOCK, title: 'Descomentar bloque' },
 ];

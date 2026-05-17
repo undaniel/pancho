@@ -44,7 +44,16 @@ El menú contextual de Pancho tiene los siguientes submenús:
 |---------|---------|
 | `pancho.insertShortTime` | Fecha y hora corta (16/5/2026 8:56 p.m.) |
 | `pancho.insertLongTime` | Fecha y hora larga (sábado, 16 de mayo de 2026 8:56 p.m.) |
-| `pancho.insertDateTime` | FechaHora (2026-05-16 20:56:51) |
+| `pancho.insertDateTime` | Fecha y hora (dd-MM-yyyy hh:mm:ss) |
+
+### Comentar / Descomentar
+
+| Comando | Función |
+|---------|---------|
+| `pancho.commentLine` | Comentar línea (`//`) |
+| `pancho.uncommentLine` | Descomentar línea |
+| `pancho.commentBlock` | Comentar bloque (`/* */`) |
+| `pancho.uncommentBlock` | Descomentar bloque |
 
 ---
 
@@ -59,6 +68,7 @@ pancho/
 │   │   └── registry.ts  # Constantes centralizadas
 │   ├── transforms/       # Funciones de transformación
 │   │   ├── case.ts
+│   │   ├── comments.ts
 │   │   ├── dateTime.ts
 │   │   ├── lineEndings.ts
 │   │   ├── lineUtils.ts

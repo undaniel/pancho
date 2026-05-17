@@ -28,6 +28,10 @@
       {
         "id": "panchoInsertar",
         "label": "Insertar"
+      },
+      {
+        "id": "panchoComentarios",
+        "label": "Comentar / Descomentar"
       }
     ],
     "commands": [
@@ -86,6 +90,22 @@
       {
         "command": "pancho.insertDateTime",
         "title": "Fecha y hora (dd-MM-yyyy hh:mm:ss)"
+      },
+      {
+        "command": "pancho.commentLine",
+        "title": "Comentar línea"
+      },
+      {
+        "command": "pancho.uncommentLine",
+        "title": "Descomentar línea"
+      },
+      {
+        "command": "pancho.commentBlock",
+        "title": "Comentar bloque"
+      },
+      {
+        "command": "pancho.uncommentBlock",
+        "title": "Descomentar bloque"
       }
     ],
     "menus": {
@@ -106,6 +126,10 @@
         {
           "submenu": "panchoInsertar",
           "label": "Insertar"
+        },
+        {
+          "submenu": "panchoComentarios",
+          "label": "Comentar / Descomentar"
         }
       ],
       "panchoOperaciones": [
@@ -157,6 +181,21 @@
         },
         {
           "command": "pancho.insertDateTime"
+        }
+      ],
+      "panchoComentarios": [
+        {
+          "command": "pancho.commentLine"
+        },
+        {
+          "command": "pancho.uncommentLine"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.commentBlock"
+        },
+        {
+          "command": "pancho.uncommentBlock"
         }
       ]
     }
