@@ -37,7 +37,20 @@ El menú contextual de Pancho tiene los siguientes submenús:
 ```
 pancho/
 ├── src/
-│   └── extension.ts      # Código principal de la extensión
+│   ├── commands/
+│   │   ├── index.ts      # Registro de comandos
+│   │   ├── factory.ts    # Factory para comandos
+│   │   └── registry.ts  # Constantes centralizadas
+│   ├── transforms/       # Funciones de transformación
+│   │   ├── case.ts
+│   │   ├── dateTime.ts
+│   │   ├── lineEndings.ts
+│   │   ├── lineUtils.ts
+│   │   ├── tabs.ts
+│   │   └── whitespace.ts
+│   ├── utils/
+│   │   └── editor.ts     # Utilidades de editor
+│   └── extension.ts      # Entry point
 ├── dist/                  # Archivos compilados (no editar)
 ├── package.json          # Configuración de la extensión
 ├── tsconfig.json         # Configuración TypeScript
@@ -47,17 +60,26 @@ pancho/
 
 ## Para agregar un nuevo comando
 
-1. Agregar el comando en `package.json`:
-   - En `contributes.commands` con `command` y `title`
-   - En `contributes.menus` según el submenú correspondiente (`panchoOperaciones` o `panchoTabulaciones`)
+1. Agregar comando en `package.json` y submenú correspondiente
 
-2. Agregar la función en `src/extension.ts`:
-   - Crear función de transformación de texto
-   - Registrar el comando con `registerCommand`
+2. Crear función de transformación en `src/transforms/*.ts`
 
-3. Compilar con `npm run compile`
+3. Agregar constante en `src/commands/registry.ts`:
+   ```typescript
+   NEW_COMMAND: 'pancho.newCommand',
+   ```
 
-4. Probar con **F5** (Extension Development Host)
+4. Registrar en `src/commands/index.ts`:
+   ```typescript
+   registerTextCommand(context, {
+       command: Commands.NEW_COMMAND,
+       transform: (text) => myTransform(text),
+   });
+   ```
+
+5. Compilar con `npm run compile`
+
+6. Probar con **F5** (Extension Development Host)
 
 ## Debugging
 
