@@ -48,6 +48,18 @@
       {
         "id": "panchoCaracteres",
         "label": "Caracteres especiales"
+      },
+      {
+        "id": "panchoTextoGeneral",
+        "label": "Texto general"
+      },
+      {
+        "id": "panchoWebDev",
+        "label": "Desarrolladores web"
+      },
+      {
+        "id": "panchoProgramador",
+        "label": "Programadores"
       }
     ],
     "commands": [
@@ -214,6 +226,154 @@
       {
         "command": "pancho.insertYen",
         "title": "Yen (¥)"
+      },
+      {
+        "command": "pancho.countWords",
+        "title": "Contar palabras"
+      },
+      {
+        "command": "pancho.countCharacters",
+        "title": "Contar caracteres"
+      },
+      {
+        "command": "pancho.countLines",
+        "title": "Contar líneas"
+      },
+      {
+        "command": "pancho.removeDuplicateWords",
+        "title": "Eliminar palabras duplicadas"
+      },
+      {
+        "command": "pancho.numberLines",
+        "title": "Numerar líneas"
+      },
+      {
+        "command": "pancho.removeLineNumbers",
+        "title": "Quitar números de línea"
+      },
+      {
+        "command": "pancho.slugify",
+        "title": "Generar slug URL"
+      },
+      {
+        "command": "pancho.reverseWords",
+        "title": "Revertir palabras"
+      },
+      {
+        "command": "pancho.randomizeLines",
+        "title": "Aleatorizar líneas"
+      },
+      {
+        "command": "pancho.minifyJSON",
+        "title": "Minificar JSON"
+      },
+      {
+        "command": "pancho.prettifyJSON",
+        "title": "Formatear JSON"
+      },
+      {
+        "command": "pancho.minifyHTML",
+        "title": "Minificar HTML"
+      },
+      {
+        "command": "pancho.prettifyHTML",
+        "title": "Formatear HTML"
+      },
+      {
+        "command": "pancho.minifyCSS",
+        "title": "Minificar CSS"
+      },
+      {
+        "command": "pancho.prettifyCSS",
+        "title": "Formatear CSS"
+      },
+      {
+        "command": "pancho.minifyJS",
+        "title": "Minificar JavaScript"
+      },
+      {
+        "command": "pancho.prettifyJS",
+        "title": "Formatear JavaScript"
+      },
+      {
+        "command": "pancho.htmlEntitiesEncode",
+        "title": "Codificar HTML entities"
+      },
+      {
+        "command": "pancho.htmlEntitiesDecode",
+        "title": "Decodificar HTML entities"
+      },
+      {
+        "command": "pancho.base64Encode",
+        "title": "Codificar Base64"
+      },
+      {
+        "command": "pancho.base64Decode",
+        "title": "Decodificar Base64"
+      },
+      {
+        "command": "pancho.urlEncode",
+        "title": "Codificar URL"
+      },
+      {
+        "command": "pancho.urlDecode",
+        "title": "Decodificar URL"
+      },
+      {
+        "command": "pancho.hexToRgb",
+        "title": "Hex a RGB"
+      },
+      {
+        "command": "pancho.rgbToHex",
+        "title": "RGB a Hex"
+      },
+      {
+        "command": "pancho.loremIpsum",
+        "title": "Generar Lorem Ipsum"
+      },
+      {
+        "command": "pancho.formatSQL",
+        "title": "Formatear SQL"
+      },
+      {
+        "command": "pancho.prettifyXML",
+        "title": "Formatear XML"
+      },
+      {
+        "command": "pancho.minifyXML",
+        "title": "Minificar XML"
+      },
+      {
+        "command": "pancho.generateUUID",
+        "title": "Generar UUID"
+      },
+      {
+        "command": "pancho.generateRandomString",
+        "title": "Generar cadena aleatoria"
+      },
+      {
+        "command": "pancho.hashMD5",
+        "title": "Hash MD5"
+      },
+      {
+        "command": "pancho.hashSHA256",
+        "title": "Hash SHA-256"
+      },
+      {
+        "command": "pancho.toBinary",
+        "title": "Texto a binario"
+      },
+      {
+        "command": "pancho.fromBinary",
+        "title": "Binario a texto"
+      },
+      {
+        "command": "pancho.toHex",
+        "title": "Texto a hexadecimal"
+      },
+      {
+        "command": "pancho.fromHex",
+        "title": "Hexadecimal a texto"
       }
     ],
     "menus": {
@@ -250,6 +410,18 @@
         {
           "submenu": "panchoCaracteres",
           "label": "Caracteres especiales"
+        },
+        {
+          "submenu": "panchoTextoGeneral",
+          "label": "Texto general"
+        },
+        {
+          "submenu": "panchoWebDev",
+          "label": "Desarrolladores web"
+        },
+        {
+          "submenu": "panchoProgramador",
+          "label": "Programadores"
         },
         {
           "submenu": "panchoComentarios",
@@ -401,6 +573,137 @@
         },
         {
           "command": "pancho.insertYen"
+        }
+      ],
+      "panchoTextoGeneral": [
+        {
+          "command": "pancho.countWords"
+        },
+        {
+          "command": "pancho.countCharacters"
+        },
+        {
+          "command": "pancho.countLines"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.removeDuplicateWords"
+        },
+        {
+          "command": "pancho.numberLines"
+        },
+        {
+          "command": "pancho.removeLineNumbers"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.slugify"
+        },
+        {
+          "command": "pancho.reverseWords"
+        },
+        {
+          "command": "pancho.randomizeLines"
+        }
+      ],
+      "panchoWebDev": [
+        {
+          "command": "pancho.minifyJSON"
+        },
+        {
+          "command": "pancho.prettifyJSON"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.minifyHTML"
+        },
+        {
+          "command": "pancho.prettifyHTML"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.minifyCSS"
+        },
+        {
+          "command": "pancho.prettifyCSS"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.minifyJS"
+        },
+        {
+          "command": "pancho.prettifyJS"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.htmlEntitiesEncode"
+        },
+        {
+          "command": "pancho.htmlEntitiesDecode"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.base64Encode"
+        },
+        {
+          "command": "pancho.base64Decode"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.urlEncode"
+        },
+        {
+          "command": "pancho.urlDecode"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.hexToRgb"
+        },
+        {
+          "command": "pancho.rgbToHex"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.loremIpsum"
+        }
+      ],
+      "panchoProgramador": [
+        {
+          "command": "pancho.formatSQL"
+        },
+        {
+          "command": "pancho.prettifyXML"
+        },
+        {
+          "command": "pancho.minifyXML"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.generateUUID"
+        },
+        {
+          "command": "pancho.generateRandomString"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.hashMD5"
+        },
+        {
+          "command": "pancho.hashSHA256"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.toBinary"
+        },
+        {
+          "command": "pancho.fromBinary"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.toHex"
+        },
+        {
+          "command": "pancho.fromHex"
         }
       ]
     }

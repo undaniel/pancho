@@ -106,9 +106,12 @@ pancho/
 │   │   ├── lines.ts
 │   │   ├── lineEndings.ts
 │   │   ├── lineUtils.ts
+│   │   ├── programmer.ts
 │   │   ├── spaces.ts
 │   │   ├── specialPaste.ts
 │   │   ├── tabs.ts
+│   │   ├── textGeneral.ts
+│   │   ├── webDev.ts
 │   │   └── whitespace.ts
 │   ├── utils/
 │   │   └── editor.ts     # Utilidades de editor
@@ -147,7 +150,7 @@ pancho/
 ---
 
 <div align="center">
-  <p>Hecho con ❤️ para desarrolladores</p>
+  <p>Hecho con ❤️ para panchos</p>
 </div>
 `;
 

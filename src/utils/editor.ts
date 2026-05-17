@@ -65,3 +65,8 @@ export function getTabSize(): number {
     const editor = getEditor();
     return (editor?.options.tabSize as number) ?? 4;
 }
+
+export function getDocumentText(): string {
+    const editor = getEditor();
+    return editor?.document.getText() ?? '';
+}

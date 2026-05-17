@@ -25,6 +25,9 @@
 6. [Comentar / Descomentar](#comentar-descomentar)
 7. [Pegado especial](#pegado-especial)
 8. [Caracteres especiales](#caracteres-especiales)
+9. [Texto general](#texto-general)
+10. [Desarrolladores web](#desarrolladores-web)
+11. [Programadores](#programadores)
 
 ---
 
@@ -157,6 +160,76 @@
 
 ---
 
+## 9. Texto general
+<details>
+<summary>Ver comandos</summary>
+
+| Comando | Función |
+|---------|----------|
+| `pancho.countWords` | Contar palabras |
+| `pancho.countCharacters` | Contar caracteres |
+| `pancho.countLines` | Contar líneas |
+| `pancho.removeDuplicateWords` | Eliminar palabras duplicadas |
+| `pancho.numberLines` | Numerar líneas |
+| `pancho.removeLineNumbers` | Quitar números de línea |
+| `pancho.slugify` | Generar slug URL |
+| `pancho.reverseWords` | Revertir palabras |
+| `pancho.randomizeLines` | Aleatorizar líneas |
+
+</details>
+
+---
+
+## 10. Desarrolladores web
+<details>
+<summary>Ver comandos</summary>
+
+| Comando | Función |
+|---------|----------|
+| `pancho.minifyJSON` | Minificar JSON |
+| `pancho.prettifyJSON` | Formatear JSON |
+| `pancho.minifyHTML` | Minificar HTML |
+| `pancho.prettifyHTML` | Formatear HTML |
+| `pancho.minifyCSS` | Minificar CSS |
+| `pancho.prettifyCSS` | Formatear CSS |
+| `pancho.minifyJS` | Minificar JavaScript |
+| `pancho.prettifyJS` | Formatear JavaScript |
+| `pancho.htmlEntitiesEncode` | Codificar HTML entities |
+| `pancho.htmlEntitiesDecode` | Decodificar HTML entities |
+| `pancho.base64Encode` | Codificar Base64 |
+| `pancho.base64Decode` | Decodificar Base64 |
+| `pancho.urlEncode` | Codificar URL |
+| `pancho.urlDecode` | Decodificar URL |
+| `pancho.hexToRgb` | Hex a RGB |
+| `pancho.rgbToHex` | RGB a Hex |
+| `pancho.loremIpsum` | Generar Lorem Ipsum |
+
+</details>
+
+---
+
+## 11. Programadores
+<details>
+<summary>Ver comandos</summary>
+
+| Comando | Función |
+|---------|----------|
+| `pancho.formatSQL` | Formatear SQL |
+| `pancho.prettifyXML` | Formatear XML |
+| `pancho.minifyXML` | Minificar XML |
+| `pancho.generateUUID` | Generar UUID |
+| `pancho.generateRandomString` | Generar cadena aleatoria |
+| `pancho.hashMD5` | Hash MD5 |
+| `pancho.hashSHA256` | Hash SHA-256 |
+| `pancho.toBinary` | Texto a binario |
+| `pancho.fromBinary` | Binario a texto |
+| `pancho.toHex` | Texto a hexadecimal |
+| `pancho.fromHex` | Hexadecimal a texto |
+
+</details>
+
+---
+
 
 ## Estructura del proyecto
 
@@ -207,33 +280,6 @@ pancho/
 
 ---
 
-## Instalación
-
-Se puede empaquetar la extensión en un archivo `.vsix` e instalarla manualmente sin publicar en el Marketplace.
-
-### Empaquetar
-
-```bash
-npm install -g vsce
-vsce package
-```
-
-Esto genera un archivo `pancho-x.x.x.vsix`.
-
-### Instalar
-
-```bash
-code --install-extension pancho-x.x.x.vsix
-```
-
-### Desinstalar
-
-```bash
-code --uninstall-extension pancho
-```
-
----
-
 ## Debugging
 
 - Los logs aparecen en el **Debug Console** de VS Code
@@ -243,5 +289,5 @@ code --uninstall-extension pancho
 ---
 
 <div align="center">
-  <p>Hecho con ❤️ para desarrolladores</p>
+  <p>Hecho con ❤️ para panchos</p>
 </div>

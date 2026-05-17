@@ -4,6 +4,7 @@ import { getSelection, replaceSelection, replaceDocumentText, insertAtCursor, ge
 
 export type TransformFn = (text: string, tabSize: number) => string;
 export type InsertFn = () => string;
+export type InfoFn = () => string;
 
 interface TextCommandOptions {
     command: CommandName;
@@ -17,7 +18,14 @@ interface InsertCommandOptions {
     insert: InsertFn;
 }
 
-type CommandOptions = TextCommandOptions | InsertCommandOptions;
+interface InfoCommandOptions {
+    command: CommandName;
+    transform?: never;
+    insert?: never;
+    info: InfoFn;
+}
+
+type CommandOptions = TextCommandOptions | InsertCommandOptions | InfoCommandOptions;
 
 export function registerTextCommand(context: vscode.ExtensionContext, options: TextCommandOptions): void {
     const { command, transform } = options;
@@ -45,6 +53,20 @@ export function registerInsertCommand(context: vscode.ExtensionContext, options:
         vscode.commands.registerCommand(command, () => {
             try {
                 insertAtCursor(insert());
+            } catch (err) {
+                console.error('[Pancho] Error:', err);
+                vscode.window.showErrorMessage(String(err));
+            }
+        })
+    );
+}
+
+export function registerInfoCommand(context: vscode.ExtensionContext, options: InfoCommandOptions): void {
+    const { command, info } = options;
+    context.subscriptions.push(
+        vscode.commands.registerCommand(command, () => {
+            try {
+                vscode.window.showInformationMessage(info());
             } catch (err) {
                 console.error('[Pancho] Error:', err);
                 vscode.window.showErrorMessage(String(err));
