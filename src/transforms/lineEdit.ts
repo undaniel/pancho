@@ -1,3 +1,5 @@
+import { sanitizeSearchPattern } from '../utils/sanitize';
+
 export function duplicateLine(text: string): string {
     return text.split('\n').map(line => line + '\n' + line).join('\n');
 }
@@ -19,27 +21,41 @@ export function insertLineAfter(text: string, newLine: string = ''): string {
 }
 
 export function deleteLinesContaining(text: string, pattern: string): string {
-    return text.split('\n').filter(line => !line.includes(pattern)).join('\n');
+    const sanitized = sanitizeSearchPattern(pattern);
+    return text.split('\n').filter(line => !line.includes(sanitized)).join('\n');
 }
 
 export function keepOnlyLinesContaining(text: string, pattern: string): string {
-    return text.split('\n').filter(line => line.includes(pattern)).join('\n');
+    const sanitized = sanitizeSearchPattern(pattern);
+    return text.split('\n').filter(line => line.includes(sanitized)).join('\n');
 }
 
-export function deleteLinesMatchingRegex(text: string, regex: string): string {
+export function deleteLinesMatchingRegex(text: string, regex: string): { result: string; error?: string } {
+    if (!regex || regex.length === 0) {
+        return { result: text, error: 'Regex vacío' };
+    }
+    if (regex.length > 200) {
+        return { result: text, error: 'Regex demasiado largo' };
+    }
     try {
         const re = new RegExp(regex, 'i');
-        return text.split('\n').filter(line => !re.test(line)).join('\n');
+        return { result: text.split('\n').filter(line => !re.test(line)).join('\n') };
     } catch {
-        return text;
+        return { result: text, error: 'Regex inválido' };
     }
 }
 
-export function keepOnlyLinesMatchingRegex(text: string, regex: string): string {
+export function keepOnlyLinesMatchingRegex(text: string, regex: string): { result: string; error?: string } {
+    if (!regex || regex.length === 0) {
+        return { result: text, error: 'Regex vacío' };
+    }
+    if (regex.length > 200) {
+        return { result: text, error: 'Regex demasiado largo' };
+    }
     try {
         const re = new RegExp(regex, 'i');
-        return text.split('\n').filter(line => re.test(line)).join('\n');
+        return { result: text.split('\n').filter(line => re.test(line)).join('\n') };
     } catch {
-        return text;
+        return { result: text, error: 'Regex inválido' };
     }
 }

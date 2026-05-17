@@ -12,7 +12,149 @@
     "Other"
   ],
   "icon": "images/icon.png",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pancho/pancho.git"
+  },
   "contributes": {
+    "configuration": {
+      "title": "Pancho",
+      "properties": {
+        "pancho.tabSize": {
+          "type": "number",
+          "default": 4,
+          "description": "Tamaño de tabulación en espacios"
+        },
+        "pancho.indentWithSpaces": {
+          "type": "boolean",
+          "default": true,
+          "description": "Usar espacios para indentación"
+        },
+        "pancho.defaultEOL": {
+          "type": "string",
+          "enum": ["LF", "CRLF", "CR"],
+          "default": "LF",
+          "description": "Fin de línea por defecto"
+        },
+        "pancho.statusBarShowCounters": {
+          "type": "boolean",
+          "default": true,
+          "description": "Mostrar contadores en barra de estado"
+        },
+        "pancho.maxFileSizeKB": {
+          "type": "number",
+          "default": 5120,
+          "description": "Tamaño máximo de archivo en KB para procesamiento (0 = sin límite)"
+        },
+        "pancho.loremIpsumWordCount": {
+          "type": "number",
+          "default": 50,
+          "description": "Cantidad de palabras en Lorem Ipsum"
+        },
+        "pancho.randomStringLength": {
+          "type": "number",
+          "default": 16,
+          "description": "Longitud de cadena aleatoria generada"
+        }
+      }
+    },
+    "configurationDefaults": {
+      "editor": {
+        "tabSize": 4,
+        "insertSpaces": true
+      }
+    },
+    "keybindings": [
+      {
+        "command": "pancho.toUpperCase",
+        "key": "ctrl+shift+u",
+        "mac": "cmd+shift+u",
+        "when": "editorTextFocus",
+        "args": null,
+        "accessibilityInformation": {
+          "label": "Convertir texto a mayúsculas",
+          "handledChannels": ["ui"]
+        }
+      },
+      {
+        "command": "pancho.toLowerCase",
+        "key": "ctrl+shift+l",
+        "mac": "cmd+shift+l",
+        "when": "editorTextFocus",
+        "args": null,
+        "accessibilityInformation": {
+          "label": "Convertir texto a minúsculas",
+          "handledChannels": ["ui"]
+        }
+      },
+      {
+        "command": "pancho.trimLines",
+        "key": "ctrl+shift+t",
+        "mac": "cmd+shift+t",
+        "when": "editorTextFocus",
+        "args": null,
+        "accessibilityInformation": {
+          "label": "Recortar espacios en líneas",
+          "handledChannels": ["ui"]
+        }
+      },
+      {
+        "command": "pancho.countWords",
+        "key": "ctrl+shift+w",
+        "mac": "cmd+shift+w",
+        "when": "editorTextFocus",
+        "args": null,
+        "accessibilityInformation": {
+          "label": "Contar palabras",
+          "handledChannels": ["ui"]
+        }
+      },
+      {
+        "command": "pancho.countCharacters",
+        "key": "ctrl+shift+c",
+        "mac": "cmd+shift+c",
+        "when": "editorTextFocus",
+        "args": null,
+        "accessibilityInformation": {
+          "label": "Contar caracteres",
+          "handledChannels": ["ui"]
+        }
+      },
+      {
+        "command": "pancho.countLines",
+        "key": "ctrl+shift+n",
+        "mac": "cmd+shift+n",
+        "when": "editorTextFocus",
+        "args": null,
+        "accessibilityInformation": {
+          "label": "Contar líneas",
+          "handledChannels": ["ui"]
+        }
+      },
+      {
+        "command": "pancho.sortAscending",
+        "key": "ctrl+shift+s",
+        "mac": "cmd+shift+s",
+        "when": "editorTextFocus",
+        "args": null,
+        "accessibilityInformation": {
+          "label": "Ordenar líneas ascendentemente",
+          "handledChannels": ["ui"]
+        }
+      },
+      {
+        "command": "pancho.removeDuplicateLines",
+        "key": "ctrl+shift+d",
+        "mac": "cmd+shift+d",
+        "when": "editorTextFocus",
+        "args": null,
+        "accessibilityInformation": {
+          "label": "Eliminar líneas duplicadas",
+          "handledChannels": ["ui"]
+        }
+      }
+    ],
     "submenus": [
       {
         "id": "panchoMenu",
@@ -28,7 +170,7 @@
       },
       {
         "id": "panchoCaso",
-        "label": "Caso"
+        "label": "Mayúsculas y minúsculas"
       },
       {
         "id": "panchoTabulaciones",
@@ -742,7 +884,68 @@
           "command": "pancho.unescapeForHTML"
         }
       ]
-    }
+    },
+    "markdownWalkthrough": [
+      {
+        "id": "pancho.walkthrough",
+        "title": "Bienvenido a Pancho",
+        "description": "Extensión para limpiar y formatear texto como Notepad++",
+        "steps": [
+          {
+            "title": "Menú contextual",
+            "description": "Haz clic derecho en el editor para ver el menú de Pancho con todos los comandos organizados por categorías.",
+            "media": {
+              "svg": "media/walkthrough.svg"
+            }
+          },
+          {
+            "title": "Categorías disponibles",
+            "description": "- **Edición**: Limpiar espacios y saltos de línea\n- **Líneas**: Ordenar, invertir, eliminar duplicados\n- **Mayúsculas y minúsculas**: Convertir texto\n- **Tabulaciones**: Convertir entre tabs y espacios\n- **Codificación**: Base64, URL, HTML entities\n- **Formateo**: JSON, HTML, CSS, JS, SQL, XML\n- **Hash y binario**: MD5, SHA-256, conversiones",
+            "media": {
+              "svg": "media/categories.svg"
+            }
+          },
+          {
+            "title": "Atajos de teclado",
+            "description": "Pancho incluye atajos de teclado para las operaciones más comunes:\n- `Ctrl+Shift+U`: Mayúsculas\n- `Ctrl+Shift+L`: Minúsculas\n- `Ctrl+Shift+T`: Recortar líneas\n- `Ctrl+Shift+W`: Contar palabras\n\nConsulta la lista completa en la configuración.",
+            "media": {
+              "svg": "media/keybindings.svg"
+            }
+          },
+          {
+            "title": "Configuración",
+            "description": "Personaliza el comportamiento de Pancho en Settings > Extensions > Pancho:\n- Tamaño de tabulación\n- Fin de línea por defecto\n- Mostrar contadores en barra de estado",
+            "media": {
+              "svg": "media/settings.svg"
+            }
+          }
+        ]
+      }
+    ],
+    "colors": [
+      {
+        "id": "pancho.statusBarBackground",
+        "description": "Color de fondo de la barra de estado de Pancho",
+        "defaults": {
+          "light": "#007acc",
+          "dark": "#007acc"
+        }
+      },
+      {
+        "id": "pancho.statusBarForeground",
+        "description": "Color de texto de la barra de estado de Pancho",
+        "defaults": {
+          "light": "#ffffff",
+          "dark": "#ffffff"
+        }
+      }
+    ],
+    "viewsWelcome": [
+      {
+        "view": "panchoStatusView",
+        "contents": "## Pancho\n\nSelecciona texto en el editor y usa el menú contextual para ver las opciones disponibles.\n\n[Configuración](command:workbench.action.openSettings?${encodeURIComponent('pancho')})"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

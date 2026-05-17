@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { CommandName } from './registry';
 import { getSelection, replaceSelection, replaceDocumentText, insertAtCursor, getTabSize, getDocumentText } from '../utils/editor';
+import { runWithProgress } from '../utils/progress';
 
 export type TransformFn = (text: string, tabSize: number) => string | { result: string; error?: string };
 export type InsertFn = () => string | { result: string; error?: string };
@@ -11,6 +12,7 @@ interface TextCommandOptions {
     transform: TransformFn;
     insert?: never;
     info?: never;
+    needsProgress?: boolean;
 }
 
 interface InsertCommandOptions {
@@ -46,33 +48,69 @@ function processResult<T>(result: T | { result: T; error?: string }): { value: T
     return { value: result as T };
 }
 
+function getMaxFileSize(): number {
+    const config = vscode.workspace.getConfiguration('pancho');
+    return config.get<number>('maxFileSizeKB', 5120) * 1024;
+}
+
+function shouldShowProgress(textLength: number): boolean {
+    return textLength > 100000;
+}
+
 export function registerTextCommand(context: vscode.ExtensionContext, options: TextCommandOptions): void {
-    const { command, transform } = options;
+    const { command, transform, needsProgress = false } = options;
     context.subscriptions.push(
-        vscode.commands.registerCommand(command, () => {
+        vscode.commands.registerCommand(command, async (args?: { pattern?: string }) => {
             try {
+                const editor = vscode.window.activeTextEditor;
+                if (!editor) {
+                    vscode.window.showWarningMessage('Pancho: No hay editor activo');
+                    return;
+                }
+
+                const fileSize = new TextEncoder().encode(editor.document.getText()).length;
+                const maxSize = getMaxFileSize();
+                if (maxSize > 0 && fileSize > maxSize) {
+                    vscode.window.showWarningMessage(`Pancho: Archivo demasiado grande (${Math.round(fileSize/1024)}KB). Máximo: ${maxSize/1024}KB`);
+                    return;
+                }
+
                 const tabSize = getTabSize();
                 const selection = getText();
+                let text = selection !== undefined && selection.length > 0 ? selection : getDocumentText();
                 let value: string;
                 let error: string | undefined;
 
-                if (selection !== undefined && selection.length > 0) {
-                    const result = transform(selection, tabSize);
+                const operation = async (progress: vscode.Progress<{ message?: string; increment?: number }>, token: vscode.CancellationToken) => {
+                    if (token.isCancellationRequested) {
+                        return;
+                    }
+
+                    const result = transform(text, tabSize);
                     const processed = processResult(result);
                     value = processed.value;
                     error = processed.error;
+
+                    if (token.isCancellationRequested) {
+                        return;
+                    }
+                };
+
+                if (needsProgress || shouldShowProgress(text.length)) {
+                    await runWithProgress(
+                        `Ejecutando ${command}...`,
+                        operation,
+                        true
+                    );
                 } else {
-                    const docText = getDocumentText();
-                    const result = transform(docText, tabSize);
-                    const processed = processResult(result);
-                    value = processed.value;
-                    error = processed.error;
+                    const noopProgress: vscode.Progress<{ message?: string; increment?: number }> = { report: () => {} };
+                    await operation(noopProgress, { isCancellationRequested: false, onCancellationRequested: () => ({ dispose: () => {} }) });
                 }
 
                 if (error) {
                     vscode.window.showWarningMessage(`Pancho: ${error}`);
                 }
-                replaceSelection(value);
+                replaceSelection(value!);
             } catch (err) {
                 console.error('[Pancho] Error:', err);
                 vscode.window.showErrorMessage(`Pancho: ${String(err)}`);

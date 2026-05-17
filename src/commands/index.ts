@@ -94,10 +94,16 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
     registerTextCommand(context, { command: Commands.DUPLICATE_LINE, transform: (text) => duplicateLine(text) });
     registerTextCommand(context, { command: Commands.INSERT_LINE_BEFORE, transform: (text) => insertLineBefore(text) });
     registerTextCommand(context, { command: Commands.INSERT_LINE_AFTER, transform: (text) => insertLineAfter(text) });
-    registerTextCommand(context, { command: Commands.DELETE_LINES_CONTAINING, transform: (text) => deleteLinesContaining(text, getSelection() || '') });
-    registerTextCommand(context, { command: Commands.KEEP_ONLY_LINES_CONTAINING, transform: (text) => keepOnlyLinesContaining(text, getSelection() || '') });
-    registerTextCommand(context, { command: Commands.HIGHLIGHT_MATCHES, transform: (text) => highlightMatches(text, getSelection() || '') });
-    registerInfoCommand(context, { command: Commands.COUNT_MATCHES, info: () => 'Coincidencias: ' + countMatches(getSelection() || getDocumentText(), getSelection() || '') });
+    registerTextCommand(context, { command: Commands.DELETE_LINES_CONTAINING, transform: (text) => deleteLinesContaining(text, vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor.selection) || '') });
+    registerTextCommand(context, { command: Commands.KEEP_ONLY_LINES_CONTAINING, transform: (text) => keepOnlyLinesContaining(text, vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor.selection) || '') });
+    registerTextCommand(context, { command: Commands.HIGHLIGHT_MATCHES, transform: (text) => highlightMatches(text, vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor.selection) || '') });
+    registerInfoCommand(context, { command: Commands.COUNT_MATCHES, info: () => {
+        const editor = vscode.window.activeTextEditor;
+        const text = editor?.document.getText() || '';
+        const pattern = editor ? editor.document.getText(editor.selection) : '';
+        const result = countMatches(text, pattern);
+        return 'Coincidencias: ' + result.result;
+    } });
 
     registerTextCommand(context, { command: Commands.ESCAPE_JSON, transform: (text) => escapeJSON(text) });
     registerTextCommand(context, { command: Commands.UNESCAPE_JSON, transform: (text) => unescapeJSON(text) });
