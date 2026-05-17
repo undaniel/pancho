@@ -35,128 +35,47 @@ function extractPackageJson() {
     return { commandTitles, submenus };
 }
 
-function generateReadmeContent(commandTitles, submenus) {
-    let toc = '## Menú Pancho\n\n';
-    toc += '> Lista de comandos disponible en el menú contextual\n\n';
-
+function generateTableOfContents(submenus) {
+    let toc = '';
     let index = 1;
     for (const submenu of Object.values(submenus)) {
         const anchor = submenu.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
         toc += `${index}. [${submenu.name}](#${anchor})\n`;
         index++;
     }
+    return toc;
+}
 
-    toc += '\n---\n\n';
-
-    index = 1;
+function generateCommandsContent(commandTitles, submenus) {
+    let content = '';
+    let index = 1;
     for (const submenu of Object.values(submenus)) {
         const anchor = submenu.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        toc += `## ${index}. ${submenu.name}\n`;
-        toc += '<details>\n<summary>Ver comandos</summary>\n\n';
-        toc += '| Comando | Función |\n|---------|----------|\n';
+        content += `## ${index}. ${submenu.name}\n`;
+        content += '<details>\n<summary>Ver comandos</summary>\n\n';
+        content += '| Comando | Función |\n|---------|----------|\n';
 
         for (const cmd of submenu.commands) {
             const title = commandTitles[cmd] || cmd;
-            toc += '| `' + cmd + '` | ' + title + ' |\n';
+            content += '| `' + cmd + '` | ' + title + ' |\n';
         }
 
-        toc += '\n</details>\n\n---\n\n';
+        content += '\n</details>\n\n---\n\n';
         index++;
     }
-
-    return toc;
+    return content;
 }
 
 function main() {
     const { commandTitles, submenus } = extractPackageJson();
-    const generatedContent = generateReadmeContent(commandTitles, submenus);
 
-    const header = `# Pancho - VS Code Extension
+    const templatePath = path.join(__dirname, 'templates', 'README.md');
+    let template = fs.readFileSync(templatePath, 'utf-8');
 
-<div align="center">
-  <img src="pancho.webp" alt="Pancho" width="200"/>
-  <p>
-    <strong>Extensión para limpiar y formatear texto como Notepad++</strong>
-  </p>
-  <p>
-    <img src="https://img.shields.io/badge/VSCode-^1.80.0-blue" alt="vscode"/>
-    <img src="https://img.shields.io/badge/TypeScript-^5.0.0-blue" alt="typescript"/>
-  </p>
-</div>
+    template = template.replace('{{TABLE_OF_CONTENTS}}', generateTableOfContents(submenus));
+    template = template.replace('{{COMMANDS_CONTENT}}', generateCommandsContent(commandTitles, submenus));
 
----
-
-`;
-
-    const footer = `
-## Estructura del proyecto
-
-\`\`\`
-pancho/
-├── src/
-│   ├── commands/
-│   │   ├── index.ts      # Registro de comandos
-│   │   ├── factory.ts    # Factory para comandos
-│   │   └── registry.ts  # Constantes centralizadas
-│   ├── transforms/       # Funciones de transformación
-│   │   ├── case.ts
-│   │   ├── comments.ts
-│   │   ├── dateTime.ts
-│   │   ├── eol.ts
-│   │   ├── lines.ts
-│   │   ├── lineEndings.ts
-│   │   ├── lineUtils.ts
-│   │   ├── programmer.ts
-│   │   ├── spaces.ts
-│   │   ├── specialPaste.ts
-│   │   ├── tabs.ts
-│   │   ├── textGeneral.ts
-│   │   ├── webDev.ts
-│   │   └── whitespace.ts
-│   ├── utils/
-│   │   └── editor.ts     # Utilidades de editor
-│   └── extension.ts      # Entry point
-├── dist/                  # Archivos compilados (no editar)
-├── package.json          # Configuración de la extensión
-├── tsconfig.json         # Configuración TypeScript
-└── .vscode/
-    └── launch.json       # Configuración para depuración (F5)
-\`\`\`
-
----
-
-## Para agregar un nuevo comando
-
-1. Agregar comando en \`package.json\` y submenú correspondiente
-
-2. Crear función de transformación en \`src/transforms/*.ts\`
-
-3. Agregar constante en \`src/commands/registry.ts\`
-
-4. Registrar en \`src/commands/index.ts\`
-
-5. Compilar con \`npm run compile\`
-
-6. Probar con **F5** (Extension Development Host)
-
----
-
-## Debugging
-
-- Los logs aparecen en el **Debug Console** de VS Code
-- Mensajes de error aparecen como notificaciones
-- Para recargar: **F5** o **Developer: Reload Window**
-
----
-
-<div align="center">
-  <p>Hecho con ❤️ para panchos</p>
-</div>
-`;
-
-    const readme = header + generatedContent + footer;
-
-    fs.writeFileSync(path.join(projectRoot, 'README.md'), readme);
+    fs.writeFileSync(path.join(projectRoot, 'README.md'), template);
     console.log('README.md generado correctamente');
 }
 

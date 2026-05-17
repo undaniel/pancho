@@ -17,21 +17,23 @@
 
 > Lista de comandos disponible en el menú contextual
 
-1. [Operaciones de limpieza](#operaciones-de-limpieza)
+1. [Edición](#edici-n)
 2. [Líneas](#l-neas)
-3. [Fin de línea](#fin-de-l-nea)
+3. [Caso](#caso)
 4. [Tabulaciones](#tabulaciones)
-5. [Insertar](#insertar)
-6. [Comentar / Descomentar](#comentar-descomentar)
-7. [Pegado especial](#pegado-especial)
-8. [Caracteres especiales](#caracteres-especiales)
-9. [Texto general](#texto-general)
-10. [Desarrolladores web](#desarrolladores-web)
-11. [Programadores](#programadores)
+5. [Fin de línea](#fin-de-l-nea)
+6. [Texto general](#texto-general)
+7. [Codificación](#codificaci-n)
+8. [Formateo](#formateo)
+9. [Hash y binario](#hash-y-binario)
+10. [Insertar](#insertar)
+11. [Desarrolladores](#desarrolladores)
+12. [Escapar](#escapar)
+
 
 ---
 
-## 1. Operaciones de limpieza
+## 1. Edición
 <details>
 <summary>Ver comandos</summary>
 
@@ -39,9 +41,6 @@
 |---------|----------|
 | `pancho.cleanWhitespace` | Limpiar espacios en blanco |
 | `pancho.cleanLineEndings` | Limpiar saltos de línea |
-| `pancho.toUpperCase` | Convertir a MAYÚSCULAS |
-| `pancho.toLowerCase` | Convertir a minúsculas |
-| `pancho.toTitleCase` | Convertir a Título |
 | `pancho.trimLines` | Recortar líneas |
 | `pancho.lineEndingsToSpaces` | Convertir saltos de línea a espacios |
 
@@ -66,15 +65,15 @@
 
 ---
 
-## 3. Fin de línea
+## 3. Caso
 <details>
 <summary>Ver comandos</summary>
 
 | Comando | Función |
 |---------|----------|
-| `pancho.toWindowsEOL` | Convertir a Windows (CRLF) |
-| `pancho.toUnixEOL` | Convertir a Unix (LF) |
-| `pancho.toMacEOL` | Convertir a Mac (CR) |
+| `pancho.toUpperCase` | Convertir a MAYÚSCULAS |
+| `pancho.toLowerCase` | Convertir a minúsculas |
+| `pancho.toTitleCase` | Convertir a Título |
 
 </details>
 
@@ -95,72 +94,21 @@
 
 ---
 
-## 5. Insertar
+## 5. Fin de línea
 <details>
 <summary>Ver comandos</summary>
 
 | Comando | Función |
 |---------|----------|
-| `pancho.insertShortTime` | Fecha y hora corta |
-| `pancho.insertLongTime` | Fecha y hora larga |
-| `pancho.insertDateTime` | Fecha y hora (dd-MM-yyyy hh:mm:ss) |
+| `pancho.toWindowsEOL` | Convertir a Windows (CRLF) |
+| `pancho.toUnixEOL` | Convertir a Unix (LF) |
+| `pancho.toMacEOL` | Convertir a Mac (CR) |
 
 </details>
 
 ---
 
-## 6. Comentar / Descomentar
-<details>
-<summary>Ver comandos</summary>
-
-| Comando | Función |
-|---------|----------|
-| `pancho.commentLine` | Comentar línea |
-| `pancho.uncommentLine` | Descomentar línea |
-| `pancho.commentBlock` | Comentar bloque |
-| `pancho.uncommentBlock` | Descomentar bloque |
-
-</details>
-
----
-
-## 7. Pegado especial
-<details>
-<summary>Ver comandos</summary>
-
-| Comando | Función |
-|---------|----------|
-| `pancho.pasteWithoutLineBreak` | Pegar sin salto de línea |
-| `pancho.copyToMultipleLines` | Copiar a múltiples líneas |
-| `pancho.formatAsCSV` | Formatear como CSV |
-
-</details>
-
----
-
-## 8. Caracteres especiales
-<details>
-<summary>Ver comandos</summary>
-
-| Comando | Función |
-|---------|----------|
-| `pancho.insertDegree` | Grado (°) |
-| `pancho.insertCopyright` | Copyright (©) |
-| `pancho.insertRegistered` | Registrado (®) |
-| `pancho.insertTrademark` | Trademark (™) |
-| `pancho.insertSection` | Sección (§) |
-| `pancho.insertPilcrow` | Pilcrow (¶) |
-| `pancho.insertEllipsis` | Puntos suspensivos (…) |
-| `pancho.insertBullet` | Viñeta (•) |
-| `pancho.insertEuro` | Euro (€) |
-| `pancho.insertPound` | Libra (£) |
-| `pancho.insertYen` | Yen (¥) |
-
-</details>
-
----
-
-## 9. Texto general
+## 6. Texto general
 <details>
 <summary>Ver comandos</summary>
 
@@ -175,12 +123,32 @@
 | `pancho.slugify` | Generar slug URL |
 | `pancho.reverseWords` | Revertir palabras |
 | `pancho.randomizeLines` | Aleatorizar líneas |
+| `pancho.pasteWithoutLineBreak` | Pegar sin salto de línea |
+| `pancho.copyToMultipleLines` | Copiar a múltiples líneas |
+| `pancho.formatAsCSV` | Formatear como CSV |
 
 </details>
 
 ---
 
-## 10. Desarrolladores web
+## 7. Codificación
+<details>
+<summary>Ver comandos</summary>
+
+| Comando | Función |
+|---------|----------|
+| `pancho.base64Encode` | Codificar Base64 |
+| `pancho.base64Decode` | Decodificar Base64 |
+| `pancho.urlEncode` | Codificar URL |
+| `pancho.urlDecode` | Decodificar URL |
+| `pancho.htmlEntitiesEncode` | Codificar HTML entities |
+| `pancho.htmlEntitiesDecode` | Decodificar HTML entities |
+
+</details>
+
+---
+
+## 8. Formateo
 <details>
 <summary>Ver comandos</summary>
 
@@ -194,42 +162,87 @@
 | `pancho.prettifyCSS` | Formatear CSS |
 | `pancho.minifyJS` | Minificar JavaScript |
 | `pancho.prettifyJS` | Formatear JavaScript |
-| `pancho.htmlEntitiesEncode` | Codificar HTML entities |
-| `pancho.htmlEntitiesDecode` | Decodificar HTML entities |
-| `pancho.base64Encode` | Codificar Base64 |
-| `pancho.base64Decode` | Decodificar Base64 |
-| `pancho.urlEncode` | Codificar URL |
-| `pancho.urlDecode` | Decodificar URL |
-| `pancho.hexToRgb` | Hex a RGB |
-| `pancho.rgbToHex` | RGB a Hex |
-| `pancho.loremIpsum` | Generar Lorem Ipsum |
+| `pancho.formatSQL` | Formatear SQL |
+| `pancho.prettifyXML` | Formatear XML |
+| `pancho.minifyXML` | Minificar XML |
 
 </details>
 
 ---
 
-## 11. Programadores
+## 9. Hash y binario
 <details>
 <summary>Ver comandos</summary>
 
 | Comando | Función |
 |---------|----------|
-| `pancho.formatSQL` | Formatear SQL |
-| `pancho.prettifyXML` | Formatear XML |
-| `pancho.minifyXML` | Minificar XML |
-| `pancho.generateUUID` | Generar UUID |
-| `pancho.generateRandomString` | Generar cadena aleatoria |
 | `pancho.hashMD5` | Hash MD5 |
 | `pancho.hashSHA256` | Hash SHA-256 |
 | `pancho.toBinary` | Texto a binario |
 | `pancho.fromBinary` | Binario a texto |
 | `pancho.toHex` | Texto a hexadecimal |
 | `pancho.fromHex` | Hexadecimal a texto |
+| `pancho.hexToRgb` | Hex a RGB |
+| `pancho.rgbToHex` | RGB a Hex |
 
 </details>
 
 ---
 
+## 10. Insertar
+<details>
+<summary>Ver comandos</summary>
+
+| Comando | Función |
+|---------|----------|
+| `pancho.insertShortTime` | Fecha y hora corta |
+| `pancho.insertLongTime` | Fecha y hora larga |
+| `pancho.insertDateTime` | Fecha y hora (dd-MM-yyyy hh:mm:ss) |
+| `pancho.loremIpsum` | Generar Lorem Ipsum |
+
+</details>
+
+---
+
+## 11. Desarrolladores
+<details>
+<summary>Ver comandos</summary>
+
+| Comando | Función |
+|---------|----------|
+| `pancho.duplicateLine` | Duplicar línea |
+| `pancho.insertLineBefore` | Insertar línea antes |
+| `pancho.insertLineAfter` | Insertar línea después |
+| `pancho.deleteLinesContaining` | Eliminar líneas con... |
+| `pancho.keepOnlyLinesContaining` | Mantener solo líneas con... |
+| `pancho.highlightMatches` | Resaltar coincidencias |
+| `pancho.countMatches` | Contar coincidencias |
+
+</details>
+
+---
+
+## 12. Escapar
+<details>
+<summary>Ver comandos</summary>
+
+| Comando | Función |
+|---------|----------|
+| `pancho.escapeJSON` | Escapar para JSON |
+| `pancho.unescapeJSON` | Desescapar de JSON |
+| `pancho.escapeForSQL` | Escapar para SQL |
+| `pancho.unescapeForSQL` | Desescapar de SQL |
+| `pancho.escapeForRegex` | Escapar para Regex |
+| `pancho.escapeForHTML` | Escapar para HTML |
+| `pancho.unescapeForHTML` | Desescapar de HTML |
+
+</details>
+
+---
+
+
+
+---
 
 ## Estructura del proyecto
 
@@ -251,13 +264,20 @@ pancho/
 │   │   ├── spaces.ts
 │   │   ├── specialPaste.ts
 │   │   ├── tabs.ts
+│   │   ├── textGeneral/
+│   │   ├── webDev/
 │   │   └── whitespace.ts
 │   ├── utils/
-│   │   └── editor.ts     # Utilidades de editor
+│   │   ├── editor.ts     # Utilidades de editor
+│   │   └── textAnalyzer.ts
 │   └── extension.ts      # Entry point
 ├── dist/                  # Archivos compilados (no editar)
 ├── package.json          # Configuración de la extensión
 ├── tsconfig.json         # Configuración TypeScript
+├── scripts/
+│   ├── generate-readme.js
+│   └── templates/
+│       └── README.md
 └── .vscode/
     └── launch.json       # Configuración para depuración (F5)
 ```
@@ -277,6 +297,33 @@ pancho/
 5. Compilar con `npm run compile`
 
 6. Probar con **F5** (Extension Development Host)
+
+---
+
+## Instalación
+
+Se puede empaquetar la extensión en un archivo `.vsix` e instalarla manualmente sin publicar en el Marketplace.
+
+### Empaquetar
+
+```bash
+npm install -g vsce
+vsce package
+```
+
+Esto genera un archivo `pancho-x.x.x.vsix`.
+
+### Instalar
+
+```bash
+code --install-extension pancho-x.x.x.vsix
+```
+
+### Desinstalar
+
+```bash
+code --uninstall-extension pancho
+```
 
 ---
 

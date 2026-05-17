@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { CommandName } from './registry';
-import { getSelection, replaceSelection, replaceDocumentText, insertAtCursor, getTabSize } from '../utils/editor';
+import { getSelection, replaceSelection, replaceDocumentText, insertAtCursor, getTabSize, getDocumentText } from '../utils/editor';
 
 export type TransformFn = (text: string, tabSize: number) => string;
 export type InsertFn = () => string;
@@ -10,12 +10,14 @@ interface TextCommandOptions {
     command: CommandName;
     transform: TransformFn;
     insert?: never;
+    info?: never;
 }
 
 interface InsertCommandOptions {
     command: CommandName;
     transform?: never;
     insert: InsertFn;
+    info?: never;
 }
 
 interface InfoCommandOptions {
@@ -27,13 +29,22 @@ interface InfoCommandOptions {
 
 type CommandOptions = TextCommandOptions | InsertCommandOptions | InfoCommandOptions;
 
+function getText(): string | undefined {
+    return getSelection();
+}
+
+function getTextOrDocument(): string {
+    const selection = getSelection();
+    return selection !== undefined && selection.length > 0 ? selection : getDocumentText();
+}
+
 export function registerTextCommand(context: vscode.ExtensionContext, options: TextCommandOptions): void {
     const { command, transform } = options;
     context.subscriptions.push(
         vscode.commands.registerCommand(command, () => {
             try {
                 const tabSize = getTabSize();
-                const selection = getSelection();
+                const selection = getText();
                 if (selection !== undefined && selection.length > 0) {
                     replaceSelection(transform(selection, tabSize));
                 } else {

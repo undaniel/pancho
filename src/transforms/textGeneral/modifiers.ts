@@ -1,19 +1,3 @@
-export function countWords(text: string): number {
-    return text.trim().split(/\s+/).filter(w => w.length > 0).length;
-}
-
-export function countCharacters(text: string): number {
-    return text.length;
-}
-
-export function countLines(text: string): number {
-    return text.split('\n').length;
-}
-
-export function countLinesFiltered(text: string): number {
-    return text.split('\n').filter(l => l.trim().length > 0).length;
-}
-
 export function removeDuplicateWords(text: string): string {
     const words = text.split(/\s+/);
     const seen = new Set();

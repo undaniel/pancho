@@ -1,7 +1,7 @@
 {
   "name": "pancho",
   "displayName": "Pancho",
-  "description": "Limpia y formatea texto como Notepad++",
+  "description": "Limpia y formatear texto como Notepad++",
   "version": "1.0.0",
   "publisher": "pancho",
   "main": "./dist/extension.js",
@@ -18,20 +18,40 @@
         "label": "Pancho"
       },
       {
-        "id": "panchoOperaciones",
-        "label": "Operaciones de limpieza"
+        "id": "panchoEdicion",
+        "label": "Edición"
       },
       {
         "id": "panchoLineas",
         "label": "Líneas"
       },
       {
-        "id": "panchoEOL",
-        "label": "Fin de línea"
+        "id": "panchoCaso",
+        "label": "Caso"
       },
       {
         "id": "panchoTabulaciones",
         "label": "Tabulaciones"
+      },
+      {
+        "id": "panchoEOL",
+        "label": "Fin de línea"
+      },
+      {
+        "id": "panchoTextoGeneral",
+        "label": "Texto general"
+      },
+      {
+        "id": "panchoCodificacion",
+        "label": "Codificación"
+      },
+      {
+        "id": "panchoFormateo",
+        "label": "Formateo"
+      },
+      {
+        "id": "panchoHashBinario",
+        "label": "Hash y binario"
       },
       {
         "id": "panchoInsertar",
@@ -42,24 +62,12 @@
         "label": "Comentar / Descomentar"
       },
       {
-        "id": "panchoPegadoEspecial",
-        "label": "Pegado especial"
+        "id": "panchoDesarrolladores",
+        "label": "Desarrolladores"
       },
       {
-        "id": "panchoCaracteres",
-        "label": "Caracteres especiales"
-      },
-      {
-        "id": "panchoTextoGeneral",
-        "label": "Texto general"
-      },
-      {
-        "id": "panchoWebDev",
-        "label": "Desarrolladores web"
-      },
-      {
-        "id": "panchoProgramador",
-        "label": "Programadores"
+        "id": "panchoEscapar",
+        "label": "Escapar"
       }
     ],
     "commands": [
@@ -72,12 +80,28 @@
         "title": "Limpiar saltos de línea"
       },
       {
+        "command": "pancho.trimLines",
+        "title": "Recortar líneas"
+      },
+      {
+        "command": "pancho.lineEndingsToSpaces",
+        "title": "Convertir saltos de línea a espacios"
+      },
+      {
         "command": "pancho.convertTabsToSpaces",
         "title": "Convertir tabs a espacios"
       },
       {
         "command": "pancho.convertSpacesToTabs",
         "title": "Convertir espacios a tabs"
+      },
+      {
+        "command": "pancho.increaseIndent",
+        "title": "Aumentar indentación"
+      },
+      {
+        "command": "pancho.decreaseIndent",
+        "title": "Disminuir indentación"
       },
       {
         "command": "pancho.toUpperCase",
@@ -92,48 +116,16 @@
         "title": "Convertir a Título"
       },
       {
-        "command": "pancho.trimLines",
-        "title": "Recortar líneas"
+        "command": "pancho.toWindowsEOL",
+        "title": "Convertir a Windows (CRLF)"
       },
       {
-        "command": "pancho.lineEndingsToSpaces",
-        "title": "Convertir saltos de línea a espacios"
+        "command": "pancho.toUnixEOL",
+        "title": "Convertir a Unix (LF)"
       },
       {
-        "command": "pancho.increaseIndent",
-        "title": "Aumentar indentación"
-      },
-      {
-        "command": "pancho.decreaseIndent",
-        "title": "Disminuir indentación"
-      },
-      {
-        "command": "pancho.insertShortTime",
-        "title": "Fecha y hora corta"
-      },
-      {
-        "command": "pancho.insertLongTime",
-        "title": "Fecha y hora larga"
-      },
-      {
-        "command": "pancho.insertDateTime",
-        "title": "Fecha y hora (dd-MM-yyyy hh:mm:ss)"
-      },
-      {
-        "command": "pancho.commentLine",
-        "title": "Comentar línea"
-      },
-      {
-        "command": "pancho.uncommentLine",
-        "title": "Descomentar línea"
-      },
-      {
-        "command": "pancho.commentBlock",
-        "title": "Comentar bloque"
-      },
-      {
-        "command": "pancho.uncommentBlock",
-        "title": "Descomentar bloque"
+        "command": "pancho.toMacEOL",
+        "title": "Convertir a Mac (CR)"
       },
       {
         "command": "pancho.removeDuplicateLines",
@@ -158,74 +150,6 @@
       {
         "command": "pancho.removeEmptyLines",
         "title": "Eliminar líneas vacías"
-      },
-      {
-        "command": "pancho.toWindowsEOL",
-        "title": "Convertir a Windows (CRLF)"
-      },
-      {
-        "command": "pancho.toUnixEOL",
-        "title": "Convertir a Unix (LF)"
-      },
-      {
-        "command": "pancho.toMacEOL",
-        "title": "Convertir a Mac (CR)"
-      },
-      {
-        "command": "pancho.pasteWithoutLineBreak",
-        "title": "Pegar sin salto de línea"
-      },
-      {
-        "command": "pancho.copyToMultipleLines",
-        "title": "Copiar a múltiples líneas"
-      },
-      {
-        "command": "pancho.formatAsCSV",
-        "title": "Formatear como CSV"
-      },
-      {
-        "command": "pancho.insertDegree",
-        "title": "Grado (°)"
-      },
-      {
-        "command": "pancho.insertCopyright",
-        "title": "Copyright (©)"
-      },
-      {
-        "command": "pancho.insertRegistered",
-        "title": "Registrado (®)"
-      },
-      {
-        "command": "pancho.insertTrademark",
-        "title": "Trademark (™)"
-      },
-      {
-        "command": "pancho.insertSection",
-        "title": "Sección (§)"
-      },
-      {
-        "command": "pancho.insertPilcrow",
-        "title": "Pilcrow (¶)"
-      },
-      {
-        "command": "pancho.insertEllipsis",
-        "title": "Puntos suspensivos (…)"
-      },
-      {
-        "command": "pancho.insertBullet",
-        "title": "Viñeta (•)"
-      },
-      {
-        "command": "pancho.insertEuro",
-        "title": "Euro (€)"
-      },
-      {
-        "command": "pancho.insertPound",
-        "title": "Libra (£)"
-      },
-      {
-        "command": "pancho.insertYen",
-        "title": "Yen (¥)"
       },
       {
         "command": "pancho.countWords",
@@ -264,6 +188,42 @@
         "title": "Aleatorizar líneas"
       },
       {
+        "command": "pancho.pasteWithoutLineBreak",
+        "title": "Pegar sin salto de línea"
+      },
+      {
+        "command": "pancho.copyToMultipleLines",
+        "title": "Copiar a múltiples líneas"
+      },
+      {
+        "command": "pancho.formatAsCSV",
+        "title": "Formatear como CSV"
+      },
+      {
+        "command": "pancho.base64Encode",
+        "title": "Codificar Base64"
+      },
+      {
+        "command": "pancho.base64Decode",
+        "title": "Decodificar Base64"
+      },
+      {
+        "command": "pancho.urlEncode",
+        "title": "Codificar URL"
+      },
+      {
+        "command": "pancho.urlDecode",
+        "title": "Decodificar URL"
+      },
+      {
+        "command": "pancho.htmlEntitiesEncode",
+        "title": "Codificar HTML entities"
+      },
+      {
+        "command": "pancho.htmlEntitiesDecode",
+        "title": "Decodificar HTML entities"
+      },
+      {
         "command": "pancho.minifyJSON",
         "title": "Minificar JSON"
       },
@@ -296,42 +256,6 @@
         "title": "Formatear JavaScript"
       },
       {
-        "command": "pancho.htmlEntitiesEncode",
-        "title": "Codificar HTML entities"
-      },
-      {
-        "command": "pancho.htmlEntitiesDecode",
-        "title": "Decodificar HTML entities"
-      },
-      {
-        "command": "pancho.base64Encode",
-        "title": "Codificar Base64"
-      },
-      {
-        "command": "pancho.base64Decode",
-        "title": "Decodificar Base64"
-      },
-      {
-        "command": "pancho.urlEncode",
-        "title": "Codificar URL"
-      },
-      {
-        "command": "pancho.urlDecode",
-        "title": "Decodificar URL"
-      },
-      {
-        "command": "pancho.hexToRgb",
-        "title": "Hex a RGB"
-      },
-      {
-        "command": "pancho.rgbToHex",
-        "title": "RGB a Hex"
-      },
-      {
-        "command": "pancho.loremIpsum",
-        "title": "Generar Lorem Ipsum"
-      },
-      {
         "command": "pancho.formatSQL",
         "title": "Formatear SQL"
       },
@@ -342,14 +266,6 @@
       {
         "command": "pancho.minifyXML",
         "title": "Minificar XML"
-      },
-      {
-        "command": "pancho.generateUUID",
-        "title": "Generar UUID"
-      },
-      {
-        "command": "pancho.generateRandomString",
-        "title": "Generar cadena aleatoria"
       },
       {
         "command": "pancho.hashMD5",
@@ -374,6 +290,110 @@
       {
         "command": "pancho.fromHex",
         "title": "Hexadecimal a texto"
+      },
+      {
+        "command": "pancho.insertShortTime",
+        "title": "Fecha y hora corta"
+      },
+      {
+        "command": "pancho.insertLongTime",
+        "title": "Fecha y hora larga"
+      },
+      {
+        "command": "pancho.insertDateTime",
+        "title": "Fecha y hora (dd-MM-yyyy hh:mm:ss)"
+      },
+      {
+        "command": "pancho.loremIpsum",
+        "title": "Generar Lorem Ipsum"
+      },
+      {
+        "command": "pancho.commentLine",
+        "title": "Comentar línea"
+      },
+      {
+        "command": "pancho.uncommentLine",
+        "title": "Descomentar línea"
+      },
+      {
+        "command": "pancho.commentBlock",
+        "title": "Comentar bloque"
+      },
+      {
+        "command": "pancho.uncommentBlock",
+        "title": "Descomentar bloque"
+      },
+      {
+        "command": "pancho.generateUUID",
+        "title": "Generar UUID"
+      },
+      {
+        "command": "pancho.generateRandomString",
+        "title": "Generar cadena aleatoria"
+      },
+      {
+        "command": "pancho.hexToRgb",
+        "title": "Hex a RGB"
+      },
+      {
+        "command": "pancho.rgbToHex",
+        "title": "RGB a Hex"
+      },
+      {
+        "command": "pancho.duplicateLine",
+        "title": "Duplicar línea"
+      },
+      {
+        "command": "pancho.insertLineBefore",
+        "title": "Insertar línea antes"
+      },
+      {
+        "command": "pancho.insertLineAfter",
+        "title": "Insertar línea después"
+      },
+      {
+        "command": "pancho.deleteLinesContaining",
+        "title": "Eliminar líneas con..."
+      },
+      {
+        "command": "pancho.keepOnlyLinesContaining",
+        "title": "Mantener solo líneas con..."
+      },
+      {
+        "command": "pancho.highlightMatches",
+        "title": "Resaltar coincidencias"
+      },
+      {
+        "command": "pancho.countMatches",
+        "title": "Contar coincidencias"
+      },
+      {
+        "command": "pancho.escapeJSON",
+        "title": "Escapar para JSON"
+      },
+      {
+        "command": "pancho.unescapeJSON",
+        "title": "Desescapar de JSON"
+      },
+      {
+        "command": "pancho.escapeForSQL",
+        "title": "Escapar para SQL"
+      },
+      {
+        "command": "pancho.unescapeForSQL",
+        "title": "Desescapar de SQL"
+      },
+      {
+        "command": "pancho.escapeForRegex",
+        "title": "Escapar para Regex"
+      },
+      {
+        "command": "pancho.escapeForHTML",
+        "title": "Escapar para HTML"
+      },
+      {
+        "command": "pancho.unescapeForHTML",
+        "title": "Desescapar de HTML"
       }
     ],
     "menus": {
@@ -384,66 +404,64 @@
       ],
       "panchoMenu": [
         {
-          "submenu": "panchoOperaciones",
-          "label": "Operaciones de limpieza"
+          "submenu": "panchoEdicion",
+          "label": "Edición"
         },
         {
           "submenu": "panchoLineas",
           "label": "Líneas"
         },
         {
-          "submenu": "panchoEOL",
-          "label": "Fin de línea"
+          "submenu": "panchoCaso",
+          "label": "Caso"
         },
         {
           "submenu": "panchoTabulaciones",
           "label": "Tabulaciones"
         },
         {
-          "submenu": "panchoInsertar",
-          "label": "Insertar"
-        },
-        {
-          "submenu": "panchoPegadoEspecial",
-          "label": "Pegado especial"
-        },
-        {
-          "submenu": "panchoCaracteres",
-          "label": "Caracteres especiales"
+          "submenu": "panchoEOL",
+          "label": "Fin de línea"
         },
         {
           "submenu": "panchoTextoGeneral",
           "label": "Texto general"
         },
         {
-          "submenu": "panchoWebDev",
-          "label": "Desarrolladores web"
+          "submenu": "panchoCodificacion",
+          "label": "Codificación"
         },
         {
-          "submenu": "panchoProgramador",
-          "label": "Programadores"
+          "submenu": "panchoFormateo",
+          "label": "Formateo"
+        },
+        {
+          "submenu": "panchoHashBinario",
+          "label": "Hash y binario"
+        },
+        {
+          "submenu": "panchoInsertar",
+          "label": "Insertar"
         },
         {
           "submenu": "panchoComentarios",
           "label": "Comentar / Descomentar"
+        },
+        {
+          "submenu": "panchoDesarrolladores",
+          "label": "Desarrolladores"
+        },
+        {
+          "submenu": "panchoEscapar",
+          "label": "Escapar"
         }
       ],
-      "panchoOperaciones": [
+      "panchoEdicion": [
         {
           "command": "pancho.cleanWhitespace"
         },
         {
           "command": "pancho.cleanLineEndings"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.toUpperCase"
-        },
-        {
-          "command": "pancho.toLowerCase"
-        },
-        {
-          "command": "pancho.toTitleCase"
         },
         {
           "separator": "before",
@@ -474,15 +492,15 @@
           "command": "pancho.removeEmptyLines"
         }
       ],
-      "panchoEOL": [
+      "panchoCaso": [
         {
-          "command": "pancho.toWindowsEOL"
+          "command": "pancho.toUpperCase"
         },
         {
-          "command": "pancho.toUnixEOL"
+          "command": "pancho.toLowerCase"
         },
         {
-          "command": "pancho.toMacEOL"
+          "command": "pancho.toTitleCase"
         }
       ],
       "panchoTabulaciones": [
@@ -500,79 +518,15 @@
           "command": "pancho.decreaseIndent"
         }
       ],
-      "panchoInsertar": [
+      "panchoEOL": [
         {
-          "command": "pancho.insertShortTime"
+          "command": "pancho.toWindowsEOL"
         },
         {
-          "command": "pancho.insertLongTime"
+          "command": "pancho.toUnixEOL"
         },
         {
-          "command": "pancho.insertDateTime"
-        }
-      ],
-      "panchoComentarios": [
-        {
-          "command": "pancho.commentLine"
-        },
-        {
-          "command": "pancho.uncommentLine"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.commentBlock"
-        },
-        {
-          "command": "pancho.uncommentBlock"
-        }
-      ],
-      "panchoPegadoEspecial": [
-        {
-          "command": "pancho.pasteWithoutLineBreak"
-        },
-        {
-          "command": "pancho.copyToMultipleLines"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.formatAsCSV"
-        }
-      ],
-      "panchoCaracteres": [
-        {
-          "command": "pancho.insertDegree"
-        },
-        {
-          "command": "pancho.insertCopyright"
-        },
-        {
-          "command": "pancho.insertRegistered"
-        },
-        {
-          "command": "pancho.insertTrademark"
-        },
-        {
-          "command": "pancho.insertSection"
-        },
-        {
-          "command": "pancho.insertPilcrow"
-        },
-        {
-          "command": "pancho.insertEllipsis"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.insertBullet"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.insertEuro"
-        },
-        {
-          "command": "pancho.insertPound"
-        },
-        {
-          "command": "pancho.insertYen"
+          "command": "pancho.toMacEOL"
         }
       ],
       "panchoTextoGeneral": [
@@ -604,9 +558,41 @@
         },
         {
           "command": "pancho.randomizeLines"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.pasteWithoutLineBreak"
+        },
+        {
+          "command": "pancho.copyToMultipleLines"
+        },
+        {
+          "command": "pancho.formatAsCSV"
         }
       ],
-      "panchoWebDev": [
+      "panchoCodificacion": [
+        {
+          "command": "pancho.base64Encode"
+        },
+        {
+          "command": "pancho.base64Decode"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.urlEncode"
+        },
+        {
+          "command": "pancho.urlDecode"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.htmlEntitiesEncode"
+        },
+        {
+          "command": "pancho.htmlEntitiesDecode"
+        }
+      ],
+      "panchoFormateo": [
         {
           "command": "pancho.minifyJSON"
         },
@@ -636,39 +622,6 @@
         },
         {
           "separator": "before",
-          "command": "pancho.htmlEntitiesEncode"
-        },
-        {
-          "command": "pancho.htmlEntitiesDecode"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.base64Encode"
-        },
-        {
-          "command": "pancho.base64Decode"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.urlEncode"
-        },
-        {
-          "command": "pancho.urlDecode"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.hexToRgb"
-        },
-        {
-          "command": "pancho.rgbToHex"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.loremIpsum"
-        }
-      ],
-      "panchoProgramador": [
-        {
           "command": "pancho.formatSQL"
         },
         {
@@ -676,16 +629,10 @@
         },
         {
           "command": "pancho.minifyXML"
-        },
+        }
+      ],
+      "panchoHashBinario": [
         {
-          "separator": "before",
-          "command": "pancho.generateUUID"
-        },
-        {
-          "command": "pancho.generateRandomString"
-        },
-        {
-          "separator": "before",
           "command": "pancho.hashMD5"
         },
         {
@@ -704,6 +651,94 @@
         },
         {
           "command": "pancho.fromHex"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.hexToRgb"
+        },
+        {
+          "command": "pancho.rgbToHex"
+        }
+      ],
+      "panchoInsertar": [
+        {
+          "command": "pancho.insertShortTime"
+        },
+        {
+          "command": "pancho.insertLongTime"
+        },
+        {
+          "command": "pancho.insertDateTime"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.loremIpsum"
+        }
+      ],
+      "panchoComentarios": [
+        {
+          "command": "pancho.commentLine"
+        },
+        {
+          "command": "pancho.uncommentLine"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.commentBlock"
+        },
+        {
+          "command": "pancho.uncommentBlock"
+        }
+      ],
+      "panchoDesarrolladores": [
+        {
+          "command": "pancho.duplicateLine"
+        },
+        {
+          "command": "pancho.insertLineBefore"
+        },
+        {
+          "command": "pancho.insertLineAfter"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.deleteLinesContaining"
+        },
+        {
+          "command": "pancho.keepOnlyLinesContaining"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.highlightMatches"
+        },
+        {
+          "command": "pancho.countMatches"
+        }
+      ],
+      "panchoEscapar": [
+        {
+          "command": "pancho.escapeJSON"
+        },
+        {
+          "command": "pancho.unescapeJSON"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.escapeForSQL"
+        },
+        {
+          "command": "pancho.unescapeForSQL"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.escapeForRegex"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.escapeForHTML"
+        },
+        {
+          "command": "pancho.unescapeForHTML"
         }
       ]
     }
