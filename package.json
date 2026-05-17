@@ -203,7 +203,8 @@
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./"
+    "watch": "tsc -watch -p ./",
+    "generate:readme": "node scripts/generate-readme.js"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

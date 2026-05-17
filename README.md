@@ -15,47 +15,77 @@
 
 ## Menú Pancho
 
-El menú contextual de Pancho tiene los siguientes submenús:
+> Lista de comandos disponible en el menú contextual
 
-### Operaciones de limpieza
+1. [Operaciones de limpieza](#operaciones-de-limpieza)
+2. [Tabulaciones](#tabulaciones)
+3. [Insertar](#insertar)
+4. [Comentar / Descomentar](#comentar-descomentar)
+
+---
+
+## 1. Operaciones de limpieza
+<details>
+<summary>Ver comandos</summary>
 
 | Comando | Función |
-|---------|---------|
-| `pancho.cleanWhitespace` | Limpiar espacios duplicados, tabs y líneas vacías |
-| `pancho.cleanLineEndings` | Limpiar saltos de línea Windows (^M) y caracteres especiales |
+|---------|----------|
+| `pancho.cleanWhitespace` | Limpiar espacios en blanco |
+| `pancho.cleanLineEndings` | Limpiar saltos de línea |
 | `pancho.toUpperCase` | Convertir a MAYÚSCULAS |
 | `pancho.toLowerCase` | Convertir a minúsculas |
 | `pancho.toTitleCase` | Convertir a Título |
-| `pancho.trimLines` | Recortar espacios al inicio y final de cada línea |
+| `pancho.trimLines` | Recortar líneas |
 | `pancho.lineEndingsToSpaces` | Convertir saltos de línea a espacios |
 
-### Tabulaciones
+</details>
+
+---
+
+## 2. Tabulaciones
+<details>
+<summary>Ver comandos</summary>
 
 | Comando | Función |
-|---------|---------|
+|---------|----------|
 | `pancho.convertTabsToSpaces` | Convertir tabs a espacios |
 | `pancho.convertSpacesToTabs` | Convertir espacios a tabs |
 | `pancho.increaseIndent` | Aumentar indentación |
 | `pancho.decreaseIndent` | Disminuir indentación |
 
-### Insertar
-
-| Comando | Función |
-|---------|---------|
-| `pancho.insertShortTime` | Fecha y hora corta (16/5/2026 8:56 p.m.) |
-| `pancho.insertLongTime` | Fecha y hora larga (sábado, 16 de mayo de 2026 8:56 p.m.) |
-| `pancho.insertDateTime` | Fecha y hora (dd-MM-yyyy hh:mm:ss) |
-
-### Comentar / Descomentar
-
-| Comando | Función |
-|---------|---------|
-| `pancho.commentLine` | Comentar línea (`//`) |
-| `pancho.uncommentLine` | Descomentar línea |
-| `pancho.commentBlock` | Comentar bloque (`/* */`) |
-| `pancho.uncommentBlock` | Descomentar bloque |
+</details>
 
 ---
+
+## 3. Insertar
+<details>
+<summary>Ver comandos</summary>
+
+| Comando | Función |
+|---------|----------|
+| `pancho.insertShortTime` | Fecha y hora corta |
+| `pancho.insertLongTime` | Fecha y hora larga |
+| `pancho.insertDateTime` | Fecha y hora (dd-MM-yyyy hh:mm:ss) |
+
+</details>
+
+---
+
+## 4. Comentar / Descomentar
+<details>
+<summary>Ver comandos</summary>
+
+| Comando | Función |
+|---------|----------|
+| `pancho.commentLine` | Comentar línea |
+| `pancho.uncommentLine` | Descomentar línea |
+| `pancho.commentBlock` | Comentar bloque |
+| `pancho.uncommentBlock` | Descomentar bloque |
+
+</details>
+
+---
+
 
 ## Estructura del proyecto
 
@@ -92,18 +122,9 @@ pancho/
 
 2. Crear función de transformación en `src/transforms/*.ts`
 
-3. Agregar constante en `src/commands/registry.ts`:
-   ```typescript
-   NEW_COMMAND: 'pancho.newCommand',
-   ```
+3. Agregar constante en `src/commands/registry.ts`
 
-4. Registrar en `src/commands/index.ts`:
-   ```typescript
-   registerTextCommand(context, {
-       command: Commands.NEW_COMMAND,
-       transform: (text) => myTransform(text),
-   });
-   ```
+4. Registrar en `src/commands/index.ts`
 
 5. Compilar con `npm run compile`
 
