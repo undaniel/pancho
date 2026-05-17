@@ -23,6 +23,8 @@
 4. [Tabulaciones](#tabulaciones)
 5. [Insertar](#insertar)
 6. [Comentar / Descomentar](#comentar-descomentar)
+7. [Pegado especial](#pegado-especial)
+8. [Caracteres especiales](#caracteres-especiales)
 
 ---
 
@@ -119,6 +121,42 @@
 
 ---
 
+## 7. Pegado especial
+<details>
+<summary>Ver comandos</summary>
+
+| Comando | Función |
+|---------|----------|
+| `pancho.pasteWithoutLineBreak` | Pegar sin salto de línea |
+| `pancho.copyToMultipleLines` | Copiar a múltiples líneas |
+| `pancho.formatAsCSV` | Formatear como CSV |
+
+</details>
+
+---
+
+## 8. Caracteres especiales
+<details>
+<summary>Ver comandos</summary>
+
+| Comando | Función |
+|---------|----------|
+| `pancho.insertDegree` | Grado (°) |
+| `pancho.insertCopyright` | Copyright (©) |
+| `pancho.insertRegistered` | Registrado (®) |
+| `pancho.insertTrademark` | Trademark (™) |
+| `pancho.insertSection` | Sección (§) |
+| `pancho.insertPilcrow` | Pilcrow (¶) |
+| `pancho.insertEllipsis` | Puntos suspensivos (…) |
+| `pancho.insertBullet` | Viñeta (•) |
+| `pancho.insertEuro` | Euro (€) |
+| `pancho.insertPound` | Libra (£) |
+| `pancho.insertYen` | Yen (¥) |
+
+</details>
+
+---
+
 
 ## Estructura del proyecto
 
@@ -138,6 +176,7 @@ pancho/
 │   │   ├── lineEndings.ts
 │   │   ├── lineUtils.ts
 │   │   ├── spaces.ts
+│   │   ├── specialPaste.ts
 │   │   ├── tabs.ts
 │   │   └── whitespace.ts
 │   ├── utils/
@@ -168,6 +207,33 @@ pancho/
 
 ---
 
+## Instalación
+
+Se puede empaquetar la extensión en un archivo `.vsix` e instalarla manualmente sin publicar en el Marketplace.
+
+### Empaquetar
+
+```bash
+npm install -g vsce
+vsce package
+```
+
+Esto genera un archivo `pancho-x.x.x.vsix`.
+
+### Instalar
+
+```bash
+code --install-extension pancho-x.x.x.vsix
+```
+
+### Desinstalar
+
+```bash
+code --uninstall-extension pancho
+```
+
+---
+
 ## Debugging
 
 - Los logs aparecen en el **Debug Console** de VS Code
@@ -177,5 +243,5 @@ pancho/
 ---
 
 <div align="center">
-  <p>Hecho con ❤️ para panchos</p>
+  <p>Hecho con ❤️ para desarrolladores</p>
 </div>

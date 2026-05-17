@@ -10,6 +10,7 @@ import { formatShortDateTime, formatLongDateTime, formatCustomDateTime } from '.
 import { commentLine, uncommentLine, commentBlock, uncommentBlock } from '../transforms/comments';
 import { removeDuplicateLines, sortLinesAscending, sortLinesDescending, reverseLines, joinLines, removeEmptyLines } from '../transforms/lines';
 import { toWindowsEOL, toUnixEOL, toMacEOL } from '../transforms/eol';
+import { pasteWithoutLineBreak, copyToMultipleLines, formatAsCSV, SPECIAL_CHARACTERS } from '../transforms/specialPaste';
 
 export function registerAllCommands(context: vscode.ExtensionContext): void {
     registerTextCommand(context, {
@@ -145,5 +146,75 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
     registerTextCommand(context, {
         command: Commands.TO_MAC_EOL,
         transform: (text) => toMacEOL(text),
+    });
+
+    registerTextCommand(context, {
+        command: Commands.PASTE_WITHOUT_LINE_BREAK,
+        transform: (text) => pasteWithoutLineBreak(text),
+    });
+
+    registerTextCommand(context, {
+        command: Commands.COPY_TO_MULTIPLE_LINES,
+        transform: (text) => copyToMultipleLines(text, 10),
+    });
+
+    registerTextCommand(context, {
+        command: Commands.FORMAT_AS_CSV,
+        transform: (text) => formatAsCSV(text),
+    });
+
+    registerInsertCommand(context, {
+        command: Commands.INSERT_DEGREE,
+        insert: () => SPECIAL_CHARACTERS.Degree,
+    });
+
+    registerInsertCommand(context, {
+        command: Commands.INSERT_COPYRIGHT,
+        insert: () => SPECIAL_CHARACTERS.Copyright,
+    });
+
+    registerInsertCommand(context, {
+        command: Commands.INSERT_REGISTERED,
+        insert: () => SPECIAL_CHARACTERS.Registered,
+    });
+
+    registerInsertCommand(context, {
+        command: Commands.INSERT_TRADEMARK,
+        insert: () => SPECIAL_CHARACTERS[' Trademark'],
+    });
+
+    registerInsertCommand(context, {
+        command: Commands.INSERT_SECTION,
+        insert: () => SPECIAL_CHARACTERS.Section,
+    });
+
+    registerInsertCommand(context, {
+        command: Commands.INSERT_PILCROW,
+        insert: () => SPECIAL_CHARACTERS.Pilcrow,
+    });
+
+    registerInsertCommand(context, {
+        command: Commands.INSERT_ELLIPSIS,
+        insert: () => SPECIAL_CHARACTERS.Ellipsis,
+    });
+
+    registerInsertCommand(context, {
+        command: Commands.INSERT_BULLET,
+        insert: () => SPECIAL_CHARACTERS.Bullet,
+    });
+
+    registerInsertCommand(context, {
+        command: Commands.INSERT_EURO,
+        insert: () => SPECIAL_CHARACTERS.Euro,
+    });
+
+    registerInsertCommand(context, {
+        command: Commands.INSERT_POUND,
+        insert: () => SPECIAL_CHARACTERS.Pound,
+    });
+
+    registerInsertCommand(context, {
+        command: Commands.INSERT_YEN,
+        insert: () => SPECIAL_CHARACTERS.Yen,
     });
 }

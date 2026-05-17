@@ -2,90 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const projectRoot = path.join(__dirname, '..');
 
-const submenuMap = {
-    panchoOperaciones: {
-        name: 'Operaciones de limpieza',
-        commands: [
-            'pancho.cleanWhitespace',
-            'pancho.cleanLineEndings',
-            'pancho.toUpperCase',
-            'pancho.toLowerCase',
-            'pancho.toTitleCase',
-            'pancho.trimLines',
-            'pancho.lineEndingsToSpaces',
-        ]
-    },
-    panchoLineas: {
-        name: 'Líneas',
-        commands: [
-            'pancho.removeDuplicateLines',
-            'pancho.sortAscending',
-            'pancho.sortDescending',
-            'pancho.reverseLines',
-            'pancho.joinLines',
-            'pancho.removeEmptyLines',
-        ]
-    },
-    panchoEOL: {
-        name: 'Fin de línea',
-        commands: [
-            'pancho.toWindowsEOL',
-            'pancho.toUnixEOL',
-            'pancho.toMacEOL',
-        ]
-    },
-    panchoTabulaciones: {
-        name: 'Tabulaciones',
-        commands: [
-            'pancho.convertTabsToSpaces',
-            'pancho.convertSpacesToTabs',
-            'pancho.increaseIndent',
-            'pancho.decreaseIndent',
-        ]
-    },
-    panchoInsertar: {
-        name: 'Insertar',
-        commands: [
-            'pancho.insertShortTime',
-            'pancho.insertLongTime',
-            'pancho.insertDateTime',
-        ]
-    },
-    panchoComentarios: {
-        name: 'Comentar / Descomentar',
-        commands: [
-            'pancho.commentLine',
-            'pancho.uncommentLine',
-            'pancho.commentBlock',
-            'pancho.uncommentBlock',
-        ]
-    }
-};
-
-function extractCommandList() {
-    const registryPath = path.join(projectRoot, 'src/commands/registry.ts');
-    const content = fs.readFileSync(registryPath, 'utf-8');
-
-    const match = content.match(/export const CommandList[^;]*;/s);
-    if (!match) return {};
-
-    const commandMap = {};
-    const arrayMatch = match[0].match(/\[([\s\S]*?)\];/);
-    if (!arrayMatch) return {};
-
-    const items = arrayMatch[1].matchAll(/\{ name: Commands\.(\w+)[^}]+\}/g);
-    for (const item of items) {
-        const key = item[1];
-        const fullMatch = item[0];
-        const titleMatch = fullMatch.match(/title:\s*'([^']+)'/);
-        if (titleMatch) {
-            commandMap[key] = titleMatch[1];
-        }
-    }
-
-    return commandMap;
-}
-
 function extractPackageJson() {
     const pkgPath = path.join(projectRoot, 'package.json');
     const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
@@ -95,15 +11,36 @@ function extractPackageJson() {
         commandTitles[cmd.command] = cmd.title;
     }
 
-    return commandTitles;
+    const submenus = {};
+    for (const submenu of pkg.contributes.submenus) {
+        if (submenu.id !== 'panchoMenu') {
+            submenus[submenu.id] = {
+                name: submenu.label,
+                commands: []
+            };
+        }
+    }
+
+    const menus = pkg.contributes.menus;
+    for (const [menuId, items] of Object.entries(menus)) {
+        if (menuId !== 'editor/context' && menuId !== 'panchoMenu' && submenus[menuId]) {
+            for (const item of items) {
+                if (item.command) {
+                    submenus[menuId].commands.push(item.command);
+                }
+            }
+        }
+    }
+
+    return { commandTitles, submenus };
 }
 
-function generateReadmeContent(commandMap, packageCommands) {
+function generateReadmeContent(commandTitles, submenus) {
     let toc = '## Menú Pancho\n\n';
     toc += '> Lista de comandos disponible en el menú contextual\n\n';
 
     let index = 1;
-    for (const submenu of Object.values(submenuMap)) {
+    for (const submenu of Object.values(submenus)) {
         const anchor = submenu.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
         toc += `${index}. [${submenu.name}](#${anchor})\n`;
         index++;
@@ -112,14 +49,14 @@ function generateReadmeContent(commandMap, packageCommands) {
     toc += '\n---\n\n';
 
     index = 1;
-    for (const [submenuId, submenu] of Object.entries(submenuMap)) {
+    for (const submenu of Object.values(submenus)) {
         const anchor = submenu.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
         toc += `## ${index}. ${submenu.name}\n`;
         toc += '<details>\n<summary>Ver comandos</summary>\n\n';
         toc += '| Comando | Función |\n|---------|----------|\n';
 
-for (const cmd of submenu.commands) {
-            const title = packageCommands[cmd] || cmd;
+        for (const cmd of submenu.commands) {
+            const title = commandTitles[cmd] || cmd;
             toc += '| `' + cmd + '` | ' + title + ' |\n';
         }
 
@@ -131,15 +68,13 @@ for (const cmd of submenu.commands) {
 }
 
 function main() {
-    const commandMap = extractCommandList();
-    const packageCommands = extractPackageJson();
-
-    const generatedContent = generateReadmeContent(commandMap, packageCommands);
+    const { commandTitles, submenus } = extractPackageJson();
+    const generatedContent = generateReadmeContent(commandTitles, submenus);
 
     const header = `# Pancho - VS Code Extension
 
 <div align="center">
-  <img src="pancho.png" alt="Pancho" width="200"/>
+  <img src="pancho.webp" alt="Pancho" width="200"/>
   <p>
     <strong>Extensión para limpiar y formatear texto como Notepad++</strong>
   </p>
@@ -172,6 +107,7 @@ pancho/
 │   │   ├── lineEndings.ts
 │   │   ├── lineUtils.ts
 │   │   ├── spaces.ts
+│   │   ├── specialPaste.ts
 │   │   ├── tabs.ts
 │   │   └── whitespace.ts
 │   ├── utils/

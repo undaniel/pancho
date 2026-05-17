@@ -40,6 +40,14 @@
       {
         "id": "panchoComentarios",
         "label": "Comentar / Descomentar"
+      },
+      {
+        "id": "panchoPegadoEspecial",
+        "label": "Pegado especial"
+      },
+      {
+        "id": "panchoCaracteres",
+        "label": "Caracteres especiales"
       }
     ],
     "commands": [
@@ -150,6 +158,62 @@
       {
         "command": "pancho.toMacEOL",
         "title": "Convertir a Mac (CR)"
+      },
+      {
+        "command": "pancho.pasteWithoutLineBreak",
+        "title": "Pegar sin salto de línea"
+      },
+      {
+        "command": "pancho.copyToMultipleLines",
+        "title": "Copiar a múltiples líneas"
+      },
+      {
+        "command": "pancho.formatAsCSV",
+        "title": "Formatear como CSV"
+      },
+      {
+        "command": "pancho.insertDegree",
+        "title": "Grado (°)"
+      },
+      {
+        "command": "pancho.insertCopyright",
+        "title": "Copyright (©)"
+      },
+      {
+        "command": "pancho.insertRegistered",
+        "title": "Registrado (®)"
+      },
+      {
+        "command": "pancho.insertTrademark",
+        "title": "Trademark (™)"
+      },
+      {
+        "command": "pancho.insertSection",
+        "title": "Sección (§)"
+      },
+      {
+        "command": "pancho.insertPilcrow",
+        "title": "Pilcrow (¶)"
+      },
+      {
+        "command": "pancho.insertEllipsis",
+        "title": "Puntos suspensivos (…)"
+      },
+      {
+        "command": "pancho.insertBullet",
+        "title": "Viñeta (•)"
+      },
+      {
+        "command": "pancho.insertEuro",
+        "title": "Euro (€)"
+      },
+      {
+        "command": "pancho.insertPound",
+        "title": "Libra (£)"
+      },
+      {
+        "command": "pancho.insertYen",
+        "title": "Yen (¥)"
       }
     ],
     "menus": {
@@ -178,6 +242,14 @@
         {
           "submenu": "panchoInsertar",
           "label": "Insertar"
+        },
+        {
+          "submenu": "panchoPegadoEspecial",
+          "label": "Pegado especial"
+        },
+        {
+          "submenu": "panchoCaracteres",
+          "label": "Caracteres especiales"
         },
         {
           "submenu": "panchoComentarios",
@@ -280,6 +352,55 @@
         },
         {
           "command": "pancho.uncommentBlock"
+        }
+      ],
+      "panchoPegadoEspecial": [
+        {
+          "command": "pancho.pasteWithoutLineBreak"
+        },
+        {
+          "command": "pancho.copyToMultipleLines"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.formatAsCSV"
+        }
+      ],
+      "panchoCaracteres": [
+        {
+          "command": "pancho.insertDegree"
+        },
+        {
+          "command": "pancho.insertCopyright"
+        },
+        {
+          "command": "pancho.insertRegistered"
+        },
+        {
+          "command": "pancho.insertTrademark"
+        },
+        {
+          "command": "pancho.insertSection"
+        },
+        {
+          "command": "pancho.insertPilcrow"
+        },
+        {
+          "command": "pancho.insertEllipsis"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.insertBullet"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.insertEuro"
+        },
+        {
+          "command": "pancho.insertPound"
+        },
+        {
+          "command": "pancho.insertYen"
         }
       ]
     }
