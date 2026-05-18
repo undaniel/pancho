@@ -19,7 +19,7 @@
 
 1. [Edición](#edici-n)
 2. [Líneas](#l-neas)
-3. [Caso](#caso)
+3. [Mayúsculas y minúsculas](#mayúsculas-y-minúsculas)
 4. [Tabulaciones](#tabulaciones)
 5. [Fin de línea](#fin-de-l-nea)
 6. [Texto general](#texto-general)
@@ -66,7 +66,7 @@
 
 ---
 
-## 3. Caso
+## 3. Mayúsculas y minúsculas
 <details>
 <summary>Ver comandos</summary>
 
@@ -185,6 +185,8 @@
 | `pancho.fromHex` | Hexadecimal a texto |
 | `pancho.hexToRgb` | Hex a RGB |
 | `pancho.rgbToHex` | RGB a Hex |
+| `pancho.generateUUID` | Generar UUID |
+| `pancho.generateRandomString` | Generar cadena aleatoria |
 
 </details>
 
