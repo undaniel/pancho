@@ -304,17 +304,165 @@ pancho/
 
 ## Para agregar un nuevo comando
 
-1. Agregar comando en `package.json` y submenú correspondiente
+### Paso 1: Crear la función de transformación
 
-2. Crear función de transformación en `src/transforms/*.ts`
+Crea o modifica un archivo en `src/transforms/`. La función debe seguir uno de estos formatos:
 
-3. Agregar constante en `src/commands/registry.ts`
+```typescript
+// Formato simple (sin manejo de errores)
+export function myTransform(text: string): string {
+    return text.toUpperCase();
+}
 
-4. Registrar en `src/commands/index.ts`
+// Formato con manejo de errores
+export function myTransform(text: string): { result: string; error?: string } {
+    try {
+        return { result: someOperation(text) };
+    } catch {
+        return { result: text, error: 'Mensaje de error' };
+    }
+}
 
-5. Compilar con `npm run compile`
+// Formato con warnings de seguridad
+export function myTransform(text: string): { result: string; warning?: string } {
+    return { result: text, warning: 'Advertencia de seguridad' };
+}
+```
 
-6. Probar con **F5** (Extension Development Host)
+### Paso 2: Registrar el comando
+
+Agrega la constante en `src/commands/registry.ts`:
+
+```typescript
+export const Commands = {
+    // ... comandos existentes ...
+    MY_COMMAND: 'pancho.myCommand',
+} as const;
+```
+
+### Paso 3: Registrar en index.ts
+
+Usa `registerTextCommand` para comandos de transformación:
+
+```typescript
+import { myTransform } from '../transforms/myFile';
+
+registerTextCommand(context, {
+    command: Commands.MY_COMMAND,
+    transform: (text) => myTransform(text),
+});
+```
+
+Para comandos que requieren el índice de línea actual (como mover líneas), usa `registerLineCommand`:
+
+```typescript
+registerLineCommand(context, {
+    command: Commands.MY_LINE_COMMAND,
+    transform: (text, lineIndex) => myLineTransform(text, lineIndex),
+});
+```
+
+### Paso 4: Agregar al package.json
+
+1. En la sección `commands`, agrega el comando:
+
+```json
+{
+    "command": "pancho.myCommand",
+    "title": "Mi Comando"
+}
+```
+
+2. En la sección `menus`, agrega el comando al submenú correspondiente:
+
+```json
+"panchoMiSubmenu": [
+    {
+        "command": "pancho.myCommand"
+    }
+]
+```
+
+### Paso 5: Compilar y probar
+
+```bash
+npm run compile
+# Presiona F5 para abrir Extension Development Host
+```
+
+---
+
+## Compilar y generar la extensión
+
+### Desarrollo local
+
+```bash
+# Compilar TypeScript
+npm run compile
+
+# Abrir en VS Code para probar
+code .
+# Presiona F5 para iniciar el Extension Development Host
+```
+
+### Generar paquete .vsix para distribución
+
+```bash
+# Instalar vsce globally si no lo tienes
+npm install -g vsce
+
+# Generar archivo .vsix
+vsce package
+
+# El archivo pancho-x.x.x.vsix se generará en el directorio raíz
+```
+
+### Instalar localmente
+
+```bash
+# Usando vsix
+code --install-extension pancho-x.x.x.vsix
+
+# Desinstalar
+code --uninstall-extension pancho
+```
+
+### Usar en otra máquina
+
+1. Copia el archivo `.vsix` a la máquina destino
+2. Ejecuta `code --install-extension pancho-x.x.x.vsix`
+3. O arrastra el archivo al área de extensiones de VS Code
+
+---
+
+## Testing
+
+```bash
+# Ejecutar todos los tests
+npm run test
+
+# Tests en modo watch
+npm run test:watch
+
+# Coverage report
+npm run test:coverage
+```
+
+Los tests están en `tests/*.test.ts`. Verifica que pasan antes de.commit.
+
+---
+
+## Configuración
+
+La extensión provee opciones configurables en `package.json`:
+
+- `pancho.tabSize`: Tamaño de tabulación (default: 4)
+- `pancho.indentWithSpaces`: Usar espacios en vez de tabs (default: true)
+- `pancho.defaultEOL`: Fin de línea por defecto (default: LF)
+- `pancho.statusBarShowCounters`: Mostrar contadores en barra de estado
+- `pancho.maxFileSizeKB`: Tamaño máximo de archivo para procesar
+- `pancho.loremIpsumWordCount`: Palabras en Lorem Ipsum
+- `pancho.randomStringLength`: Longitud de strings aleatorios
 
 ---
 

@@ -26,24 +26,21 @@ export function joinLines(text: string, separator: string = ' '): string {
 }
 
 export function splitLine(text: string): string {
-    return text.replace(/(.{1,80})(?=[\s])/g, '$1\n');
+    return text.replace(/(.{1,80})(?=\s)/g, '$1\n');
 }
 
-export function moveLineUp(text: string): string {
+export function moveLineUp(text: string, currentLineIndex: number = 0): string {
+    if (currentLineIndex <= 0) return text;
     const lines = text.split('\n');
-    const idx = lines.findIndex(line => line.includes(text.substring(0, 20)));
-    if (idx > 0) {
-        [lines[idx], lines[idx - 1]] = [lines[idx - 1], lines[idx]];
-    }
+    if (currentLineIndex >= lines.length) return text;
+    [lines[currentLineIndex], lines[currentLineIndex - 1]] = [lines[currentLineIndex - 1], lines[currentLineIndex]];
     return lines.join('\n');
 }
 
-export function moveLineDown(text: string): string {
+export function moveLineDown(text: string, currentLineIndex: number = 0): string {
     const lines = text.split('\n');
-    const idx = lines.findIndex(line => line.includes(text.substring(0, 20)));
-    if (idx < lines.length - 1) {
-        [lines[idx], lines[idx + 1]] = [lines[idx + 1], lines[idx]];
-    }
+    if (currentLineIndex < 0 || currentLineIndex >= lines.length - 1) return text;
+    [lines[currentLineIndex], lines[currentLineIndex + 1]] = [lines[currentLineIndex + 1], lines[currentLineIndex]];
     return lines.join('\n');
 }
 

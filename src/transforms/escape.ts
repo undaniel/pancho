@@ -2,11 +2,15 @@ export function escapeJSON(text: string): string {
     return JSON.stringify(text);
 }
 
-export function unescapeJSON(text: string): string {
+export function unescapeJSON(text: string): { result: string; error?: string } {
     try {
-        return JSON.parse(text);
+        const parsed = JSON.parse(text);
+        if (typeof parsed !== 'string') {
+            return { result: text, error: 'JSON no es una cadena' };
+        }
+        return { result: parsed };
     } catch {
-        return text;
+        return { result: text, error: 'JSON inválido' };
     }
 }
 
@@ -31,13 +35,20 @@ export function escapeForHTML(text: string): string {
         .replace(/'/g, '&#39;');
 }
 
-export function unescapeForHTML(text: string): string {
-    return text
-        .replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&quot;/g, '"')
-        .replace(/&#39;/g, "'");
+export function unescapeForHTML(text: string): { result: string; error?: string } {
+    const invalidSequence = /&(?!(amp|lt|gt|quot|#39|#x27|#[0-9]+;|#[0-9a-fA-F]+;))/gi;
+    if (invalidSequence.test(text)) {
+        return { result: text, error: 'Secuencia HTML inválida' };
+    }
+    return {
+        result: text
+            .replace(/&amp;/g, '&')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'"),
+        error: undefined
+    };
 }
 
 export function escapeForShell(text: string): string {

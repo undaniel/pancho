@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { Commands } from './registry';
-import { registerTextCommand, registerInsertCommand, registerInfoCommand } from './factory';
+import { registerTextCommand, registerInsertCommand, registerInfoCommand, registerLineCommand } from './factory';
 import { getSelection, getDocumentText } from '../utils/editor';
 import { cleanWhitespace } from '../transforms/whitespace';
 import { cleanLineEndings, lineEndingsToSpaces } from '../transforms/lineEndings';
@@ -9,7 +9,7 @@ import { tabsToSpaces, spacesToTabs, increaseIndent, decreaseIndent } from '../t
 import { trimLines } from '../transforms/lineUtils';
 import { formatShortDateTime, formatLongDateTime, formatCustomDateTime } from '../transforms/dateTime';
 import { commentLine, uncommentLine, commentBlock, uncommentBlock } from '../transforms/comments';
-import { removeDuplicateLines, sortLinesAscending, sortLinesDescending, reverseLines, joinLines, removeEmptyLines } from '../transforms/lines';
+import { removeDuplicateLines, sortLinesAscending, sortLinesDescending, reverseLines, joinLines, removeEmptyLines, moveLineUp, moveLineDown } from '../transforms/lines';
 import { toWindowsEOL, toUnixEOL, toMacEOL } from '../transforms/eol';
 import { pasteWithoutLineBreak, copyToMultipleLines, formatAsCSV } from '../transforms/specialPaste';
 import { countWords, countCharacters, countLines, removeDuplicateWords, numberLines, removeLineNumbers, slugify, reverseWords, randomizeLines } from '../transforms/textGeneral';
@@ -94,6 +94,8 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
     registerTextCommand(context, { command: Commands.DUPLICATE_LINE, transform: (text) => duplicateLine(text) });
     registerTextCommand(context, { command: Commands.INSERT_LINE_BEFORE, transform: (text) => insertLineBefore(text) });
     registerTextCommand(context, { command: Commands.INSERT_LINE_AFTER, transform: (text) => insertLineAfter(text) });
+    registerLineCommand(context, { command: Commands.MOVE_LINE_UP, transform: (text, lineIndex) => moveLineUp(text, lineIndex) });
+    registerLineCommand(context, { command: Commands.MOVE_LINE_DOWN, transform: (text, lineIndex) => moveLineDown(text, lineIndex) });
     registerTextCommand(context, { command: Commands.DELETE_LINES_CONTAINING, transform: (text) => deleteLinesContaining(text, vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor.selection) || '') });
     registerTextCommand(context, { command: Commands.KEEP_ONLY_LINES_CONTAINING, transform: (text) => keepOnlyLinesContaining(text, vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor.selection) || '') });
     registerTextCommand(context, { command: Commands.HIGHLIGHT_MATCHES, transform: (text) => highlightMatches(text, vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor.selection) || '') });
