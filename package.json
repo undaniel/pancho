@@ -990,7 +990,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:integration": "npm run compile && node tests/integration/runTest.ts"
+    "test:integration": "npm run compile && node tests/integration/runTest.ts",
+    "package": "vsce package",
+    "publish": "vsce publish"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",

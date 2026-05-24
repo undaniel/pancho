@@ -150,12 +150,28 @@ suite('Pancho Integration Tests', function() {
     });
 
     suite('Line Editing Commands', () => {
-        test('moveLineUp should move current line up', async function() {
-            this.skip();
+        test('moveLineUp should move current line up', async () => {
+            await editor.edit(editBuilder => {
+                editBuilder.delete(new vscode.Range(0, 0, editor.document.lineCount, 0));
+                editBuilder.insert(new vscode.Position(0, 0), 'line1\nline2\nline3');
+            });
+            const position = new vscode.Position(1, 0);
+            await editor.selection = new vscode.Selection(position, position);
+            await vscode.commands.executeCommand('pancho.moveLineUp');
+            const text = editor.document.getText();
+            assert.ok(text.includes('line2\nline1\nline3'), `Expected line2 before line1, got: ${text}`);
         });
 
-        test('moveLineDown should move current line down', async function() {
-            this.skip();
+        test('moveLineDown should move current line down', async () => {
+            await editor.edit(editBuilder => {
+                editBuilder.delete(new vscode.Range(0, 0, editor.document.lineCount, 0));
+                editBuilder.insert(new vscode.Position(0, 0), 'line1\nline2\nline3');
+            });
+            const position = new vscode.Position(1, 0);
+            await editor.selection = new vscode.Selection(position, position);
+            await vscode.commands.executeCommand('pancho.moveLineDown');
+            const text = editor.document.getText();
+            assert.ok(text.includes('line1\nline3\nline2'), `Expected line3 before line2, got: ${text}`);
         });
 
         test('duplicateLine should duplicate current line', async () => {

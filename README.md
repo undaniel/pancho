@@ -466,6 +466,42 @@ La extensión provee opciones configurables en `package.json`:
 
 ---
 
+## Publicar en Marketplace
+
+### Requisitos
+- Cuenta de publisher en [Visual Studio Marketplace](https://marketplace.visualstudio.com/)
+- [vsce](https://github.com/microsoft/vscode-vsce) instalado globalmente
+
+### Preparar assets para marketplace
+
+1. **Icono**: 256x256 PNG (ya existe en `images/icon.png`)
+2. **Banner**: 1280x640 JPG para el header (crear como `images/store-header.jpg`)
+3. **Screenshots**: GIF animados en `images/screenshots/` folder
+
+### Publicar
+
+```bash
+# Generar archivo .vsix
+npm run package
+
+# Publicar (requiere token de publisher)
+npm run publish
+
+# O manualmente:
+vsce package
+vsce publish
+```
+
+### Changelog
+
+El archivo `CHANGELOG.md` documenta todos los cambios. Actualizarlo antes de cada release.
+
+---
+
+## Arquitectura
+
+---
+
 ## Instalación
 
 Se puede empaquetar la extensión en un archivo `.vsix` e instalarla manualmente sin publicar en el Marketplace.
