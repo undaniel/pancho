@@ -1,45 +1,28 @@
 import * as vscode from 'vscode';
 
-const log = (...args: any[]) => console.log('[Pancho]', ...args);
-
 export function getEditor(): vscode.TextEditor | undefined {
-    const editor = vscode.window.activeTextEditor;
-    log('getEditor:', editor ? 'found' : 'undefined');
-    return editor;
+    return vscode.window.activeTextEditor;
 }
 
 export function getSelection(): string | undefined {
     const editor = getEditor();
     if (!editor) return undefined;
-    const selection = editor.selection;
-    const text = editor.document.getText(selection);
-    log('getSelection:', text ? `"${text.substring(0, 20)}..."` : 'empty');
-    return text;
+    return editor.document.getText(editor.selection);
 }
 
 export function replaceSelection(replacement: string): void {
     const editor = getEditor();
-    if (!editor) {
-        log('replaceSelection: no editor');
-        return;
-    }
-    const selection = editor.selection;
-    log('replaceSelection: replacing selection with', replacement.substring(0, 30));
+    if (!editor) return;
     editor.edit(editBuilder => {
-        editBuilder.replace(selection, replacement);
+        editBuilder.replace(editor.selection, replacement);
     });
-    log('replaceSelection: done');
 }
 
 export function replaceDocumentText(replacement: (text: string) => string): void {
     const editor = getEditor();
-    if (!editor) {
-        log('replaceDocumentText: no editor');
-        return;
-    }
+    if (!editor) return;
     const fullText = editor.document.getText();
     const newText = replacement(fullText);
-    log('replaceDocumentText: new text length', newText.length);
     const firstLine = editor.document.lineAt(0);
     const lastLine = editor.document.lineAt(editor.document.lineCount - 1);
     const fullRange = new vscode.Range(
@@ -49,7 +32,6 @@ export function replaceDocumentText(replacement: (text: string) => string): void
     editor.edit(editBuilder => {
         editBuilder.replace(fullRange, newText);
     });
-    log('replaceDocumentText: done');
 }
 
 export function insertAtCursor(text: string): void {

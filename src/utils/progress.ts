@@ -26,7 +26,3 @@ export async function runWithProgress<T>(
 ): Promise<T | undefined> {
     return withProgress({ title, cancellable }, task);
 }
-
-export function createProgressIncrementer(totalSteps: number): (step: number) => number {
-    return (step: number) => Math.floor((step / totalSteps) * 100);
-}

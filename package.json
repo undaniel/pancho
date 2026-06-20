@@ -5,6 +5,9 @@
   "version": "1.0.0",
   "publisher": "pancho",
   "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -983,9 +986,12 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run package:production",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
+    "bundle": "node esbuild.config.mjs",
+    "bundle:production": "node esbuild.config.mjs --production",
+    "package:production": "npm run bundle:production",
     "generate:readme": "node scripts/generate-readme.js",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -999,6 +1005,7 @@
     "@types/node": "^20.0.0",
     "@types/vscode": "^1.80.0",
     "@vscode/test-cli": "^0.0.12",
+    "esbuild": "^0.28.1",
     "jest": "^30.4.2",
     "ts-jest": "^29.4.11",
     "typescript": "^5.0.0"
