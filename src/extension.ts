@@ -8,9 +8,9 @@ export function activate(context: vscode.ExtensionContext): void {
     registerAllCommands(context);
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('pancho.showStatusInfo', () => {
-            showInfo('Pancho - Limpia y formatear texto como Notepad++');
-        })
+            vscode.commands.registerCommand('pancho.showStatusInfo', () => {
+                showInfo(vscode.l10n.t('Pancho - Clean and format text like Notepad++'));
+            })
     );
 
     context.subscriptions.push(

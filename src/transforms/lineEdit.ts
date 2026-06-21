@@ -29,33 +29,3 @@ export function keepOnlyLinesContaining(text: string, pattern: string): string {
     const sanitized = sanitizeSearchPattern(pattern);
     return text.split('\n').filter(line => line.includes(sanitized)).join('\n');
 }
-
-export function deleteLinesMatchingRegex(text: string, regex: string): { result: string; error?: string } {
-    if (!regex || regex.length === 0) {
-        return { result: text, error: 'Regex vacío' };
-    }
-    if (regex.length > 200) {
-        return { result: text, error: 'Regex demasiado largo' };
-    }
-    try {
-        const re = new RegExp(regex, 'i');
-        return { result: text.split('\n').filter(line => !re.test(line)).join('\n') };
-    } catch {
-        return { result: text, error: 'Regex inválido' };
-    }
-}
-
-export function keepOnlyLinesMatchingRegex(text: string, regex: string): { result: string; error?: string } {
-    if (!regex || regex.length === 0) {
-        return { result: text, error: 'Regex vacío' };
-    }
-    if (regex.length > 200) {
-        return { result: text, error: 'Regex demasiado largo' };
-    }
-    try {
-        const re = new RegExp(regex, 'i');
-        return { result: text.split('\n').filter(line => re.test(line)).join('\n') };
-    } catch {
-        return { result: text, error: 'Regex inválido' };
-    }
-}

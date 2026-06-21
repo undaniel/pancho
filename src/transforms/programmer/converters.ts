@@ -1,3 +1,5 @@
+import { t } from '../../utils/i18n';
+
 export function toBinary(text: string): { result: string } {
     return { result: text.split('').map(c => c.charCodeAt(0).toString(2).padStart(8, '0')).join(' ') };
 }
@@ -10,7 +12,7 @@ export function fromBinary(binary: string): { result: string; error?: string } {
         }).join('');
         return { result };
     } catch {
-        return { result: binary, error: 'Binario inválido. Use 8 bits separados por espacios (ej: 01000001 01000010)' };
+        return { result: binary, error: t('Invalid binary. Use 8 bits separated by spaces (e.g.: 01000001 01000010)') };
     }
 }
 
@@ -22,10 +24,10 @@ export function fromHex(hex: string): { result: string; error?: string } {
     try {
         const result = hex.split(/([a-fA-F0-9]{2})/).filter(Boolean).map(h => String.fromCharCode(parseInt(h, 16))).join('');
         if (!/^[a-fA-F0-9\s]+$/.test(hex)) {
-            return { result, error: 'Hexadecimal inválido' };
+            return { result, error: t('Invalid hex') };
         }
         return { result };
     } catch {
-        return { result: hex, error: 'Hexadecimal inválido' };
+        return { result: hex, error: t('Invalid hex') };
     }
 }

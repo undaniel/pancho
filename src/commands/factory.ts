@@ -73,14 +73,14 @@ export function registerTextCommand(context: vscode.ExtensionContext, options: T
             try {
                 const editor = vscode.window.activeTextEditor;
                 if (!editor) {
-                    vscode.window.showWarningMessage('Pancho: No hay editor activo');
+                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: No active editor'));
                     return;
                 }
 
                 const fileSize = new TextEncoder().encode(editor.document.getText()).length;
                 const maxSize = getMaxFileSize();
                 if (maxSize > 0 && fileSize > maxSize) {
-                    vscode.window.showWarningMessage(`Pancho: Archivo demasiado grande (${Math.round(fileSize/1024)}KB). Máximo: ${maxSize/1024}KB`);
+                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: File too large ({0}KB). Max: {1}KB', Math.round(fileSize / 1024), Math.round(maxSize / 1024)));
                     return;
                 }
 
@@ -110,7 +110,7 @@ export function registerTextCommand(context: vscode.ExtensionContext, options: T
 
                 if (needsProgress || shouldShowProgress(text.length)) {
                     await runWithProgress(
-                        `Ejecutando ${command}...`,
+                        vscode.l10n.t('Running {0}...', command),
                         operation,
                         true
                     );
@@ -120,9 +120,9 @@ export function registerTextCommand(context: vscode.ExtensionContext, options: T
                 }
 
                 if (warning) {
-                    vscode.window.showWarningMessage(`Pancho: ${warning}`);
+                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', warning));
                 } else if (error) {
-                    vscode.window.showWarningMessage(`Pancho: ${error}`);
+                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', error));
                 }
                 if (hasSelection) {
                     replaceSelection(value!);
@@ -131,7 +131,7 @@ export function registerTextCommand(context: vscode.ExtensionContext, options: T
                 }
             } catch (err) {
                 console.error('[Pancho] Error:', err);
-                vscode.window.showErrorMessage(`Pancho: ${String(err)}`);
+                vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
             }
         })
     );
@@ -144,14 +144,14 @@ export function registerLineCommand(context: vscode.ExtensionContext, options: L
             try {
                 const editor = vscode.window.activeTextEditor;
                 if (!editor) {
-                    vscode.window.showWarningMessage('Pancho: No hay editor activo');
+                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: No active editor'));
                     return;
                 }
 
                 const fileSize = new TextEncoder().encode(editor.document.getText()).length;
                 const maxSize = getMaxFileSize();
                 if (maxSize > 0 && fileSize > maxSize) {
-                    vscode.window.showWarningMessage(`Pancho: Archivo demasiado grande (${Math.round(fileSize/1024)}KB). Máximo: ${maxSize/1024}KB`);
+                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: File too large ({0}KB). Max: {1}KB', Math.round(fileSize / 1024), Math.round(maxSize / 1024)));
                     return;
                 }
 
@@ -181,7 +181,7 @@ export function registerLineCommand(context: vscode.ExtensionContext, options: L
 
                 if (needsProgress || shouldShowProgress(fullText.length)) {
                     await runWithProgress(
-                        `Ejecutando ${command}...`,
+                        vscode.l10n.t('Running {0}...', command),
                         operation,
                         true
                     );
@@ -191,14 +191,14 @@ export function registerLineCommand(context: vscode.ExtensionContext, options: L
                 }
 
                 if (warning) {
-                    vscode.window.showWarningMessage(`Pancho: ${warning}`);
+                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', warning));
                 } else if (error) {
-                    vscode.window.showWarningMessage(`Pancho: ${error}`);
+                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', error));
                 }
                 replaceDocumentText(() => value!);
             } catch (err) {
                 console.error('[Pancho] Error:', err);
-                vscode.window.showErrorMessage(`Pancho: ${String(err)}`);
+                vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
             }
         })
     );
@@ -212,14 +212,14 @@ export function registerInsertCommand(context: vscode.ExtensionContext, options:
                 const result = insert();
                 const processed = processResult(result);
                 if (processed.warning) {
-                    vscode.window.showWarningMessage(`Pancho: ${processed.warning}`);
+                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', processed.warning));
                 } else if (processed.error) {
-                    vscode.window.showWarningMessage(`Pancho: ${processed.error}`);
+                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', processed.error));
                 }
                 insertAtCursor(processed.value);
             } catch (err) {
                 console.error('[Pancho] Error:', err);
-                vscode.window.showErrorMessage(`Pancho: ${String(err)}`);
+                vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
             }
         })
     );
@@ -233,7 +233,7 @@ export function registerInfoCommand(context: vscode.ExtensionContext, options: I
                 vscode.window.showInformationMessage(info());
             } catch (err) {
                 console.error('[Pancho] Error:', err);
-                vscode.window.showErrorMessage(`Pancho: ${String(err)}`);
+                vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
             }
         })
     );

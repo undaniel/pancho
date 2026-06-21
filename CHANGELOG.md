@@ -5,6 +5,48 @@ All notable changes to this extension will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Internationalization (i18n)**: The extension UI now adapts to VS Code's display language.
+  - English (default) and Spanish (`es`) translations for all 83 commands, 14 submenus, 7 settings, walkthrough, keybindings and status bar messages.
+  - `package.nls.json` + `package.nls.es.json` for the manifest.
+  - `l10n/bundle.l10n.json` + `l10n/bundle.l10n.es.json` for runtime strings (errors, warnings, tooltips).
+  - `"l10n": "./l10n"` declared in `package.json`.
+- `LICENSE` file (MIT).
+- npm scripts: `build`, `build:production`, `typecheck`.
+- `@vscode/vsce` as devDependency.
+
+### Fixed
+
+- **Critical**: `pancho.minifyHTML/CSS/JS` and `pancho.prettifyHTML/CSS/JS` were running the JSON formatter due to incorrect imports in `commands/index.ts`. Now each language uses its own formatter.
+- **Build**: `npm run package` and `npm run publish` now use `@vscode/vsce` (was calling a missing `vsce` binary).
+- **Build**: `npm run test:integration` now compiles TypeScript before running tests.
+- **Package**: Removed orphan `viewsWelcome` referencing a non-existent `panchoStatusView`.
+- **Package**: Status bar now uses the `$(wand)` codicon instead of the unregistered `$(pancho)` icon.
+- **Package**: `media/**` is no longer excluded from `.vsix` so walkthrough SVGs are bundled.
+- **Package**: Significantly reduced `.vsix` size (excluded `tests/`, `scripts/`, `AGENTS.md`, `README_PANCHO.md`, loose `dist/` files, source maps, etc.).
+
+### Changed
+
+- **Settings**: `pancho.loremIpsumWordCount` and `pancho.randomStringLength` are now respected (were hardcoded).
+- **Keybindings (Mac)**: Moved to `Cmd+Alt+...` to avoid conflicts with native VS Code shortcuts (`Cmd+Shift+W` close window, `Cmd+Shift+L` select all occurrences, etc.).
+- **Keybindings**: Removed unused `accessibilityInformation.handledChannels` field (only valid for views).
+- **Performance**: Status bar counters are debounced (150ms) and capped for large documents (>500K chars).
+- **Security**: `generateUUID` and `generateRandomString` now use `crypto.randomUUID()` and `crypto.randomBytes()` instead of `Math.random()`.
+- **Code**: Replaced deprecated `String.prototype.substr` with `slice` in `toTitleCase`.
+
+### Removed
+
+- Dead code: `escapeForShell`, `findAllMatches`, `replaceAllMatches`, `splitLine`, `deleteLinesMatchingRegex`, `keepOnlyLinesMatchingRegex`, `insertSpecialCharacter`, `SPECIAL_CHARACTERS`, duplicated `joinLines` in `specialPaste.ts`, unused `sanitizeRegexPattern` and `truncateText`.
+
+### Added
+
+- `LICENSE` file (MIT).
+- npm scripts: `build`, `build:production`, `typecheck`.
+- `@vscode/vsce` as devDependency.
+
 ## [1.0.0] - 2026-05-23
 
 ### Added

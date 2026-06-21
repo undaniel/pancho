@@ -3,12 +3,16 @@ import { countWords, countCharacters, countLines } from '../transforms/textGener
 
 let statusBarItem: vscode.StatusBarItem | undefined;
 let countersItem: vscode.StatusBarItem | undefined;
+let updateTimer: NodeJS.Timeout | undefined;
+
+const STATUSBAR_ICON = '$(wand)';
+const MAX_COUNTER_LENGTH = 500000;
 
 export function initStatusBar(context: vscode.ExtensionContext): void {
     statusBarItem = vscode.window.createStatusBarItem('pancho.status', vscode.StatusBarAlignment.Right, 100);
     statusBarItem.command = 'pancho.showStatusInfo';
-    statusBarItem.text = '$(pancho) Pancho';
-    statusBarItem.tooltip = 'Extensión de formateo de texto';
+    statusBarItem.text = `${STATUSBAR_ICON} Pancho`;
+    statusBarItem.tooltip = vscode.l10n.t('Text formatting extension');
     statusBarItem.show();
     context.subscriptions.push(statusBarItem);
 
@@ -16,14 +20,24 @@ export function initStatusBar(context: vscode.ExtensionContext): void {
     if (config.get<boolean>('statusBarShowCounters', true)) {
         countersItem = vscode.window.createStatusBarItem('pancho.counters', vscode.StatusBarAlignment.Left, 101);
         countersItem.text = '';
-        countersItem.tooltip = 'Contadores de Pancho';
+        countersItem.tooltip = vscode.l10n.t('Pancho counters');
         countersItem.show();
         context.subscriptions.push(countersItem);
 
         context.subscriptions.push(
-            vscode.window.onDidChangeTextEditorSelection(() => updateCounters())
+            vscode.window.onDidChangeTextEditorSelection(() => scheduleUpdate())
+        );
+        context.subscriptions.push(
+            vscode.workspace.onDidChangeTextDocument(() => scheduleUpdate())
         );
     }
+}
+
+function scheduleUpdate(): void {
+    if (updateTimer) {
+        clearTimeout(updateTimer);
+    }
+    updateTimer = setTimeout(() => updateCounters(), 150);
 }
 
 export function updateCounters(): void {
@@ -35,20 +49,29 @@ export function updateCounters(): void {
         return;
     }
 
-    const text = editor.document.getText(editor.selection) || editor.document.getText();
+    const selectionText = editor.document.getText(editor.selection);
+    const text = selectionText.length > 0 ? selectionText : editor.document.getText();
+
+    if (text.length > MAX_COUNTER_LENGTH) {
+        countersItem.text = 'L:? P:? C:?';
+        countersItem.tooltip = vscode.l10n.t('Document too large to count');
+        return;
+    }
+
     const words = countWords(text);
     const chars = countCharacters(text);
     const lines = countLines(text);
 
     countersItem.text = `L:${lines} P:${words} C:${chars}`;
+    countersItem.tooltip = vscode.l10n.t('Pancho counters');
 }
 
 export function updateStatusBar(message: string): void {
     if (statusBarItem) {
-        statusBarItem.text = `$(pancho) ${message}`;
+        statusBarItem.text = `${STATUSBAR_ICON} ${message}`;
         setTimeout(() => {
             if (statusBarItem) {
-                statusBarItem.text = '$(pancho) Pancho';
+                statusBarItem.text = `${STATUSBAR_ICON} Pancho`;
             }
         }, 3000);
     }

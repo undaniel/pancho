@@ -25,10 +25,6 @@ export function joinLines(text: string, separator: string = ' '): string {
     return text.split('\n').map(line => line.trim()).filter(line => line).join(separator);
 }
 
-export function splitLine(text: string): string {
-    return text.replace(/(.{1,80})(?=\s)/g, '$1\n');
-}
-
 export function moveLineUp(text: string, currentLineIndex: number = 0): string {
     if (currentLineIndex <= 0) return text;
     const lines = text.split('\n');

@@ -1,3 +1,5 @@
+import { t } from '../utils/i18n';
+
 export function escapeJSON(text: string): string {
     return JSON.stringify(text);
 }
@@ -6,11 +8,11 @@ export function unescapeJSON(text: string): { result: string; error?: string } {
     try {
         const parsed = JSON.parse(text);
         if (typeof parsed !== 'string') {
-            return { result: text, error: 'JSON no es una cadena' };
+            return { result: text, error: t('JSON is not a string') };
         }
         return { result: parsed };
     } catch {
-        return { result: text, error: 'JSON inválido' };
+        return { result: text, error: t('Invalid JSON') };
     }
 }
 
@@ -38,7 +40,7 @@ export function escapeForHTML(text: string): string {
 export function unescapeForHTML(text: string): { result: string; error?: string } {
     const invalidSequence = /&(?!(amp|lt|gt|quot|#39|#x27|#[0-9]+;|#[0-9a-fA-F]+;))/gi;
     if (invalidSequence.test(text)) {
-        return { result: text, error: 'Secuencia HTML inválida' };
+        return { result: text, error: t('Invalid HTML sequence') };
     }
     return {
         result: text
@@ -49,8 +51,4 @@ export function unescapeForHTML(text: string): { result: string; error?: string 
             .replace(/&#39;/g, "'"),
         error: undefined
     };
-}
-
-export function escapeForShell(text: string): string {
-    return text.replace(/[`$!"\\]/g, '\\$&');
 }

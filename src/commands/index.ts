@@ -13,7 +13,7 @@ import { removeDuplicateLines, sortLinesAscending, sortLinesDescending, reverseL
 import { toWindowsEOL, toUnixEOL, toMacEOL } from '../transforms/eol';
 import { pasteWithoutLineBreak, copyToMultipleLines, formatAsCSV } from '../transforms/specialPaste';
 import { countWords, countCharacters, countLines, removeDuplicateWords, numberLines, removeLineNumbers, slugify, reverseWords, randomizeLines } from '../transforms/textGeneral';
-import { minify as minifyJSON, prettify as prettifyJSON, minify as minifyHTML, prettify as prettifyHTML, minify as minifyCSS, prettify as prettifyCSS, minify as minifyJS, prettify as prettifyJS, htmlEntitiesEncode, htmlEntitiesDecode, base64Encode, base64Decode, urlEncode, urlDecode, hexToRgb, rgbToHex, generateLoremIpsum } from '../transforms/webDev';
+import { minify as minifyJSON, prettify as prettifyJSON, minifyHTML, prettifyHTML, minifyCSS, prettifyCSS, minifyJS, prettifyJS, htmlEntitiesEncode, htmlEntitiesDecode, base64Encode, base64Decode, urlEncode, urlDecode, hexToRgb, rgbToHex, generateLoremIpsum } from '../transforms/webDev';
 import { formatSQL, minifyXML, prettifyXML, generateUUID, generateRandomString, hashMD5, hashSHA256, toBinary, fromBinary, toHex, fromHex } from '../transforms/programmer';
 import { duplicateLine, insertLineBefore, insertLineAfter, deleteLinesContaining, keepOnlyLinesContaining } from '../transforms/lineEdit';
 import { highlightMatches, countMatches } from '../transforms/search';
@@ -82,9 +82,9 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
     registerInsertCommand(context, { command: Commands.INSERT_SHORT_TIME, insert: formatShortDateTime });
     registerInsertCommand(context, { command: Commands.INSERT_LONG_TIME, insert: formatLongDateTime });
     registerInsertCommand(context, { command: Commands.INSERT_DATE_TIME, insert: formatCustomDateTime });
-    registerInsertCommand(context, { command: Commands.LOREM_IPSUM, insert: () => generateLoremIpsum(50) });
+    registerInsertCommand(context, { command: Commands.LOREM_IPSUM, insert: () => generateLoremIpsum(vscode.workspace.getConfiguration('pancho').get<number>('loremIpsumWordCount', 50)) });
     registerInsertCommand(context, { command: Commands.GENERATE_UUID, insert: () => generateUUID() });
-    registerInsertCommand(context, { command: Commands.GENERATE_RANDOM_STRING, insert: () => generateRandomString(16) });
+    registerInsertCommand(context, { command: Commands.GENERATE_RANDOM_STRING, insert: () => generateRandomString(vscode.workspace.getConfiguration('pancho').get<number>('randomStringLength', 16)) });
 
     registerTextCommand(context, { command: Commands.COMMENT_LINE, transform: (text) => commentLine(text) });
     registerTextCommand(context, { command: Commands.UNCOMMENT_LINE, transform: (text) => uncommentLine(text) });
