@@ -7,10 +7,60 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-06-21
+
+### Added
+
+- **Case conversions (8 new):**
+  - `pancho.toSentenceCase` / `pancho.invertCase` / `pancho.randomCase`
+  - `pancho.toKebabCase` / `pancho.toSnakeCase` / `pancho.toCamelCase` / `pancho.toPascalCase` / `pancho.toConstantCase`
+
+- **Text operations:**
+  - `pancho.removeDiacritics` — Remove accents and diacritical marks
+  - `pancho.stripHTMLTags` — Strip HTML tags from text
+  - `pancho.wrapText` / `pancho.unwrapText` — Wrap/unwrap text at column width
+
+- **Advanced sorting:**
+  - `pancho.sortNatural` / `pancho.sortNaturalDescending` — Natural sort (`file2` < `file10`)
+  - `pancho.sortByLength` / `pancho.sortByLengthDescending` — Sort by line length
+  - `pancho.sortNumeric` — Numeric sort
+  - `pancho.removeConsecutiveDuplicateLines` — Remove only adjacent duplicates
+
+- **Transpose:**
+  - `pancho.transposeCharacters` / `pancho.transposeWords` / `pancho.transposeLines`
+
+- **CSV / Markdown conversions:**
+  - `pancho.csvToJSON` / `pancho.jsonToCSV` / `pancho.csvToTSV` / `pancho.tsvToCSV`
+  - `pancho.csvToMarkdown` / `pancho.markdownTableToCSV`
+
+- **Column alignment:**
+  - `pancho.alignByChar` / `pancho.alignEquals` / `pancho.alignColons`
+
+- **Developer tools:**
+  - `pancho.decodeJWT` — Decode JWT tokens (header + payload + expiry check)
+  - `pancho.timestampToISO` / `pancho.isoToTimestamp` / `pancho.nowAsTimestamp`
+  - `pancho.aesEncrypt` / `pancho.aesDecrypt` — AES-256-CBC with PBKDF2
+  - `pancho.colorInfo` — Show HEX + RGB + HSL for a color
+  - `pancho.regexTester` — Test regex with groups and match count
+
+- **Search in workspace:**
+  - `pancho.findInFiles` — Search across all workspace files (results in OutputChannel)
+  - `pancho.replaceInFiles` — Replace across all workspace files (with confirmation)
+
+- **New submenus:** Search, Developer Tools
+
+### Changed
+
+- **Total commands:** 83 → 124 (41 new commands)
+- README bilingual updated with all new commands
+- NLS and l10n bundles updated (EN + ES)
+
+## [1.1.0] - 2026-06-21
+
 ### Added
 
 - **Internationalization (i18n)**: The extension UI now adapts to VS Code's display language.
-  - English (default) and Spanish (`es`) translations for all 83 commands, 14 submenus, 7 settings, walkthrough, keybindings and status bar messages.
+  - English (default) and Spanish (`es`) translations for all commands, submenus, settings, walkthrough, keybindings and status bar messages.
   - `package.nls.json` + `package.nls.es.json` for the manifest.
   - `l10n/bundle.l10n.json` + `l10n/bundle.l10n.es.json` for runtime strings (errors, warnings, tooltips).
   - `"l10n": "./l10n"` declared in `package.json`.

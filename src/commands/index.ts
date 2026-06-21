@@ -1,15 +1,18 @@
 import * as vscode from 'vscode';
 import { Commands } from './registry';
-import { registerTextCommand, registerInsertCommand, registerInfoCommand, registerLineCommand } from './factory';
+import { registerTextCommand, registerInsertCommand, registerInfoCommand, registerLineCommand, registerPromptCommand, registerAsyncCommand } from './factory';
 import { getSelection, getDocumentText } from '../utils/editor';
 import { cleanWhitespace } from '../transforms/whitespace';
 import { cleanLineEndings, lineEndingsToSpaces } from '../transforms/lineEndings';
-import { toUpper, toLower, toTitleCase } from '../transforms/case';
+import { toUpper, toLower, toTitleCase, toSentenceCase, invertCase, randomCase, toKebabCase, toSnakeCase, toCamelCase, toPascalCase, toConstantCase } from '../transforms/case';
 import { tabsToSpaces, spacesToTabs, increaseIndent, decreaseIndent } from '../transforms/tabs';
 import { trimLines } from '../transforms/lineUtils';
 import { formatShortDateTime, formatLongDateTime, formatCustomDateTime } from '../transforms/dateTime';
 import { commentLine, uncommentLine, commentBlock, uncommentBlock } from '../transforms/comments';
-import { removeDuplicateLines, sortLinesAscending, sortLinesDescending, reverseLines, joinLines, removeEmptyLines, moveLineUp, moveLineDown } from '../transforms/lines';
+import { removeDuplicateLines, removeConsecutiveDuplicateLines, sortLinesAscending, sortLinesDescending, reverseLines, joinLines, removeEmptyLines, moveLineUp, moveLineDown } from '../transforms/lines';
+import { sortNatural, sortNaturalDescending, sortByLength, sortByLengthDescending, sortNumeric } from '../transforms/sort';
+import { removeDiacritics, stripHTMLTags, wrapText, unwrapText } from '../transforms/text';
+import { transposeCharacters, transposeWords, transposeLines } from '../transforms/transpose';
 import { toWindowsEOL, toUnixEOL, toMacEOL } from '../transforms/eol';
 import { pasteWithoutLineBreak, copyToMultipleLines, formatAsCSV } from '../transforms/specialPaste';
 import { countWords, countCharacters, countLines, removeDuplicateWords, numberLines, removeLineNumbers, slugify, reverseWords, randomizeLines } from '../transforms/textGeneral';
@@ -18,6 +21,14 @@ import { formatSQL, minifyXML, prettifyXML, generateUUID, generateRandomString, 
 import { duplicateLine, insertLineBefore, insertLineAfter, deleteLinesContaining, keepOnlyLinesContaining } from '../transforms/lineEdit';
 import { highlightMatches, countMatches } from '../transforms/search';
 import { escapeJSON, unescapeJSON, escapeForSQL, unescapeForSQL, escapeForRegex, escapeForHTML, unescapeForHTML } from '../transforms/escape';
+import { csvToJSON, jsonToCSV, csvToTSV, tsvToCSV, csvToMarkdown, markdownTableToCSV } from '../transforms/convert';
+import { alignByChar, alignEquals, alignColons } from '../transforms/align';
+import { decodeJWT } from '../transforms/jwt';
+import { timestampToISO, isoToTimestamp, nowAsTimestamp } from '../transforms/timestamp';
+import { aesEncrypt, aesDecrypt } from '../transforms/aes';
+import { colorInfo } from '../transforms/colorInfo';
+import { formatRegexResult } from '../transforms/regex';
+import { findInFiles, replaceInFiles } from '../transforms/searchAdvanced';
 
 export function registerAllCommands(context: vscode.ExtensionContext): void {
     registerTextCommand(context, { command: Commands.CLEAN_WHITESPACE, transform: (text) => cleanWhitespace(text) });
@@ -114,4 +125,173 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
     registerTextCommand(context, { command: Commands.ESCAPE_FOR_REGEX, transform: (text) => escapeForRegex(text) });
     registerTextCommand(context, { command: Commands.ESCAPE_FOR_HTML, transform: (text) => escapeForHTML(text) });
     registerTextCommand(context, { command: Commands.UNESCAPE_FOR_HTML, transform: (text) => unescapeForHTML(text) });
+
+    // ===== Bloque A: comandos rápidos =====
+    registerTextCommand(context, { command: Commands.TO_SENTENCE_CASE, transform: (text) => toSentenceCase(text) });
+    registerTextCommand(context, { command: Commands.INVERT_CASE, transform: (text) => invertCase(text) });
+    registerTextCommand(context, { command: Commands.RANDOM_CASE, transform: (text) => randomCase(text) });
+    registerTextCommand(context, { command: Commands.TO_KEBAB_CASE, transform: (text) => toKebabCase(text) });
+    registerTextCommand(context, { command: Commands.TO_SNAKE_CASE, transform: (text) => toSnakeCase(text) });
+    registerTextCommand(context, { command: Commands.TO_CAMEL_CASE, transform: (text) => toCamelCase(text) });
+    registerTextCommand(context, { command: Commands.TO_PASCAL_CASE, transform: (text) => toPascalCase(text) });
+    registerTextCommand(context, { command: Commands.TO_CONSTANT_CASE, transform: (text) => toConstantCase(text) });
+    registerTextCommand(context, { command: Commands.REMOVE_DIACRITICS, transform: (text) => removeDiacritics(text) });
+    registerTextCommand(context, { command: Commands.STRIP_HTML_TAGS, transform: (text) => stripHTMLTags(text) });
+    registerTextCommand(context, { command: Commands.SORT_NATURAL, transform: (text) => sortNatural(text) });
+    registerTextCommand(context, { command: Commands.SORT_NATURAL_DESCENDING, transform: (text) => sortNaturalDescending(text) });
+    registerTextCommand(context, { command: Commands.SORT_BY_LENGTH, transform: (text) => sortByLength(text) });
+    registerTextCommand(context, { command: Commands.SORT_BY_LENGTH_DESCENDING, transform: (text) => sortByLengthDescending(text) });
+    registerTextCommand(context, { command: Commands.SORT_NUMERIC, transform: (text) => sortNumeric(text) });
+    registerTextCommand(context, { command: Commands.TRANSPOSE_CHARS, transform: (text) => transposeCharacters(text) });
+    registerTextCommand(context, { command: Commands.TRANSPOSE_WORDS, transform: (text) => transposeWords(text) });
+    registerTextCommand(context, { command: Commands.TRANSPOSE_LINES, transform: (text) => transposeLines(text) });
+    registerPromptCommand(context, {
+        command: Commands.WRAP_TEXT,
+        prompts: [{ label: vscode.l10n.t('Column width'), placeholder: '80' }],
+        transform: (text, width) => wrapText(text, parseInt(width || '80', 10) || 80),
+    });
+    registerTextCommand(context, { command: Commands.UNWRAP_TEXT, transform: (text) => unwrapText(text) });
+    registerTextCommand(context, { command: Commands.REMOVE_CONSECUTIVE_DUPLICATE_LINES, transform: (text) => removeConsecutiveDuplicateLines(text) });
+
+    // ===== Bloque B: conversiones =====
+    registerTextCommand(context, { command: Commands.CSV_TO_JSON, transform: (text) => csvToJSON(text) });
+    registerTextCommand(context, { command: Commands.JSON_TO_CSV, transform: (text) => jsonToCSV(text) });
+    registerTextCommand(context, { command: Commands.CSV_TO_TSV, transform: (text) => csvToTSV(text) });
+    registerTextCommand(context, { command: Commands.TSV_TO_CSV, transform: (text) => tsvToCSV(text) });
+    registerTextCommand(context, { command: Commands.CSV_TO_MARKDOWN, transform: (text) => csvToMarkdown(text) });
+    registerTextCommand(context, { command: Commands.MARKDOWN_TABLE_TO_CSV, transform: (text) => markdownTableToCSV(text) });
+
+    // ===== Bloque C: align =====
+    registerPromptCommand(context, {
+        command: Commands.ALIGN_BY_CHAR,
+        prompts: [{ label: vscode.l10n.t('Character to align by'), placeholder: '=' }],
+        transform: (text, char) => alignByChar(text, char || '='),
+    });
+    registerTextCommand(context, { command: Commands.ALIGN_EQUALS, transform: (text) => alignEquals(text) });
+    registerTextCommand(context, { command: Commands.ALIGN_COLONS, transform: (text) => alignColons(text) });
+
+    // ===== Bloque D: dev tools =====
+    registerTextCommand(context, { command: Commands.DECODE_JWT, transform: (text) => decodeJWT(text) });
+    registerTextCommand(context, { command: Commands.TIMESTAMP_TO_ISO, transform: (text) => timestampToISO(text) });
+    registerTextCommand(context, { command: Commands.ISO_TO_TIMESTAMP, transform: (text) => isoToTimestamp(text) });
+    registerInsertCommand(context, { command: Commands.NOW_AS_TIMESTAMP, insert: () => nowAsTimestamp() });
+    registerPromptCommand(context, {
+        command: Commands.AES_ENCRYPT,
+        prompts: [{ label: vscode.l10n.t('Password'), placeholder: '********', password: true }],
+        transform: (text, password) => aesEncrypt(text, password),
+    });
+    registerPromptCommand(context, {
+        command: Commands.AES_DECRYPT,
+        prompts: [{ label: vscode.l10n.t('Password'), placeholder: '********', password: true }],
+        transform: (text, password) => aesDecrypt(text, password),
+    });
+    registerTextCommand(context, { command: Commands.COLOR_INFO, transform: (text) => colorInfo(text) });
+    registerPromptCommand(context, {
+        command: Commands.REGEX_TESTER,
+        prompts: [
+            { label: vscode.l10n.t('Regex pattern'), placeholder: '\\d+' },
+            { label: vscode.l10n.t('Flags'), placeholder: 'gi' },
+        ],
+        transform: (text, pattern, flags) => formatRegexResult(pattern, flags || 'g', text),
+    });
+
+    // ===== Bloque E: búsqueda avanzada =====
+    registerAsyncCommand(context, {
+        command: Commands.FIND_IN_FILES,
+        handler: async () => {
+            const pattern = await vscode.window.showInputBox({
+                prompt: vscode.l10n.t('Search pattern'),
+                placeHolder: vscode.l10n.t('Text or regex'),
+            });
+            if (!pattern) return;
+
+            const useRegex = await vscode.window.showQuickPick(
+                [vscode.l10n.t('Literal'), vscode.l10n.t('Regex')],
+                { placeHolder: vscode.l10n.t('Search mode') }
+            );
+            if (!useRegex) return;
+
+            const caseOption = await vscode.window.showQuickPick(
+                [vscode.l10n.t('Case insensitive'), vscode.l10n.t('Case sensitive')],
+                { placeHolder: vscode.l10n.t('Case match') }
+            );
+            if (!caseOption) return;
+
+            await vscode.window.withProgress(
+                {
+                    location: vscode.ProgressLocation.Notification,
+                    title: vscode.l10n.t('Pancho: searching in files...'),
+                    cancellable: false,
+                },
+                async () => {
+                    const result = await findInFiles(pattern, {
+                        regex: useRegex === vscode.l10n.t('Regex'),
+                        caseSensitive: caseOption === vscode.l10n.t('Case sensitive'),
+                    });
+                    if (result.error) {
+                        vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', result.error));
+                        return;
+                    }
+                    const channel = vscode.window.createOutputChannel('Pancho Search');
+                    channel.clear();
+                    channel.appendLine(vscode.l10n.t('Search: {0} ({1} matches in {2} files scanned)', pattern, result.matches.length, result.filesScanned ?? 0));
+                    channel.appendLine('');
+                    for (const m of result.matches) {
+                        channel.appendLine(`${m.file}:${m.line}:${m.column}: ${m.text}`);
+                    }
+                    channel.show();
+                }
+            );
+        },
+    });
+
+    registerAsyncCommand(context, {
+        command: Commands.REPLACE_IN_FILES,
+        handler: async () => {
+            const pattern = await vscode.window.showInputBox({
+                prompt: vscode.l10n.t('Search pattern'),
+                placeHolder: vscode.l10n.t('Text or regex'),
+            });
+            if (pattern === undefined) return;
+
+            const replacement = await vscode.window.showInputBox({
+                prompt: vscode.l10n.t('Replacement (use $1, $2 for groups)'),
+                placeHolder: '$1',
+            });
+            if (replacement === undefined) return;
+
+            const useRegex = await vscode.window.showQuickPick(
+                [vscode.l10n.t('Literal'), vscode.l10n.t('Regex')],
+                { placeHolder: vscode.l10n.t('Search mode') }
+            );
+            if (!useRegex) return;
+
+            const confirm = await vscode.window.showWarningMessage(
+                vscode.l10n.t('Replace in all workspace files?'),
+                { modal: true },
+                vscode.l10n.t('Replace')
+            );
+            if (confirm !== vscode.l10n.t('Replace')) return;
+
+            await vscode.window.withProgress(
+                {
+                    location: vscode.ProgressLocation.Notification,
+                    title: vscode.l10n.t('Pancho: replacing in files...'),
+                    cancellable: false,
+                },
+                async () => {
+                    const result = await replaceInFiles(pattern, replacement, {
+                        regex: useRegex === vscode.l10n.t('Regex'),
+                    });
+                    if (result.error) {
+                        vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', result.error));
+                        return;
+                    }
+                    vscode.window.showInformationMessage(
+                        vscode.l10n.t('Replaced {0} occurrences in {1} files', result.replaced, result.files)
+                    );
+                }
+            );
+        },
+    });
 }

@@ -238,3 +238,80 @@ export function registerInfoCommand(context: vscode.ExtensionContext, options: I
         })
     );
 }
+
+export interface PromptCommandOptions {
+    command: CommandName;
+    prompts: { label: string; placeholder: string; password?: boolean }[];
+    transform: (text: string, ...answers: string[]) => string | { result: string; error?: string; warning?: string };
+}
+
+export function registerPromptCommand(context: vscode.ExtensionContext, options: PromptCommandOptions): void {
+    const { command, prompts, transform } = options;
+    context.subscriptions.push(
+        vscode.commands.registerCommand(command, async () => {
+            try {
+                const editor = vscode.window.activeTextEditor;
+                if (!editor) {
+                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: No active editor'));
+                    return;
+                }
+
+                const answers: string[] = [];
+                for (const p of prompts) {
+                    const value = await vscode.window.showInputBox({
+                        prompt: p.label,
+                        placeHolder: p.placeholder,
+                        password: p.password,
+                    });
+                    if (value === undefined) return;
+                    answers.push(value);
+                }
+
+                const selection = editor.selection;
+                const hasSelection = !selection.isEmpty;
+                const text = hasSelection
+                    ? editor.document.getText(selection)
+                    : editor.document.getText();
+
+                const result = transform(text, ...answers);
+                const processed = processResult(result);
+
+                if (processed.error) {
+                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', processed.error));
+                    return;
+                }
+
+                if (hasSelection) {
+                    editor.edit(eb => eb.replace(selection, processed.value));
+                } else {
+                    const firstLine = editor.document.lineAt(0);
+                    const lastLine = editor.document.lineAt(editor.document.lineCount - 1);
+                    const fullRange = new vscode.Range(firstLine.range.start, lastLine.range.end);
+                    editor.edit(eb => eb.replace(fullRange, processed.value));
+                }
+            } catch (err) {
+                console.error('[Pancho] Error:', err);
+                vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
+            }
+        })
+    );
+}
+
+export interface AsyncCommandOptions {
+    command: CommandName;
+    handler: () => Promise<void>;
+}
+
+export function registerAsyncCommand(context: vscode.ExtensionContext, options: AsyncCommandOptions): void {
+    const { command, handler } = options;
+    context.subscriptions.push(
+        vscode.commands.registerCommand(command, async () => {
+            try {
+                await handler();
+            } catch (err) {
+                console.error('[Pancho] Error:', err);
+                vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
+            }
+        })
+    );
+}

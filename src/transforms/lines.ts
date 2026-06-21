@@ -9,6 +9,17 @@ export function removeDuplicateLines(text: string): string {
     return result.join('\n');
 }
 
+export function removeConsecutiveDuplicateLines(text: string): string {
+    const lines = text.split('\n');
+    const result: string[] = [];
+    for (const line of lines) {
+        if (result.length === 0 || result[result.length - 1] !== line) {
+            result.push(line);
+        }
+    }
+    return result.join('\n');
+}
+
 export function sortLinesAscending(text: string): string {
     return text.split('\n').sort((a, b) => a.localeCompare(b)).join('\n');
 }

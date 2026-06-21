@@ -82,6 +82,56 @@ export const Commands = {
     ESCAPE_FOR_REGEX: 'pancho.escapeForRegex',
     ESCAPE_FOR_HTML: 'pancho.escapeForHTML',
     UNESCAPE_FOR_HTML: 'pancho.unescapeForHTML',
+
+    // Bloque A: comandos rápidos
+    TO_SENTENCE_CASE: 'pancho.toSentenceCase',
+    INVERT_CASE: 'pancho.invertCase',
+    RANDOM_CASE: 'pancho.randomCase',
+    TO_KEBAB_CASE: 'pancho.toKebabCase',
+    TO_SNAKE_CASE: 'pancho.toSnakeCase',
+    TO_CAMEL_CASE: 'pancho.toCamelCase',
+    TO_PASCAL_CASE: 'pancho.toPascalCase',
+    TO_CONSTANT_CASE: 'pancho.toConstantCase',
+    REMOVE_DIACRITICS: 'pancho.removeDiacritics',
+    STRIP_HTML_TAGS: 'pancho.stripHTMLTags',
+    SORT_NATURAL: 'pancho.sortNatural',
+    SORT_NATURAL_DESCENDING: 'pancho.sortNaturalDescending',
+    SORT_BY_LENGTH: 'pancho.sortByLength',
+    SORT_BY_LENGTH_DESCENDING: 'pancho.sortByLengthDescending',
+    SORT_NUMERIC: 'pancho.sortNumeric',
+    TRANSPOSE_CHARS: 'pancho.transposeCharacters',
+    TRANSPOSE_WORDS: 'pancho.transposeWords',
+    TRANSPOSE_LINES: 'pancho.transposeLines',
+    WRAP_TEXT: 'pancho.wrapText',
+    UNWRAP_TEXT: 'pancho.unwrapText',
+    REMOVE_CONSECUTIVE_DUPLICATE_LINES: 'pancho.removeConsecutiveDuplicateLines',
+
+    // Bloque B: conversiones
+    CSV_TO_JSON: 'pancho.csvToJSON',
+    JSON_TO_CSV: 'pancho.jsonToCSV',
+    CSV_TO_TSV: 'pancho.csvToTSV',
+    TSV_TO_CSV: 'pancho.tsvToCSV',
+    CSV_TO_MARKDOWN: 'pancho.csvToMarkdown',
+    MARKDOWN_TABLE_TO_CSV: 'pancho.markdownTableToCSV',
+
+    // Bloque C: align
+    ALIGN_BY_CHAR: 'pancho.alignByChar',
+    ALIGN_EQUALS: 'pancho.alignEquals',
+    ALIGN_COLONS: 'pancho.alignColons',
+
+    // Bloque D: dev tools
+    DECODE_JWT: 'pancho.decodeJWT',
+    TIMESTAMP_TO_ISO: 'pancho.timestampToISO',
+    ISO_TO_TIMESTAMP: 'pancho.isoToTimestamp',
+    NOW_AS_TIMESTAMP: 'pancho.nowAsTimestamp',
+    AES_ENCRYPT: 'pancho.aesEncrypt',
+    AES_DECRYPT: 'pancho.aesDecrypt',
+    COLOR_INFO: 'pancho.colorInfo',
+    REGEX_TESTER: 'pancho.regexTester',
+
+    // Bloque E: búsqueda avanzada
+    FIND_IN_FILES: 'pancho.findInFiles',
+    REPLACE_IN_FILES: 'pancho.replaceInFiles',
 } as const;
 
 export type CommandName = typeof Commands[keyof typeof Commands];

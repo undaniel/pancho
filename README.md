@@ -1,6 +1,6 @@
 # Pancho
 
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/undaniel/pancho)
+[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/undaniel/pancho)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
 [![VSCode Engine](https://img.shields.io/badge/VSCode-%5E1.80.0-blue.svg)](https://code.visualstudio.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-%5E5.0.0-blue.svg)](https://www.typescriptlang.org/)
@@ -15,7 +15,7 @@
 
 ### Features
 
-- **80+ commands** available from the context menu
+- **124 commands** available from the context menu
 - **Status bar counters** (lines, words, characters)
 - **Keyboard shortcuts** for frequent operations
 - **Settings** for tab size, EOL and more
@@ -36,14 +36,23 @@
 | `Pancho: Clean line endings` | Normalize line endings |
 | `Pancho: Trim lines` | Trim leading/trailing whitespace |
 | `Pancho: Convert line endings to spaces` | Line breaks → spaces |
+| `Pancho: Wrap text...` | Wrap at column width |
+| `Pancho: Unwrap text` | Remove line breaks |
 
 #### Lines
 | Command | Description |
 |---------|-------------|
-| `Pancho: Remove duplicate lines` | Remove duplicates |
+| `Pancho: Remove duplicate lines` | Remove all duplicates |
+| `Pancho: Remove consecutive duplicate lines` | Remove only adjacent duplicates |
 | `Pancho: Sort A-Z` | Sort ascending |
 | `Pancho: Sort Z-A` | Sort descending |
+| `Pancho: Sort natural` | Natural sort (`file2` < `file10`) |
+| `Pancho: Sort natural descending` | Natural sort reverse |
+| `Pancho: Sort by length` | Shortest first |
+| `Pancho: Sort by length descending` | Longest first |
+| `Pancho: Sort numeric` | Numeric ascending |
 | `Pancho: Reverse lines` | Reverse order |
+| `Pancho: Randomize lines` | Shuffle lines |
 | `Pancho: Join lines` | Join into a single line |
 | `Pancho: Remove empty lines` | Remove blank lines |
 
@@ -53,6 +62,14 @@
 | `Pancho: Convert to UPPERCASE` | UPPERCASE |
 | `Pancho: Convert to lowercase` | lowercase |
 | `Pancho: Convert to Title Case` | Title Case |
+| `Pancho: Convert to sentence case` | Sentence case |
+| `Pancho: Invert case` | Swap upper/lower |
+| `Pancho: Random case` | Random upper/lower |
+| `Pancho: Convert to camelCase` | camelCase |
+| `Pancho: Convert to PascalCase` | PascalCase |
+| `Pancho: Convert to snake_case` | snake_case |
+| `Pancho: Convert to kebab-case` | kebab-case |
+| `Pancho: Convert to CONSTANT_CASE` | CONSTANT_CASE |
 
 #### Indentation
 | Command | Description |
@@ -84,6 +101,14 @@
 | `Pancho: Paste without line break` | Paste without breaks |
 | `Pancho: Copy to multiple lines` | Copy to multiple lines |
 | `Pancho: Format as CSV` | Format as CSV |
+| `Pancho: Remove diacritics` | Remove accents |
+| `Pancho: Strip HTML tags` | Strip HTML tags |
+| `Pancho: CSV to JSON` | CSV → JSON |
+| `Pancho: JSON to CSV` | JSON → CSV |
+| `Pancho: CSV to TSV` | CSV → TSV |
+| `Pancho: TSV to CSV` | TSV → CSV |
+| `Pancho: CSV to Markdown table` | CSV → Markdown table |
+| `Pancho: Markdown table to CSV` | Markdown table → CSV |
 
 #### Encoding
 | Command | Description |
@@ -152,6 +177,12 @@
 | `Pancho: Keep only lines containing...` | Keep lines by content |
 | `Pancho: Highlight matches` | Highlight matches |
 | `Pancho: Count matches` | Count occurrences |
+| `Pancho: Transpose characters` | Swap last two chars |
+| `Pancho: Transpose words` | Swap last two words |
+| `Pancho: Transpose lines` | Swap last two lines |
+| `Pancho: Align by =` | Align by equals |
+| `Pancho: Align by :` | Align by colon |
+| `Pancho: Align by character...` | Align by custom char |
 
 #### Escape
 | Command | Description |
@@ -163,6 +194,24 @@
 | `Pancho: Escape for regex` | Escape for regex |
 | `Pancho: Escape for HTML` | Escape for HTML |
 | `Pancho: Unescape from HTML` | Unescape from HTML |
+
+#### Search
+| Command | Description |
+|---------|-------------|
+| `Pancho: Search in workspace files...` | Search across all files |
+| `Pancho: Replace in workspace files...` | Replace across all files |
+
+#### Developer Tools
+| Command | Description |
+|---------|-------------|
+| `Pancho: Decode JWT` | Decode JWT token |
+| `Pancho: Timestamp to ISO` | Unix timestamp → ISO |
+| `Pancho: ISO to timestamp` | ISO → Unix timestamp |
+| `Pancho: Insert current timestamp` | Insert current timestamp |
+| `Pancho: AES encrypt...` | AES-256-CBC encrypt |
+| `Pancho: AES decrypt...` | AES-256-CBC decrypt |
+| `Pancho: Color info` | Show HEX + RGB + HSL |
+| `Pancho: Regex tester...` | Test regex with groups |
 
 ### Keyboard shortcuts
 
@@ -200,7 +249,7 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 
 ### Características
 
-- **80+ comandos** accesibles desde el menú contextual
+- **124 comandos** accesibles desde el menú contextual
 - **Contadores en barra de estado** (líneas, palabras, caracteres)
 - **Atajos de teclado** para operaciones frecuentes
 - **Configuración** de tabulación, EOL y más
@@ -221,14 +270,23 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | `Pancho: Limpiar saltos de línea` | Normaliza saltos de línea |
 | `Pancho: Recortar líneas` | Elimina espacios al inicio/final |
 | `Pancho: Convertir saltos de línea a espacios` | Convierte saltos a espacios |
+| `Pancho: Ajustar texto...` | Ajusta a ancho de columna |
+| `Pancho: Desajustar texto` | Quita saltos de línea |
 
 #### Líneas
 | Comando | Descripción |
 |---------|-------------|
-| `Pancho: Eliminar líneas duplicadas` | Quita duplicados |
+| `Pancho: Eliminar líneas duplicadas` | Quita todos los duplicados |
+| `Pancho: Eliminar líneas duplicadas consecutivas` | Quita solo adyacentes |
 | `Pancho: Ordenar A-Z` | Ordena ascendentemente |
 | `Pancho: Ordenar Z-A` | Ordena descendentemente |
+| `Pancho: Ordenar natural` | Orden natural (`file2` < `file10`) |
+| `Pancho: Ordenar natural descendente` | Orden natural inverso |
+| `Pancho: Ordenar por longitud` | Más cortas primero |
+| `Pancho: Ordenar por longitud descendente` | Más largas primero |
+| `Pancho: Ordenar numérico` | Numérico ascendente |
 | `Pancho: Revertir líneas` | Invierte el orden |
+| `Pancho: Aleatorizar líneas` | Mezcla aleatoriamente |
 | `Pancho: Unir líneas` | Combina líneas en una |
 | `Pancho: Eliminar líneas vacías` | Quita líneas en blanco |
 
@@ -238,6 +296,14 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | `Pancho: Convertir a MAYÚSCULAS` | TODO EN MAYÚSCULAS |
 | `Pancho: Convertir a minúsculas` | todo en minúsculas |
 | `Pancho: Convertir a Título` | Cada Palabra Capitalizada |
+| `Pancho: Convertir a sentence case` | Sentence case |
+| `Pancho: Invertir mayúsculas/minúsculas` | Intercambia may/min |
+| `Pancho: Mayúsculas aleatorias` | May/min aleatorio |
+| `Pancho: Convertir a camelCase` | camelCase |
+| `Pancho: Convertir a PascalCase` | PascalCase |
+| `Pancho: Convertir a snake_case` | snake_case |
+| `Pancho: Convertir a kebab-case` | kebab-case |
+| `Pancho: Convertir a CONSTANT_CASE` | CONSTANT_CASE |
 
 #### Tabulaciones
 | Comando | Descripción |
@@ -265,10 +331,18 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | `Pancho: Quitar números de línea` | Elimina números de línea |
 | `Pancho: Generar slug URL` | Genera slug para URL |
 | `Pancho: Revertir palabras` | Invierte orden de palabras |
-| `Pancho: Aleatorizar líneas` | Mezcla líneas aleatoriamente |
+| `Pancho: Aleatorizar líneas` | Mezcla aleatoriamente |
 | `Pancho: Pegar sin salto de línea` | Pega sin saltos |
 | `Pancho: Copiar a múltiples líneas` | Copia a múltiples líneas |
 | `Pancho: Formatear como CSV` | Formatea como CSV |
+| `Pancho: Quitar acentos y diacríticos` | Quita acentos |
+| `Pancho: Quitar etiquetas HTML` | Quita etiquetas HTML |
+| `Pancho: CSV a JSON` | CSV → JSON |
+| `Pancho: JSON a CSV` | JSON → CSV |
+| `Pancho: CSV a TSV` | CSV → TSV |
+| `Pancho: TSV a CSV` | TSV → CSV |
+| `Pancho: CSV a tabla Markdown` | CSV → tabla Markdown |
+| `Pancho: Tabla Markdown a CSV` | Tabla Markdown → CSV |
 
 #### Codificación
 | Comando | Descripción |
@@ -337,6 +411,12 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | `Pancho: Mantener solo líneas con...` | Mantiene líneas por contenido |
 | `Pancho: Resaltar coincidencias` | Resalta coincidencias |
 | `Pancho: Contar coincidencias` | Cuenta ocurrencias |
+| `Pancho: Transponer caracteres` | Intercambia últimos 2 chars |
+| `Pancho: Transponer palabras` | Intercambia últimas 2 palabras |
+| `Pancho: Transponer líneas` | Intercambia últimas 2 líneas |
+| `Pancho: Alinear por =` | Alinea por igual |
+| `Pancho: Alinear por :` | Alinea por dos puntos |
+| `Pancho: Alinear por carácter...` | Alinea por carácter custom |
 
 #### Escapar
 | Comando | Descripción |
@@ -348,6 +428,24 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | `Pancho: Escapar para Regex` | Escapa caracteres regex |
 | `Pancho: Escapar para HTML` | Escapa caracteres HTML |
 | `Pancho: Desescapar de HTML` | Desescapa de HTML |
+
+#### Buscar
+| Comando | Descripción |
+|---------|-------------|
+| `Pancho: Buscar en archivos del workspace...` | Busca en todos los archivos |
+| `Pancho: Reemplazar en archivos del workspace...` | Reemplaza en todos los archivos |
+
+#### Herramientas de desarrollo
+| Comando | Descripción |
+|---------|-------------|
+| `Pancho: Decodificar JWT` | Decodifica token JWT |
+| `Pancho: Timestamp a ISO` | Timestamp Unix → ISO |
+| `Pancho: ISO a timestamp` | ISO → Timestamp Unix |
+| `Pancho: Insertar timestamp actual` | Inserta timestamp actual |
+| `Pancho: Cifrar con AES...` | Cifra AES-256-CBC |
+| `Pancho: Descifrar con AES...` | Descifra AES-256-CBC |
+| `Pancho: Información de color` | Muestra HEX + RGB + HSL |
+| `Pancho: Probador de regex...` | Prueba regex con grupos |
 
 ### Atajos de teclado
 
