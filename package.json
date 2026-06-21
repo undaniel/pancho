@@ -1,9 +1,9 @@
 {
-  "name": "pancho",
-  "displayName": "Pancho",
+  "name": "pancho-plus-plus",
+  "displayName": "Pancho++",
   "description": "Limpia y formatear texto como Notepad++",
   "version": "1.0.0",
-  "publisher": "pancho",
+  "publisher": "undaniels",
   "main": "./dist/extension.js",
   "activationEvents": [
     "onStartupFinished"
