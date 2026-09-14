@@ -9,7 +9,8 @@ export function formatSQL(text: string): string {
 
     formatted = formatted
         .replace(/,\s*/g, ',\n  ')
-        .replace(/\s+/g, ' ')
+        .replace(/[^\S\n]+/g, ' ')
+        .replace(/ *\n */g, '\n')
         .trim();
 
     return formatted.replace(/^\n/, '');

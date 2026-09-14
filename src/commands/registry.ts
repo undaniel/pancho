@@ -132,6 +132,32 @@ export const Commands = {
     // Bloque E: búsqueda avanzada
     FIND_IN_FILES: 'pancho.findInFiles',
     REPLACE_IN_FILES: 'pancho.replaceInFiles',
+
+    // Bloque F: UX
+    SHOW_MENU: 'pancho.showMenu',
+    REPEAT_LAST: 'pancho.repeatLast',
+
+    // Bloque G: columnas
+    COLUMN_INSERT: 'pancho.columnInsert',
+    COLUMN_DELETE: 'pancho.columnDelete',
+    COLUMN_COPY: 'pancho.columnCopy',
+    COLUMN_PASTE: 'pancho.columnPaste',
+
+    // Bloque H: macros
+    MACRO_START: 'pancho.macroStart',
+    MACRO_STOP: 'pancho.macroStop',
+    MACRO_PLAY: 'pancho.macroPlay',
+    MACRO_SAVE: 'pancho.macroSave',
+    MACRO_LOAD: 'pancho.macroLoad',
+    MACRO_LIST: 'pancho.macroList',
+
+    // Bloque I: codificación
+    ENCODING_INFO: 'pancho.encodingInfo',
+    CHANGE_ENCODING: 'pancho.changeEncoding',
+
+    // Bloque J: filtros
+    FILTER_LINES_BY_REGEX: 'pancho.filterLinesByRegex',
+    REMOVE_LINES_BY_REGEX: 'pancho.removeLinesByRegex',
 } as const;
 
 export type CommandName = typeof Commands[keyof typeof Commands];

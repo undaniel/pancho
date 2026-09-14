@@ -27,16 +27,24 @@ export function sortNumeric(text: string): string {
     }).join('\n');
 }
 
+function tokenize(value: string): (string | number)[] {
+    const tokens: (string | number)[] = [];
+    value.replace(/(\d+)|(\D+)/g, (_, digits, text) => {
+        tokens.push(digits ? parseInt(digits, 10) : text);
+        return '';
+    });
+    return tokens;
+}
+
 function naturalCompare(a: string, b: string): number {
-    const ax: (string | number)[] = [];
-    const bx: (string | number)[] = [];
-    a.replace(/(\d+)|(\D+)/g, (_, $1, $2) => { ax.push($1 ? parseInt($1, 10) : $2); return ''; });
-    b.replace(/(\d+)|(\D+)/g, (_, $1, $2) => { bx.push($1 ? parseInt($1, 10) : $2); return ''; });
-    while (ax.length && bx.length) {
-        const an = ax.shift()!;
-        const bn = bx.shift()!;
-        const nn = (typeof an === 'number' ? 1 : 0) - (typeof bn === 'number' ? 1 : 0);
-        if (nn) return nn;
+    const ax = tokenize(a);
+    const bx = tokenize(b);
+    const length = Math.min(ax.length, bx.length);
+    for (let i = 0; i < length; i++) {
+        const an = ax[i];
+        const bn = bx[i];
+        const typeDiff = (typeof an === 'number' ? 1 : 0) - (typeof bn === 'number' ? 1 : 0);
+        if (typeDiff) return typeDiff;
         if (an < bn) return -1;
         if (an > bn) return 1;
     }

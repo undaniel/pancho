@@ -1,52 +1,58 @@
 import * as vscode from 'vscode';
 import { CommandName } from './registry';
-import { getSelection, replaceSelection, replaceDocumentText, insertAtCursor, getTabSize, getDocumentText } from '../utils/editor';
+import {
+    applyEdits,
+    replaceDocumentText,
+    insertAtCursors,
+    getTabSize,
+    isFileWithinLimit,
+    formatFileTooLargeMessage,
+    TextEdit,
+} from '../utils/editor';
 import { runWithProgress } from '../utils/progress';
+import { planSelectionEdits, applyPlannedEdits, PlannedEdit, SelectionRange } from '../core/planEdits';
+import { recordLastCommand } from '../utils/history';
+import { confirmWithPreview, isPreviewEnabled } from '../utils/preview';
+import { DESTRUCTIVE_COMMANDS } from './destructive';
+import { macroRecorder } from '../macro/recorder';
 
-export type TransformFn = (text: string, tabSize: number) => string | { result: string; error?: string; warning?: string };
-export type InsertFn = () => string | { result: string; error?: string };
-export type InfoFn = () => string;
-export type LineTransformFn = (text: string, currentLineIndex: number, tabSize: number) => string | { result: string; error?: string; warning?: string };
+function recordCommandAction(context: vscode.ExtensionContext, command: CommandName): void {
+    void recordLastCommand(context, command);
+    macroRecorder.record({ type: 'command', command });
+}
+
+export type TransformOutput = string | { result: string; error?: string; warning?: string };
+export type TransformFn = (text: string, tabSize: number) => TransformOutput | Promise<TransformOutput>;
+export type InsertFn = () => TransformOutput | Promise<TransformOutput>;
+export type InfoFn = () => string | Promise<string>;
+export type LineTransformFn = (text: string, lineIndices: number[], tabSize: number) => TransformOutput | Promise<TransformOutput>;
+export type DocumentTransformFn = (documentText: string, pattern: string, tabSize: number) => TransformOutput | Promise<TransformOutput>;
 
 interface TextCommandOptions {
     command: CommandName;
     transform: TransformFn;
-    insert?: never;
-    info?: never;
     needsProgress?: boolean;
 }
 
 interface LineCommandOptions {
     command: CommandName;
     transform: LineTransformFn;
-    insert?: never;
-    info?: never;
     needsProgress?: boolean;
 }
 
 interface InsertCommandOptions {
     command: CommandName;
-    transform?: never;
     insert: InsertFn;
-    info?: never;
 }
 
 interface InfoCommandOptions {
     command: CommandName;
-    transform?: never;
-    insert?: never;
     info: InfoFn;
 }
 
-type CommandOptions = TextCommandOptions | InsertCommandOptions | InfoCommandOptions;
-
-function getText(): string | undefined {
-    return getSelection();
-}
-
-function getTextOrDocument(): string {
-    const selection = getSelection();
-    return selection !== undefined && selection.length > 0 ? selection : getDocumentText();
+interface DocumentCommandOptions {
+    command: CommandName;
+    transform: DocumentTransformFn;
 }
 
 function processResult<T>(result: T | { result: T; error?: string; warning?: string }): { value: T; error?: string; warning?: string } {
@@ -57,77 +63,131 @@ function processResult<T>(result: T | { result: T; error?: string; warning?: str
     return { value: result as T };
 }
 
-function getMaxFileSize(): number {
-    const config = vscode.workspace.getConfiguration('pancho');
-    return config.get<number>('maxFileSizeKB', 5120) * 1024;
+function reportProcessed(processed: { error?: string; warning?: string }): void {
+    if (processed.error) {
+        vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', processed.error));
+    } else if (processed.warning) {
+        vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', processed.warning));
+    }
 }
 
 function shouldShowProgress(textLength: number): boolean {
     return textLength > 100000;
 }
 
+function noopToken(): vscode.CancellationToken {
+    return {
+        isCancellationRequested: false,
+        onCancellationRequested: () => ({ dispose: () => {} }),
+    };
+}
+
+const noopProgress: vscode.Progress<{ message?: string; increment?: number }> = { report: () => {} };
+
+async function runOperation(
+    command: CommandName,
+    inputLength: number,
+    needsProgress: boolean,
+    operation: (progress: vscode.Progress<{ message?: string; increment?: number }>, token: vscode.CancellationToken) => Promise<void>
+): Promise<void> {
+    if (needsProgress || shouldShowProgress(inputLength)) {
+        await runWithProgress(vscode.l10n.t('Running {0}...', command), operation, true);
+    } else {
+        await operation(noopProgress, noopToken());
+    }
+}
+
+function toVscodeEdits(document: vscode.TextDocument, edits: PlannedEdit[]): TextEdit[] {
+    return edits.map(edit => ({
+        range: new vscode.Range(document.positionAt(edit.start), document.positionAt(edit.end)),
+        text: edit.text,
+    }));
+}
+
+function selectionRanges(editor: vscode.TextEditor): SelectionRange[] {
+    return editor.selections.map(selection => ({
+        start: editor.document.offsetAt(selection.start),
+        end: editor.document.offsetAt(selection.end),
+    }));
+}
+
+function touchedLineIndices(editor: vscode.TextEditor): number[] {
+    const lines = new Set<number>();
+    for (const selection of editor.selections) {
+        for (let line = selection.start.line; line <= selection.end.line; line++) {
+            lines.add(line);
+        }
+    }
+    return Array.from(lines).sort((a, b) => a - b);
+}
+
 export function registerTextCommand(context: vscode.ExtensionContext, options: TextCommandOptions): void {
     const { command, transform, needsProgress = false } = options;
     context.subscriptions.push(
-        vscode.commands.registerCommand(command, async (args?: { pattern?: string }) => {
+        vscode.commands.registerCommand(command, async () => {
             try {
                 const editor = vscode.window.activeTextEditor;
                 if (!editor) {
                     vscode.window.showWarningMessage(vscode.l10n.t('Pancho: No active editor'));
                     return;
                 }
+                recordCommandAction(context, command);
 
-                const fileSize = new TextEncoder().encode(editor.document.getText()).length;
-                const maxSize = getMaxFileSize();
-                if (maxSize > 0 && fileSize > maxSize) {
-                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: File too large ({0}KB). Max: {1}KB', Math.round(fileSize / 1024), Math.round(maxSize / 1024)));
+                const fullText = editor.document.getText();
+                if (!isFileWithinLimit(fullText)) {
+                    vscode.window.showWarningMessage(formatFileTooLargeMessage(fullText));
                     return;
                 }
 
                 const tabSize = getTabSize();
-                const selection = getText();
-                const hasSelection = selection !== undefined && selection.length > 0;
-                let text = hasSelection ? selection : getDocumentText();
-                let value: string;
+                const ranges = selectionRanges(editor);
+                const wholeDocument = editor.selections.length === 1 && editor.selections[0].isEmpty;
+                const inputLength = wholeDocument
+                    ? fullText.length
+                    : ranges.reduce((max, range) => Math.max(max, range.end - range.start), 0);
+
+                let value: string | undefined;
+                let edits: PlannedEdit[] | undefined;
                 let error: string | undefined;
                 let warning: string | undefined;
+                let cancelled = false;
 
-                const operation = async (progress: vscode.Progress<{ message?: string; increment?: number }>, token: vscode.CancellationToken) => {
+                await runOperation(command, inputLength, needsProgress, async (_progress, token) => {
                     if (token.isCancellationRequested) {
+                        cancelled = true;
                         return;
                     }
-
-                    const result = transform(text, tabSize);
-                    const processed = processResult(result);
-                    value = processed.value;
-                    error = processed.error;
-                    warning = processed.warning;
-
-                    if (token.isCancellationRequested) {
-                        return;
+                    if (wholeDocument) {
+                        const processed = processResult(await transform(fullText, tabSize));
+                        value = processed.value;
+                        error = processed.error;
+                        warning = processed.warning;
+                    } else {
+                        const plan = await planSelectionEdits(fullText, ranges, text => transform(text, tabSize));
+                        if (plan.error) {
+                            error = plan.error;
+                            return;
+                        }
+                        warning = plan.warning;
+                        edits = plan.edits;
                     }
-                };
+                    if (token.isCancellationRequested) cancelled = true;
+                });
 
-                if (needsProgress || shouldShowProgress(text.length)) {
-                    await runWithProgress(
-                        vscode.l10n.t('Running {0}...', command),
-                        operation,
-                        true
-                    );
-                } else {
-                    const noopProgress: vscode.Progress<{ message?: string; increment?: number }> = { report: () => {} };
-                    await operation(noopProgress, { isCancellationRequested: false, onCancellationRequested: () => ({ dispose: () => {} }) });
+                if (cancelled) return;
+                reportProcessed({ error, warning });
+                if (error) return;
+                if (wholeDocument && value === undefined) return;
+
+                if (DESTRUCTIVE_COMMANDS.has(command) && isPreviewEnabled()) {
+                    const modified = wholeDocument ? value! : applyPlannedEdits(fullText, edits ?? []);
+                    if (!(await confirmWithPreview(fullText, modified, command))) return;
                 }
 
-                if (warning) {
-                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', warning));
-                } else if (error) {
-                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', error));
-                }
-                if (hasSelection) {
-                    replaceSelection(value!);
-                } else {
-                    replaceDocumentText(() => value!);
+                if (wholeDocument) {
+                    await replaceDocumentText(() => value!);
+                } else if (edits) {
+                    await applyEdits(editor, toVscodeEdits(editor.document, edits));
                 }
             } catch (err) {
                 console.error('[Pancho] Error:', err);
@@ -148,54 +208,34 @@ export function registerLineCommand(context: vscode.ExtensionContext, options: L
                     return;
                 }
 
-                const fileSize = new TextEncoder().encode(editor.document.getText()).length;
-                const maxSize = getMaxFileSize();
-                if (maxSize > 0 && fileSize > maxSize) {
-                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: File too large ({0}KB). Max: {1}KB', Math.round(fileSize / 1024), Math.round(maxSize / 1024)));
+                const fullText = editor.document.getText();
+                if (!isFileWithinLimit(fullText)) {
+                    vscode.window.showWarningMessage(formatFileTooLargeMessage(fullText));
                     return;
                 }
 
+                recordCommandAction(context, command);
+
                 const tabSize = getTabSize();
-                const selection = editor.selection;
-                const currentLineIndex = selection.active.line;
-                const fullText = editor.document.getText();
-                let value: string;
+                const lineIndices = touchedLineIndices(editor);
+                let value: string | undefined;
                 let error: string | undefined;
                 let warning: string | undefined;
 
-                const operation = async (progress: vscode.Progress<{ message?: string; increment?: number }>, token: vscode.CancellationToken) => {
-                    if (token.isCancellationRequested) {
-                        return;
-                    }
-
-                    const result = transform(fullText, currentLineIndex, tabSize);
-                    const processed = processResult(result);
+                await runOperation(command, fullText.length, needsProgress, async (_progress, token) => {
+                    if (token.isCancellationRequested) return;
+                    const processed = processResult(await transform(fullText, lineIndices, tabSize));
                     value = processed.value;
                     error = processed.error;
                     warning = processed.warning;
+                });
 
-                    if (token.isCancellationRequested) {
-                        return;
-                    }
-                };
-
-                if (needsProgress || shouldShowProgress(fullText.length)) {
-                    await runWithProgress(
-                        vscode.l10n.t('Running {0}...', command),
-                        operation,
-                        true
-                    );
-                } else {
-                    const noopProgress: vscode.Progress<{ message?: string; increment?: number }> = { report: () => {} };
-                    await operation(noopProgress, { isCancellationRequested: false, onCancellationRequested: () => ({ dispose: () => {} }) });
+                reportProcessed({ error, warning });
+                if (error || value === undefined) return;
+                if (DESTRUCTIVE_COMMANDS.has(command) && isPreviewEnabled()) {
+                    if (!(await confirmWithPreview(fullText, value, command))) return;
                 }
-
-                if (warning) {
-                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', warning));
-                } else if (error) {
-                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', error));
-                }
-                replaceDocumentText(() => value!);
+                await replaceDocumentText(() => value!);
             } catch (err) {
                 console.error('[Pancho] Error:', err);
                 vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
@@ -207,16 +247,19 @@ export function registerLineCommand(context: vscode.ExtensionContext, options: L
 export function registerInsertCommand(context: vscode.ExtensionContext, options: InsertCommandOptions): void {
     const { command, insert } = options;
     context.subscriptions.push(
-        vscode.commands.registerCommand(command, () => {
+        vscode.commands.registerCommand(command, async () => {
             try {
-                const result = insert();
-                const processed = processResult(result);
-                if (processed.warning) {
-                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', processed.warning));
-                } else if (processed.error) {
-                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', processed.error));
+                void recordLastCommand(context, command);
+                const processed = processResult(await insert());
+                if (processed.error) {
+                    reportProcessed({ error: processed.error });
+                    return;
                 }
-                insertAtCursor(processed.value);
+                if (processed.warning) {
+                    reportProcessed({ warning: processed.warning });
+                }
+                macroRecorder.record({ type: 'insert', text: processed.value });
+                await insertAtCursors(processed.value);
             } catch (err) {
                 console.error('[Pancho] Error:', err);
                 vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
@@ -228,9 +271,46 @@ export function registerInsertCommand(context: vscode.ExtensionContext, options:
 export function registerInfoCommand(context: vscode.ExtensionContext, options: InfoCommandOptions): void {
     const { command, info } = options;
     context.subscriptions.push(
-        vscode.commands.registerCommand(command, () => {
+        vscode.commands.registerCommand(command, async () => {
             try {
-                vscode.window.showInformationMessage(info());
+                vscode.window.showInformationMessage(await info());
+            } catch (err) {
+                console.error('[Pancho] Error:', err);
+                vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
+            }
+        })
+    );
+}
+
+export function registerDocumentCommand(context: vscode.ExtensionContext, options: DocumentCommandOptions): void {
+    const { command, transform } = options;
+    context.subscriptions.push(
+        vscode.commands.registerCommand(command, async () => {
+            try {
+                const editor = vscode.window.activeTextEditor;
+                if (!editor) {
+                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: No active editor'));
+                    return;
+                }
+                recordCommandAction(context, command);
+
+                const fullText = editor.document.getText();
+                if (!isFileWithinLimit(fullText)) {
+                    vscode.window.showWarningMessage(formatFileTooLargeMessage(fullText));
+                    return;
+                }
+
+                const pattern = editor.document.getText(editor.selection);
+                if (!pattern) {
+                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: Select text to use as pattern'));
+                    return;
+                }
+
+                const processed = processResult(await transform(fullText, pattern, getTabSize()));
+                reportProcessed(processed);
+                if (processed.error) return;
+                if (isPreviewEnabled() && !(await confirmWithPreview(fullText, processed.value, command))) return;
+                await replaceDocumentText(() => processed.value);
             } catch (err) {
                 console.error('[Pancho] Error:', err);
                 vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
@@ -242,7 +322,7 @@ export function registerInfoCommand(context: vscode.ExtensionContext, options: I
 export interface PromptCommandOptions {
     command: CommandName;
     prompts: { label: string; placeholder: string; password?: boolean }[];
-    transform: (text: string, ...answers: string[]) => string | { result: string; error?: string; warning?: string };
+    transform: (text: string, ...answers: string[]) => TransformOutput | Promise<TransformOutput>;
 }
 
 export function registerPromptCommand(context: vscode.ExtensionContext, options: PromptCommandOptions): void {
@@ -255,6 +335,7 @@ export function registerPromptCommand(context: vscode.ExtensionContext, options:
                     vscode.window.showWarningMessage(vscode.l10n.t('Pancho: No active editor'));
                     return;
                 }
+                recordCommandAction(context, command);
 
                 const answers: string[] = [];
                 for (const p of prompts) {
@@ -267,27 +348,45 @@ export function registerPromptCommand(context: vscode.ExtensionContext, options:
                     answers.push(value);
                 }
 
-                const selection = editor.selection;
-                const hasSelection = !selection.isEmpty;
-                const text = hasSelection
-                    ? editor.document.getText(selection)
-                    : editor.document.getText();
-
-                const result = transform(text, ...answers);
-                const processed = processResult(result);
-
-                if (processed.error) {
-                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', processed.error));
+                const fullText = editor.document.getText();
+                if (!isFileWithinLimit(fullText)) {
+                    vscode.window.showWarningMessage(formatFileTooLargeMessage(fullText));
                     return;
                 }
 
-                if (hasSelection) {
-                    editor.edit(eb => eb.replace(selection, processed.value));
+                const ranges = selectionRanges(editor);
+                const wholeDocument = editor.selections.length === 1 && editor.selections[0].isEmpty;
+
+                let value: string | undefined;
+                let edits: PlannedEdit[] | undefined;
+                let error: string | undefined;
+                let warning: string | undefined;
+
+                if (wholeDocument) {
+                    const processed = processResult(await transform(fullText, ...answers));
+                    value = processed.value;
+                    error = processed.error;
+                    warning = processed.warning;
                 } else {
-                    const firstLine = editor.document.lineAt(0);
-                    const lastLine = editor.document.lineAt(editor.document.lineCount - 1);
-                    const fullRange = new vscode.Range(firstLine.range.start, lastLine.range.end);
-                    editor.edit(eb => eb.replace(fullRange, processed.value));
+                    const plan = await planSelectionEdits(fullText, ranges, text => transform(text, ...answers));
+                    if (plan.error) error = plan.error;
+                    warning = plan.warning;
+                    edits = plan.edits;
+                }
+
+                if (error) {
+                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', error));
+                    return;
+                }
+                if (warning) {
+                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', warning));
+                }
+
+                if (wholeDocument) {
+                    if (value === undefined) return;
+                    await replaceDocumentText(() => value!);
+                } else if (edits) {
+                    await applyEdits(editor, toVscodeEdits(editor.document, edits));
                 }
             } catch (err) {
                 console.error('[Pancho] Error:', err);

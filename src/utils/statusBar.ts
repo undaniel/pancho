@@ -5,6 +5,16 @@ let statusBarItem: vscode.StatusBarItem | undefined;
 let countersItem: vscode.StatusBarItem | undefined;
 let updateTimer: NodeJS.Timeout | undefined;
 
+interface DocumentCounts {
+    uri: string;
+    version: number;
+    lines: number;
+    words: number;
+    chars: number;
+}
+
+let documentCountsCache: DocumentCounts | undefined;
+
 const STATUSBAR_ICON = '$(wand)';
 const MAX_COUNTER_LENGTH = 500000;
 
@@ -40,6 +50,12 @@ function scheduleUpdate(): void {
     updateTimer = setTimeout(() => updateCounters(), 150);
 }
 
+function renderCounts(lines: number, words: number, chars: number): void {
+    if (!countersItem) return;
+    countersItem.text = `L:${lines} P:${words} C:${chars}`;
+    countersItem.tooltip = vscode.l10n.t('Pancho counters');
+}
+
 export function updateCounters(): void {
     if (!countersItem) return;
 
@@ -50,20 +66,39 @@ export function updateCounters(): void {
     }
 
     const selectionText = editor.document.getText(editor.selection);
-    const text = selectionText.length > 0 ? selectionText : editor.document.getText();
+    if (selectionText.length > 0) {
+        if (selectionText.length > MAX_COUNTER_LENGTH) {
+            countersItem.text = 'L:? P:? C:?';
+            countersItem.tooltip = vscode.l10n.t('Document too large to count');
+            return;
+        }
+        renderCounts(countLines(selectionText), countWords(selectionText), countCharacters(selectionText));
+        return;
+    }
 
+    const uri = editor.document.uri.toString();
+    const version = editor.document.version;
+    if (documentCountsCache && documentCountsCache.uri === uri && documentCountsCache.version === version) {
+        renderCounts(documentCountsCache.lines, documentCountsCache.words, documentCountsCache.chars);
+        return;
+    }
+
+    const text = editor.document.getText();
     if (text.length > MAX_COUNTER_LENGTH) {
         countersItem.text = 'L:? P:? C:?';
         countersItem.tooltip = vscode.l10n.t('Document too large to count');
         return;
     }
 
-    const words = countWords(text);
-    const chars = countCharacters(text);
-    const lines = countLines(text);
-
-    countersItem.text = `L:${lines} P:${words} C:${chars}`;
-    countersItem.tooltip = vscode.l10n.t('Pancho counters');
+    const counts: DocumentCounts = {
+        uri,
+        version,
+        lines: countLines(text),
+        words: countWords(text),
+        chars: countCharacters(text),
+    };
+    documentCountsCache = counts;
+    renderCounts(counts.lines, counts.words, counts.chars);
 }
 
 export function updateStatusBar(message: string): void {
@@ -75,14 +110,6 @@ export function updateStatusBar(message: string): void {
             }
         }, 3000);
     }
-}
-
-export function showError(message: string): void {
-    vscode.window.showErrorMessage(`Pancho: ${message}`);
-}
-
-export function showWarning(message: string): void {
-    vscode.window.showWarningMessage(`Pancho: ${message}`);
 }
 
 export function showInfo(message: string): void {

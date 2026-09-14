@@ -1,11 +1,24 @@
 import * as vscode from 'vscode';
 import { registerAllCommands } from './commands';
+import { registerMenuCommands } from './commands/menu';
+import { registerColumnCommands } from './commands/column';
+import { registerMacroCommands } from './commands/macro';
+import { registerEncodingCommands } from './commands/encoding';
+import { registerFilterCommands } from './commands/filter';
 import { initStatusBar, updateCounters, showInfo } from './utils/statusBar';
+import { disposeRegexWorker } from './utils/safeRegex';
+import { registerPreviewProvider } from './utils/preview';
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log('[Pancho] Extension activating...');
     initStatusBar(context);
     registerAllCommands(context);
+    registerMenuCommands(context);
+    registerColumnCommands(context);
+    registerMacroCommands(context);
+    registerEncodingCommands(context);
+    registerFilterCommands(context);
+    registerPreviewProvider(context);
 
     context.subscriptions.push(
             vscode.commands.registerCommand('pancho.showStatusInfo', () => {
@@ -21,7 +34,11 @@ export function activate(context: vscode.ExtensionContext): void {
         })
     );
 
+    context.subscriptions.push({ dispose: disposeRegexWorker });
+
     console.log('[Pancho] Extension activated successfully!');
 }
 
-export function deactivate(): void {}
+export function deactivate(): void {
+    disposeRegexWorker();
+}

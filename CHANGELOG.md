@@ -7,6 +7,79 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-09-14
+
+Major release focused on safety, multi-cursor support, UX and Notepad++-style power features.
+
+### Added
+
+- **Command hub:**
+  - `pancho.showMenu` — Quick Pick hub with all categories and commands (built from the manifest, showing shortcuts). Localized.
+
+- **Repeat last command:**
+  - `pancho.repeatLast` (keybinding `Ctrl+Shift+.` / `Cmd+Shift+.`), backed by workspace state.
+
+- **Diff preview for destructive commands:**
+  - `pancho.previewDestructive` (opt-in) opens a side-by-side diff before applying ~50 structural commands.
+  - `replaceInFiles` now performs a **dry-run** and confirms with the real count: *"Replace N matches in M files?"*.
+
+- **Multi-cursor & multi-selection support:**
+  - Text, prompt, insert and line commands now apply **per cursor/selection**; an empty cursor expands to its whole line. Overlapping ranges are merged and a single undo step is used.
+  - Insert commands insert at **every** cursor.
+
+- **Column mode:**
+  - `pancho.columnInsert` / `pancho.columnDelete` / `pancho.columnCopy` / `pancho.columnPaste` — operate on a column block (Alt+drag selections).
+
+- **Macros:**
+  - `pancho.macroStart` / `macroStop` / `macroPlay` / `macroSave` / `macroLoad` / `macroList` — record and replay Pancho commands and generated insertions; persists to global state.
+
+- **Encoding tools:**
+  - `pancho.encodingInfo` — detect BOM (UTF-8/UTF-16 LE/BE), UTF-8 validity and Latin-1 fallback.
+  - `pancho.changeEncoding` — change/reopen the file with another encoding (delegates to VS Code).
+
+- **Regex line filters:**
+  - `pancho.filterLinesByRegex` / `pancho.removeLinesByRegex` — keep/remove lines matching a regex (safe engine).
+
+- **Settings:** `pancho.regexTimeoutMs` (default `2000`), `pancho.previewDestructive` (default `false`).
+
+- **Security test** that fails the build if `eval`, `new Function`, `child_process` or network modules appear in `src/`.
+
+### Changed
+
+- **Total commands:** 124 → 139.
+- **AES:** encryption now uses **AES-256-GCM** with a random salt per message and PBKDF2-SHA256 (210,000 iterations). Legacy CBC data is still decryptable.
+- **Regex safety:** user patterns now run in an isolated **worker thread with a configurable timeout**, plus a catastrophic-backtracking pre-check, so a bad pattern can no longer freeze VS Code.
+- **Workspace trust:** `replaceInFiles` is disabled in untrusted workspaces; the extension declares `untrustedWorkspaces: limited`.
+- **Performance:** status bar counters are cached per document version (no full re-read when only moving the cursor); `naturalCompare` is now O(n log n); removed the `Math.max(...array)` spread.
+- **Cancellation:** find/replace in files honor the progress cancellation token.
+- **Editor defaults:** removed the global `configurationDefaults` that forced `tabSize: 4` / `insertSpaces` on every file.
+- **i18n:** date/time uses the VS Code display language (was hardcoded `es-ES`); counter messages and submenu labels are now localized.
+
+### Fixed
+
+- `spacesToTabs` no longer drops characters when indentation doesn't complete a tab stop.
+- `formatSQL` now preserves line breaks instead of collapsing everything to one line.
+- Insert commands no longer insert text when the transform returns an error.
+- Errors now take precedence over warnings; prompt warnings are surfaced.
+- `deleteLinesContaining` / `keepOnlyLinesContaining` / `highlightMatches` no longer re-read the selection as the input (the selection is the pattern; the whole document is the target, and an empty pattern is rejected).
+
+### Security
+
+- Isolated regex execution with timeout and complexity pre-validation.
+- Authenticated encryption (AES-256-GCM) with per-message random salt.
+- Hard caps on `loremIpsumWordCount` (100,000) and `randomStringLength` (10,000).
+- Workspace-trust gating for mass file replacement.
+- Privacy section in the README (no telemetry, no network access).
+
+### Removed
+
+- Dead code: orphan in-extension test runner (`src/test/suite.ts`), unused `src/transforms/spaces.ts`, and unused `statusBar` message helpers.
+
+### Testing
+
+- 260 unit tests (was 84); ~81% statement coverage of `src/transforms`.
+- Added tests for regex safety, AES-GCM (+ legacy), plan/column/macro/encoding cores, the command factory contracts, menu catalog and a privacy/security guard.
+
 ## [1.2.0] - 2026-06-21
 
 ### Added

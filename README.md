@@ -1,6 +1,6 @@
 # Pancho
 
-[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/undaniel/pancho)
+[![Version](https://img.shields.io/badge/version-1.3.0-blue.svg)](https://github.com/undaniel/pancho)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
 [![VSCode Engine](https://img.shields.io/badge/VSCode-%5E1.80.0-blue.svg)](https://code.visualstudio.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-%5E5.0.0-blue.svg)](https://www.typescriptlang.org/)
@@ -15,11 +15,26 @@
 
 ### Features
 
-- **124 commands** available from the context menu
+- **139 commands** available from the context menu
+- **Command hub** (`Pancho: Show command menu`) with categories and shortcuts
+- **Multi-cursor & multi-selection** aware: transforms apply per cursor/selection
+- **Repeat last command** (`Ctrl+Shift+.`)
+- **Diff preview** for destructive commands (opt-in) and a dry-run count before replacing in files
+- **Column mode**: insert / delete / copy / paste column blocks
+- **Macros**: record, replay, and save command sequences
+- **Encoding tools**: detect the current encoding and change/reopen with another one
+- **Safe regex engine** with timeout (no more frozen windows)
 - **Status bar counters** (lines, words, characters)
 - **Keyboard shortcuts** for frequent operations
 - **Settings** for tab size, EOL and more
 - **English & Spanish** UI (follows VS Code's display language)
+
+### Privacy & security
+
+- **No telemetry, no network access.** Pancho runs entirely locally and never sends your text anywhere.
+- **Safe regex engine.** User-provided regular expressions run in an isolated worker thread with a timeout, so a malicious or accidental catastrophic pattern cannot freeze VS Code.
+- **Authenticated encryption.** AES encryption uses AES-256-GCM with a random salt per message (legacy CBC data is still readable).
+- **Workspace trust aware.** Replace-in-files is disabled in untrusted workspaces.
 
 ### How to use
 
@@ -109,6 +124,8 @@
 | `Pancho: TSV to CSV` | TSV → CSV |
 | `Pancho: CSV to Markdown table` | CSV → Markdown table |
 | `Pancho: Markdown table to CSV` | Markdown table → CSV |
+| `Pancho: Keep lines matching regex...` | Keep only matching lines |
+| `Pancho: Remove lines matching regex...` | Remove matching lines |
 
 #### Encoding
 | Command | Description |
@@ -119,6 +136,8 @@
 | `Pancho: URL decode` | URL-decode |
 | `Pancho: HTML entities encode` | Escape HTML characters |
 | `Pancho: HTML entities decode` | Unescape HTML |
+| `Pancho: Show file encoding` | Detect the current file encoding |
+| `Pancho: Change file encoding...` | Change/reopen with another encoding |
 
 #### Formatting
 | Command | Description |
@@ -184,6 +203,24 @@
 | `Pancho: Align by :` | Align by colon |
 | `Pancho: Align by character...` | Align by custom char |
 
+#### Columns
+| Command | Description |
+|---------|-------------|
+| `Pancho: Column: insert text...` | Insert text at the column block |
+| `Pancho: Column: delete` | Delete the column block |
+| `Pancho: Column: copy` | Copy the column block |
+| `Pancho: Column: paste` | Paste into the column block |
+
+#### Macros
+| Command | Description |
+|---------|-------------|
+| `Pancho: Macro: start recording` | Start recording a macro |
+| `Pancho: Macro: stop recording` | Stop and keep the macro |
+| `Pancho: Macro: play` | Replay the last macro |
+| `Pancho: Macro: save...` | Save the last macro |
+| `Pancho: Macro: load...` | Load a saved macro |
+| `Pancho: Macro: list saved` | List saved macros |
+
 #### Escape
 | Command | Description |
 |---------|-------------|
@@ -199,7 +236,7 @@
 | Command | Description |
 |---------|-------------|
 | `Pancho: Search in workspace files...` | Search across all files |
-| `Pancho: Replace in workspace files...` | Replace across all files |
+| `Pancho: Replace in workspace files...` | Replace across all files (with dry-run count + confirmation) |
 
 #### Developer Tools
 | Command | Description |
@@ -208,10 +245,16 @@
 | `Pancho: Timestamp to ISO` | Unix timestamp → ISO |
 | `Pancho: ISO to timestamp` | ISO → Unix timestamp |
 | `Pancho: Insert current timestamp` | Insert current timestamp |
-| `Pancho: AES encrypt...` | AES-256-CBC encrypt |
-| `Pancho: AES decrypt...` | AES-256-CBC decrypt |
+| `Pancho: AES encrypt...` | AES-256-GCM encrypt |
+| `Pancho: AES decrypt...` | AES-256-GCM decrypt |
 | `Pancho: Color info` | Show HEX + RGB + HSL |
-| `Pancho: Regex tester...` | Test regex with groups |
+| `Pancho: Regex tester...` | Test regex with groups (safe, timeout) |
+
+#### Command hub
+| Command | Description |
+|---------|-------------|
+| `Pancho: Show command menu` | Quick Pick hub of all categories and commands |
+| `Pancho: Repeat last command` | Re-run the previous Pancho command |
 
 ### Keyboard shortcuts
 
@@ -225,6 +268,7 @@
 | `Ctrl+Shift+N` | `Cmd+Alt+N` | Count lines |
 | `Ctrl+Shift+S` | `Cmd+Alt+S` | Sort A-Z |
 | `Ctrl+Shift+D` | `Cmd+Alt+D` | Remove duplicates |
+| `Ctrl+Shift+.` | `Cmd+Shift+.` | Repeat last command |
 
 > Mac shortcuts use `Cmd+Alt+...` to avoid clashing with native VS Code shortcuts (`Cmd+Shift+W` closes the window, etc.).
 
@@ -238,6 +282,8 @@
 | `pancho.maxFileSizeKB` | `5120` | Max file size to process |
 | `pancho.loremIpsumWordCount` | `50` | Lorem Ipsum word count |
 | `pancho.randomStringLength` | `16` | Random string length |
+| `pancho.regexTimeoutMs` | `2000` | Max time (ms) a regex may run before aborting |
+| `pancho.previewDestructive` | `false` | Show a diff preview before destructive commands |
 
 ### Status bar counters
 
@@ -249,11 +295,26 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 
 ### Características
 
-- **124 comandos** accesibles desde el menú contextual
+- **139 comandos** accesibles desde el menú contextual
+- **Hub de comandos** (`Pancho: Mostrar menú de comandos`) con categorías y atajos
+- **Compatible con multi-cursor y multi-selección**: las transformaciones se aplican por cursor/selección
+- **Repetir último comando** (`Ctrl+Shift+.`)
+- **Vista previa (diff)** para comandos destructivos (opcional) y conteo antes de reemplazar en archivos
+- **Modo columna**: insertar / eliminar / copiar / pegar bloques de columna
+- **Macros**: grabar, reproducir y guardar secuencias de comandos
+- **Herramientas de codificación**: detectar la codificación actual y cambiarla/reabrir con otra
+- **Motor de regex seguro** con timeout (sin ventanas congeladas)
 - **Contadores en barra de estado** (líneas, palabras, caracteres)
 - **Atajos de teclado** para operaciones frecuentes
 - **Configuración** de tabulación, EOL y más
 - **Interfaz en inglés y español** (sigue el idioma de VS Code)
+
+### Privacidad y seguridad
+
+- **Sin telemetría ni acceso a red.** Pancho funciona completamente en local y nunca envía tu texto a ningún sitio.
+- **Motor de regex seguro.** Las expresiones regulares del usuario se ejecutan en un worker thread aislado con timeout, así un patrón catastrófico no puede congelar VS Code.
+- **Cifrado autenticado.** El cifrado AES usa AES-256-GCM con salt aleatorio por mensaje (los datos antiguos en CBC siguen siendo legibles).
+- **Consciente del workspace trust.** Reemplazar en archivos está deshabilitado en workspaces no confiables.
 
 ### Cómo usar
 
@@ -343,6 +404,8 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | `Pancho: TSV a CSV` | TSV → CSV |
 | `Pancho: CSV a tabla Markdown` | CSV → tabla Markdown |
 | `Pancho: Tabla Markdown a CSV` | Tabla Markdown → CSV |
+| `Pancho: Mantener líneas que coinciden con regex...` | Mantiene solo las líneas que coinciden |
+| `Pancho: Eliminar líneas que coinciden con regex...` | Elimina las líneas que coinciden |
 
 #### Codificación
 | Comando | Descripción |
@@ -353,6 +416,8 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | `Pancho: Decodificar URL` | Decodifica URLs |
 | `Pancho: Codificar HTML entities` | Escapa caracteres HTML |
 | `Pancho: Decodificar HTML entities` | Desescapa HTML |
+| `Pancho: Mostrar codificación del archivo` | Detecta la codificación actual |
+| `Pancho: Cambiar codificación del archivo...` | Cambia/reabre con otra codificación |
 
 #### Formateo
 | Comando | Descripción |
@@ -418,6 +483,24 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | `Pancho: Alinear por :` | Alinea por dos puntos |
 | `Pancho: Alinear por carácter...` | Alinea por carácter custom |
 
+#### Columnas
+| Comando | Descripción |
+|---------|-------------|
+| `Pancho: Columna: insertar texto...` | Inserta texto en el bloque de columna |
+| `Pancho: Columna: eliminar` | Elimina el bloque de columna |
+| `Pancho: Columna: copiar` | Copia el bloque de columna |
+| `Pancho: Columna: pegar` | Pega en el bloque de columna |
+
+#### Macros
+| Comando | Descripción |
+|---------|-------------|
+| `Pancho: Macro: empezar grabación` | Empieza a grabar una macro |
+| `Pancho: Macro: detener grabación` | Detiene y conserva la macro |
+| `Pancho: Macro: reproducir` | Reproduce la última macro |
+| `Pancho: Macro: guardar...` | Guarda la última macro |
+| `Pancho: Macro: cargar...` | Carga una macro guardada |
+| `Pancho: Macro: listar guardadas` | Lista las macros guardadas |
+
 #### Escapar
 | Comando | Descripción |
 |---------|-------------|
@@ -433,7 +516,7 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | Comando | Descripción |
 |---------|-------------|
 | `Pancho: Buscar en archivos del workspace...` | Busca en todos los archivos |
-| `Pancho: Reemplazar en archivos del workspace...` | Reemplaza en todos los archivos |
+| `Pancho: Reemplazar en archivos del workspace...` | Reemplaza en todos los archivos (con conteo previo y confirmación) |
 
 #### Herramientas de desarrollo
 | Comando | Descripción |
@@ -442,10 +525,16 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | `Pancho: Timestamp a ISO` | Timestamp Unix → ISO |
 | `Pancho: ISO a timestamp` | ISO → Timestamp Unix |
 | `Pancho: Insertar timestamp actual` | Inserta timestamp actual |
-| `Pancho: Cifrar con AES...` | Cifra AES-256-CBC |
-| `Pancho: Descifrar con AES...` | Descifra AES-256-CBC |
+| `Pancho: Cifrar con AES...` | Cifra AES-256-GCM |
+| `Pancho: Descifrar con AES...` | Descifra AES-256-GCM |
 | `Pancho: Información de color` | Muestra HEX + RGB + HSL |
-| `Pancho: Probador de regex...` | Prueba regex con grupos |
+| `Pancho: Probador de regex...` | Prueba regex con grupos (seguro, con timeout) |
+
+#### Hub de comandos
+| Comando | Descripción |
+|---------|-------------|
+| `Pancho: Mostrar menú de comandos` | Hub (Quick Pick) con todas las categorías y comandos |
+| `Pancho: Repetir último comando` | Reejecuta el comando anterior de Pancho |
 
 ### Atajos de teclado
 
@@ -459,6 +548,7 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | `Ctrl+Shift+N` | `Cmd+Alt+N` | Contar líneas |
 | `Ctrl+Shift+S` | `Cmd+Alt+S` | Ordenar A-Z |
 | `Ctrl+Shift+D` | `Cmd+Alt+D` | Eliminar duplicados |
+| `Ctrl+Shift+.` | `Cmd+Shift+.` | Repetir último comando |
 
 > Los atajos en Mac usan `Cmd+Alt+...` para evitar chocar con los nativos de VS Code (`Cmd+Shift+W` cierra ventana, etc.).
 
@@ -472,6 +562,8 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | `pancho.maxFileSizeKB` | `5120` | Tamaño máximo de archivo |
 | `pancho.loremIpsumWordCount` | `50` | Palabras en Lorem Ipsum |
 | `pancho.randomStringLength` | `16` | Longitud de string aleatorio |
+| `pancho.regexTimeoutMs` | `2000` | Tiempo máximo (ms) de una regex antes de abortar |
+| `pancho.previewDestructive` | `false` | Mostrar diff antes de comandos destructivos |
 
 ### Contadores en barra de estado
 

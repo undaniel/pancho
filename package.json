@@ -2,7 +2,7 @@
   "name": "pancho-plus-plus",
   "displayName": "%extension.displayName%",
   "description": "%extension.description%",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "publisher": "undaniels",
   "main": "./dist/extension.js",
   "l10n": "./l10n",
@@ -11,6 +11,13 @@
   ],
   "engines": {
     "vscode": "^1.80.0"
+  },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "%capabilities.untrustedWorkspaces.description%",
+      "restrictedConfigurations": []
+    }
   },
   "categories": [
     "Formatters",
@@ -78,13 +85,19 @@
           "type": "number",
           "default": 16,
           "description": "%setting.randomStringLength.description%"
+        },
+        "pancho.regexTimeoutMs": {
+          "type": "number",
+          "default": 2000,
+          "minimum": 50,
+          "maximum": 30000,
+          "description": "%setting.regexTimeoutMs.description%"
+        },
+        "pancho.previewDestructive": {
+          "type": "boolean",
+          "default": false,
+          "description": "%setting.previewDestructive.description%"
         }
-      }
-    },
-    "configurationDefaults": {
-      "editor": {
-        "tabSize": 4,
-        "insertSpaces": true
       }
     },
     "keybindings": [
@@ -158,6 +171,15 @@
         "when": "editorTextFocus",
         "accessibilityInformation": {
           "label": "%keybinding.removeDuplicateLines.label%"
+        }
+      },
+      {
+        "command": "pancho.repeatLast",
+        "key": "ctrl+shift+.",
+        "mac": "cmd+shift+.",
+        "when": "editorTextFocus",
+        "accessibilityInformation": {
+          "label": "%keybinding.repeatLast.label%"
         }
       }
     ],
@@ -719,6 +741,70 @@
       {
         "command": "pancho.replaceInFiles",
         "title": "%command.pancho.replaceInFiles.title%"
+      },
+      {
+        "command": "pancho.showMenu",
+        "title": "%command.pancho.showMenu.title%"
+      },
+      {
+        "command": "pancho.repeatLast",
+        "title": "%command.pancho.repeatLast.title%"
+      },
+      {
+        "command": "pancho.columnInsert",
+        "title": "%command.pancho.columnInsert.title%"
+      },
+      {
+        "command": "pancho.columnDelete",
+        "title": "%command.pancho.columnDelete.title%"
+      },
+      {
+        "command": "pancho.columnCopy",
+        "title": "%command.pancho.columnCopy.title%"
+      },
+      {
+        "command": "pancho.columnPaste",
+        "title": "%command.pancho.columnPaste.title%"
+      },
+      {
+        "command": "pancho.macroStart",
+        "title": "%command.pancho.macroStart.title%"
+      },
+      {
+        "command": "pancho.macroStop",
+        "title": "%command.pancho.macroStop.title%"
+      },
+      {
+        "command": "pancho.macroPlay",
+        "title": "%command.pancho.macroPlay.title%"
+      },
+      {
+        "command": "pancho.macroSave",
+        "title": "%command.pancho.macroSave.title%"
+      },
+      {
+        "command": "pancho.macroLoad",
+        "title": "%command.pancho.macroLoad.title%"
+      },
+      {
+        "command": "pancho.macroList",
+        "title": "%command.pancho.macroList.title%"
+      },
+      {
+        "command": "pancho.encodingInfo",
+        "title": "%command.pancho.encodingInfo.title%"
+      },
+      {
+        "command": "pancho.changeEncoding",
+        "title": "%command.pancho.changeEncoding.title%"
+      },
+      {
+        "command": "pancho.filterLinesByRegex",
+        "title": "%command.pancho.filterLinesByRegex.title%"
+      },
+      {
+        "command": "pancho.removeLinesByRegex",
+        "title": "%command.pancho.removeLinesByRegex.title%"
       }
     ],
     "menus": {
@@ -729,56 +815,62 @@
       ],
       "panchoMenu": [
         {
+          "command": "pancho.showMenu"
+        },
+        {
+          "command": "pancho.repeatLast"
+        },
+        {
           "submenu": "panchoEdicion",
-          "label": "Edición"
+          "label": "%submenu.panchoEdicion.label%"
         },
         {
           "submenu": "panchoLineas",
-          "label": "Líneas"
+          "label": "%submenu.panchoLineas.label%"
         },
         {
           "submenu": "panchoCaso",
-          "label": "Caso"
+          "label": "%submenu.panchoCaso.label%"
         },
         {
           "submenu": "panchoTabulaciones",
-          "label": "Tabulaciones"
+          "label": "%submenu.panchoTabulaciones.label%"
         },
         {
           "submenu": "panchoEOL",
-          "label": "Fin de línea"
+          "label": "%submenu.panchoEOL.label%"
         },
         {
           "submenu": "panchoTextoGeneral",
-          "label": "Texto general"
+          "label": "%submenu.panchoTextoGeneral.label%"
         },
         {
           "submenu": "panchoCodificacion",
-          "label": "Codificación"
+          "label": "%submenu.panchoCodificacion.label%"
         },
         {
           "submenu": "panchoFormateo",
-          "label": "Formateo"
+          "label": "%submenu.panchoFormateo.label%"
         },
         {
           "submenu": "panchoHashBinario",
-          "label": "Hash y binario"
+          "label": "%submenu.panchoHashBinario.label%"
         },
         {
           "submenu": "panchoInsertar",
-          "label": "Insertar"
+          "label": "%submenu.panchoInsertar.label%"
         },
         {
           "submenu": "panchoComentarios",
-          "label": "Comentar / Descomentar"
+          "label": "%submenu.panchoComentarios.label%"
         },
         {
           "submenu": "panchoDesarrolladores",
-          "label": "Desarrolladores"
+          "label": "%submenu.panchoDesarrolladores.label%"
         },
         {
           "submenu": "panchoEscapar",
-          "label": "Escapar"
+          "label": "%submenu.panchoEscapar.label%"
         },
         {
           "submenu": "panchoBuscar",
@@ -979,6 +1071,13 @@
         },
         {
           "command": "pancho.markdownTableToCSV"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.filterLinesByRegex"
+        },
+        {
+          "command": "pancho.removeLinesByRegex"
         }
       ],
       "panchoCodificacion": [
@@ -1001,6 +1100,13 @@
         },
         {
           "command": "pancho.htmlEntitiesDecode"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.encodingInfo"
+        },
+        {
+          "command": "pancho.changeEncoding"
         }
       ],
       "panchoFormateo": [
@@ -1157,6 +1263,38 @@
         },
         {
           "command": "pancho.alignByChar"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.columnInsert"
+        },
+        {
+          "command": "pancho.columnDelete"
+        },
+        {
+          "command": "pancho.columnCopy"
+        },
+        {
+          "command": "pancho.columnPaste"
+        },
+        {
+          "separator": "before",
+          "command": "pancho.macroStart"
+        },
+        {
+          "command": "pancho.macroStop"
+        },
+        {
+          "command": "pancho.macroPlay"
+        },
+        {
+          "command": "pancho.macroSave"
+        },
+        {
+          "command": "pancho.macroLoad"
+        },
+        {
+          "command": "pancho.macroList"
         }
       ],
       "panchoEscapar": [

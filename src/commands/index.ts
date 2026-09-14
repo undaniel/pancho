@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
 import { Commands } from './registry';
-import { registerTextCommand, registerInsertCommand, registerInfoCommand, registerLineCommand, registerPromptCommand, registerAsyncCommand } from './factory';
+import { registerTextCommand, registerInsertCommand, registerInfoCommand, registerLineCommand, registerPromptCommand, registerAsyncCommand, registerDocumentCommand } from './factory';
 import { getSelection, getDocumentText } from '../utils/editor';
+import { getRegexTimeoutMs } from '../utils/config';
 import { cleanWhitespace } from '../transforms/whitespace';
 import { cleanLineEndings, lineEndingsToSpaces } from '../transforms/lineEndings';
 import { toUpper, toLower, toTitleCase, toSentenceCase, invertCase, randomCase, toKebabCase, toSnakeCase, toCamelCase, toPascalCase, toConstantCase } from '../transforms/case';
@@ -9,7 +10,8 @@ import { tabsToSpaces, spacesToTabs, increaseIndent, decreaseIndent } from '../t
 import { trimLines } from '../transforms/lineUtils';
 import { formatShortDateTime, formatLongDateTime, formatCustomDateTime } from '../transforms/dateTime';
 import { commentLine, uncommentLine, commentBlock, uncommentBlock } from '../transforms/comments';
-import { removeDuplicateLines, removeConsecutiveDuplicateLines, sortLinesAscending, sortLinesDescending, reverseLines, joinLines, removeEmptyLines, moveLineUp, moveLineDown } from '../transforms/lines';
+import { removeDuplicateLines, removeConsecutiveDuplicateLines, sortLinesAscending, sortLinesDescending, reverseLines, joinLines, removeEmptyLines } from '../transforms/lines';
+import { moveSelectedLines } from '../core/planEdits';
 import { sortNatural, sortNaturalDescending, sortByLength, sortByLengthDescending, sortNumeric } from '../transforms/sort';
 import { removeDiacritics, stripHTMLTags, wrapText, unwrapText } from '../transforms/text';
 import { transposeCharacters, transposeWords, transposeLines } from '../transforms/transpose';
@@ -86,12 +88,12 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
     registerTextCommand(context, { command: Commands.HEX_TO_RGB, transform: (text) => hexToRgb(text) });
     registerTextCommand(context, { command: Commands.RGB_TO_HEX, transform: (text) => rgbToHex(text) });
 
-    registerInfoCommand(context, { command: Commands.COUNT_WORDS, info: () => 'Palabras: ' + countWords(getSelection() || getDocumentText()) });
-    registerInfoCommand(context, { command: Commands.COUNT_CHARACTERS, info: () => 'Caracteres: ' + countCharacters(getSelection() || getDocumentText()) });
-    registerInfoCommand(context, { command: Commands.COUNT_LINES, info: () => 'Líneas: ' + countLines(getSelection() || getDocumentText()) });
+    registerInfoCommand(context, { command: Commands.COUNT_WORDS, info: () => vscode.l10n.t('Words: {0}', countWords(getSelection() || getDocumentText())) });
+    registerInfoCommand(context, { command: Commands.COUNT_CHARACTERS, info: () => vscode.l10n.t('Characters: {0}', countCharacters(getSelection() || getDocumentText())) });
+    registerInfoCommand(context, { command: Commands.COUNT_LINES, info: () => vscode.l10n.t('Lines: {0}', countLines(getSelection() || getDocumentText())) });
 
-    registerInsertCommand(context, { command: Commands.INSERT_SHORT_TIME, insert: formatShortDateTime });
-    registerInsertCommand(context, { command: Commands.INSERT_LONG_TIME, insert: formatLongDateTime });
+    registerInsertCommand(context, { command: Commands.INSERT_SHORT_TIME, insert: () => formatShortDateTime(vscode.env.language) });
+    registerInsertCommand(context, { command: Commands.INSERT_LONG_TIME, insert: () => formatLongDateTime(vscode.env.language) });
     registerInsertCommand(context, { command: Commands.INSERT_DATE_TIME, insert: formatCustomDateTime });
     registerInsertCommand(context, { command: Commands.LOREM_IPSUM, insert: () => generateLoremIpsum(vscode.workspace.getConfiguration('pancho').get<number>('loremIpsumWordCount', 50)) });
     registerInsertCommand(context, { command: Commands.GENERATE_UUID, insert: () => generateUUID() });
@@ -105,17 +107,17 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
     registerTextCommand(context, { command: Commands.DUPLICATE_LINE, transform: (text) => duplicateLine(text) });
     registerTextCommand(context, { command: Commands.INSERT_LINE_BEFORE, transform: (text) => insertLineBefore(text) });
     registerTextCommand(context, { command: Commands.INSERT_LINE_AFTER, transform: (text) => insertLineAfter(text) });
-    registerLineCommand(context, { command: Commands.MOVE_LINE_UP, transform: (text, lineIndex) => moveLineUp(text, lineIndex) });
-    registerLineCommand(context, { command: Commands.MOVE_LINE_DOWN, transform: (text, lineIndex) => moveLineDown(text, lineIndex) });
-    registerTextCommand(context, { command: Commands.DELETE_LINES_CONTAINING, transform: (text) => deleteLinesContaining(text, vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor.selection) || '') });
-    registerTextCommand(context, { command: Commands.KEEP_ONLY_LINES_CONTAINING, transform: (text) => keepOnlyLinesContaining(text, vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor.selection) || '') });
-    registerTextCommand(context, { command: Commands.HIGHLIGHT_MATCHES, transform: (text) => highlightMatches(text, vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor.selection) || '') });
-    registerInfoCommand(context, { command: Commands.COUNT_MATCHES, info: () => {
+    registerLineCommand(context, { command: Commands.MOVE_LINE_UP, transform: (text, lineIndices) => moveSelectedLines(text, lineIndices, 'up') });
+    registerLineCommand(context, { command: Commands.MOVE_LINE_DOWN, transform: (text, lineIndices) => moveSelectedLines(text, lineIndices, 'down') });
+    registerDocumentCommand(context, { command: Commands.DELETE_LINES_CONTAINING, transform: (text, pattern) => deleteLinesContaining(text, pattern) });
+    registerDocumentCommand(context, { command: Commands.KEEP_ONLY_LINES_CONTAINING, transform: (text, pattern) => keepOnlyLinesContaining(text, pattern) });
+    registerDocumentCommand(context, { command: Commands.HIGHLIGHT_MATCHES, transform: (text, pattern) => highlightMatches(text, pattern, getRegexTimeoutMs()) });
+    registerInfoCommand(context, { command: Commands.COUNT_MATCHES, info: async () => {
         const editor = vscode.window.activeTextEditor;
         const text = editor?.document.getText() || '';
         const pattern = editor ? editor.document.getText(editor.selection) : '';
-        const result = countMatches(text, pattern);
-        return 'Coincidencias: ' + result.result;
+        const result = await countMatches(text, pattern, getRegexTimeoutMs());
+        return vscode.l10n.t('Matches: {0}', String(result.result)) + (result.error ? ' (' + result.error + ')' : '');
     } });
 
     registerTextCommand(context, { command: Commands.ESCAPE_JSON, transform: (text) => escapeJSON(text) });
@@ -192,7 +194,7 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
             { label: vscode.l10n.t('Regex pattern'), placeholder: '\\d+' },
             { label: vscode.l10n.t('Flags'), placeholder: 'gi' },
         ],
-        transform: (text, pattern, flags) => formatRegexResult(pattern, flags || 'g', text),
+        transform: (text, pattern, flags) => formatRegexResult(pattern, flags || 'g', text, getRegexTimeoutMs()),
     });
 
     // ===== Bloque E: búsqueda avanzada =====
@@ -221,13 +223,13 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
                 {
                     location: vscode.ProgressLocation.Notification,
                     title: vscode.l10n.t('Pancho: searching in files...'),
-                    cancellable: false,
+                    cancellable: true,
                 },
-                async () => {
+                async (_progress, token) => {
                     const result = await findInFiles(pattern, {
                         regex: useRegex === vscode.l10n.t('Regex'),
                         caseSensitive: caseOption === vscode.l10n.t('Case sensitive'),
-                    });
+                    }, getRegexTimeoutMs(), token);
                     if (result.error) {
                         vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', result.error));
                         return;
@@ -248,6 +250,11 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
     registerAsyncCommand(context, {
         command: Commands.REPLACE_IN_FILES,
         handler: async () => {
+            if (!vscode.workspace.isTrusted) {
+                vscode.window.showWarningMessage(vscode.l10n.t('Pancho: Workspace is not trusted. Replace in files is disabled.'));
+                return;
+            }
+
             const pattern = await vscode.window.showInputBox({
                 prompt: vscode.l10n.t('Search pattern'),
                 placeHolder: vscode.l10n.t('Text or regex'),
@@ -266,8 +273,28 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
             );
             if (!useRegex) return;
 
+            const options = { regex: useRegex === vscode.l10n.t('Regex') };
+
+            const preview = await vscode.window.withProgress(
+                {
+                    location: vscode.ProgressLocation.Notification,
+                    title: vscode.l10n.t('Pancho: searching in files...'),
+                    cancellable: true,
+                },
+                async (_progress, token) => findInFiles(pattern, options, getRegexTimeoutMs(), token)
+            );
+            if (!preview) return;
+            if (preview.error) {
+                vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', preview.error));
+                return;
+            }
+            if (preview.matches.length === 0) {
+                vscode.window.showInformationMessage(vscode.l10n.t('No matches found'));
+                return;
+            }
+            const fileCount = new Set(preview.matches.map(m => m.file)).size;
             const confirm = await vscode.window.showWarningMessage(
-                vscode.l10n.t('Replace in all workspace files?'),
+                vscode.l10n.t('Replace {0} matches in {1} files?', preview.matches.length, fileCount),
                 { modal: true },
                 vscode.l10n.t('Replace')
             );
@@ -277,12 +304,10 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
                 {
                     location: vscode.ProgressLocation.Notification,
                     title: vscode.l10n.t('Pancho: replacing in files...'),
-                    cancellable: false,
+                    cancellable: true,
                 },
-                async () => {
-                    const result = await replaceInFiles(pattern, replacement, {
-                        regex: useRegex === vscode.l10n.t('Regex'),
-                    });
+                async (_progress, token) => {
+                    const result = await replaceInFiles(pattern, replacement, options, getRegexTimeoutMs(), token);
                     if (result.error) {
                         vscode.window.showWarningMessage(vscode.l10n.t('Pancho: {0}', result.error));
                         return;

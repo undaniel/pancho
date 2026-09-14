@@ -110,7 +110,7 @@ export function csvToMarkdown(text: string, opts: CsvOptions = {}): { result: st
     try {
         const rows = csvToRows(text, opts);
         if (rows.length === 0) return { result: '' };
-        const widths = rows[0].map((_, i) => Math.max(...rows.map(r => (r[i] ?? '').length)));
+        const widths = rows[0].map((_, i) => rows.reduce((max, r) => Math.max(max, (r[i] ?? '').length), 0));
         const formatRow = (r: string[]) => '| ' + r.map((c, i) => (c ?? '').padEnd(widths[i])).join(' | ') + ' |';
         const header = formatRow(rows[0]);
         const separator = '| ' + widths.map(w => '-'.repeat(w)).join(' | ') + ' |';

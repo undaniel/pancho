@@ -1,29 +1,39 @@
 import { sanitizeSearchPattern } from '../utils/sanitize';
 import { t } from '../utils/i18n';
+import { runRegexJob } from '../utils/safeRegex';
+import type { RegexErrorCode } from '../utils/regexCore';
 
-export function highlightMatches(text: string, pattern: string): { result: string; error?: string } {
-    const sanitized = sanitizeSearchPattern(pattern);
-    if (!sanitized) {
-        return { result: text, error: t('Empty pattern') };
-    }
-    try {
-        const regex = new RegExp(sanitized, 'gi');
-        return { result: text.replace(regex, '==$0==') };
-    } catch {
-        return { result: text, error: t('Invalid pattern') };
+function describeError(code: RegexErrorCode | undefined): string {
+    switch (code) {
+        case 'empty':
+            return t('Empty pattern');
+        case 'complex':
+            return t('Pattern too complex (possible catastrophic backtracking)');
+        case 'timeout':
+            return t('Pattern took too long (possible catastrophic backtracking)');
+        default:
+            return t('Invalid pattern');
     }
 }
 
-export function countMatches(text: string, pattern: string): { result: number; error?: string } {
+export async function highlightMatches(text: string, pattern: string, timeoutMs?: number): Promise<{ result: string; error?: string }> {
     const sanitized = sanitizeSearchPattern(pattern);
-    if (!sanitized) {
-        return { result: 0 };
-    }
-    try {
-        const regex = new RegExp(sanitized, 'gi');
-        const matches = text.match(regex);
-        return { result: matches ? matches.length : 0 };
-    } catch {
-        return { result: 0, error: t('Invalid pattern') };
-    }
+    if (!sanitized) return { result: text, error: t('Empty pattern') };
+    const result = await runRegexJob(
+        { pattern: sanitized, flags: 'gi', text, mode: 'replace', replacement: '==$0==', maxMatches: 100000 },
+        timeoutMs
+    );
+    if (result.error) return { result: text, error: describeError(result.error) };
+    return { result: result.result ?? text };
+}
+
+export async function countMatches(text: string, pattern: string, timeoutMs?: number): Promise<{ result: number; error?: string }> {
+    const sanitized = sanitizeSearchPattern(pattern);
+    if (!sanitized) return { result: 0 };
+    const result = await runRegexJob(
+        { pattern: sanitized, flags: 'gi', text, mode: 'count', maxMatches: 100000 },
+        timeoutMs
+    );
+    if (result.error) return { result: 0, error: describeError(result.error) };
+    return { result: result.count ?? 0 };
 }

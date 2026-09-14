@@ -11,6 +11,7 @@ module.exports = {
   coverageDirectory: 'coverage',
   verbose: true,
   moduleNameMapper: {
+    '^vscode$': '<rootDir>/tests/mocks/vscode.ts',
     '^transforms/(.*)$': '<rootDir>/src/transforms/$1',
     '^transforms$': '<rootDir>/src/transforms',
   },
