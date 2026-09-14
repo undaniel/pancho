@@ -1,6 +1,6 @@
 import { describe, it, expect } from '@jest/globals';
 import { cleanLineEndings, lineEndingsToSpaces } from '../../src/transforms/lineEndings';
-import { removeConsecutiveDuplicateLines, removeEmptyLines, moveLineUp, moveLineDown } from '../../src/transforms/lines';
+import { removeConsecutiveDuplicateLines, removeEmptyLines } from '../../src/transforms/lines';
 import { sortByLength, sortByLengthDescending, sortNumeric } from '../../src/transforms/sort';
 import { generateUUID, generateRandomString } from '../../src/transforms/programmer/generators';
 import { generateLoremIpsum } from '../../src/transforms/webDev/loremIpsum';
@@ -25,12 +25,6 @@ describe('line utilities', () => {
 
   it('removes empty lines', () => {
     expect(removeEmptyLines('a\n\n b \n')).toBe('a\n b ');
-  });
-
-  it('moves lines up and down', () => {
-    expect(moveLineUp('a\nb\nc', 1)).toBe('b\na\nc');
-    expect(moveLineDown('a\nb\nc', 0)).toBe('b\na\nc');
-    expect(moveLineUp('a\nb', 0)).toBe('a\nb');
   });
 });
 

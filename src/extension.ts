@@ -3,7 +3,6 @@ import { registerAllCommands } from './commands';
 import { registerMenuCommands } from './commands/menu';
 import { registerColumnCommands } from './commands/column';
 import { registerMacroCommands } from './commands/macro';
-import { registerEncodingCommands } from './commands/encoding';
 import { registerFilterCommands } from './commands/filter';
 import { initStatusBar, updateCounters, showInfo } from './utils/statusBar';
 import { disposeRegexWorker } from './utils/safeRegex';
@@ -16,7 +15,6 @@ export function activate(context: vscode.ExtensionContext): void {
     registerMenuCommands(context);
     registerColumnCommands(context);
     registerMacroCommands(context);
-    registerEncodingCommands(context);
     registerFilterCommands(context);
     registerPreviewProvider(context);
 

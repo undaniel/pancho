@@ -62,8 +62,10 @@ export function updateCounters(): void {
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
         countersItem.text = '';
+        countersItem.hide();
         return;
     }
+    countersItem.show();
 
     const selectionText = editor.document.getText(editor.selection);
     if (selectionText.length > 0) {

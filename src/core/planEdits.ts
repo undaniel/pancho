@@ -15,6 +15,7 @@ export interface PlanResult {
     edits: PlannedEdit[];
     error?: string;
     warning?: string;
+    cancelled?: boolean;
 }
 
 export type PerSelectionTransform = (text: string) => TextOutput | Promise<TextOutput>;
@@ -76,7 +77,8 @@ export function lineEndAt(text: string, offset: number): number {
 export async function planSelectionEdits(
     documentText: string,
     selections: SelectionRange[],
-    transform: PerSelectionTransform
+    transform: PerSelectionTransform,
+    shouldCancel?: () => boolean
 ): Promise<PlanResult> {
     const base = normalize(selections, documentText.length);
     const expanded = base.map(range =>
@@ -90,6 +92,9 @@ export async function planSelectionEdits(
     let warning: string | undefined;
 
     for (const range of ranges) {
+        if (shouldCancel?.()) {
+            return { edits: [], cancelled: true };
+        }
         const slice = documentText.slice(range.start, range.end);
         const processed = processOutput(await transform(slice));
         if (processed.error) {
@@ -102,51 +107,4 @@ export async function planSelectionEdits(
     return { edits, warning };
 }
 
-function toBlocks(sortedIndices: number[]): [number, number][] {
-    const blocks: [number, number][] = [];
-    let start = sortedIndices[0];
-    let previous = sortedIndices[0];
-    for (let i = 1; i < sortedIndices.length; i++) {
-        if (sortedIndices[i] === previous + 1) {
-            previous = sortedIndices[i];
-        } else {
-            blocks.push([start, previous]);
-            start = sortedIndices[i];
-            previous = sortedIndices[i];
-        }
-    }
-    blocks.push([start, previous]);
-    return blocks;
-}
 
-/**
- * Moves the selected lines (grouped into contiguous blocks) one step up or down.
- * Unselected lines between blocks stay in place. A single index matches the
- * classic single-line move behavior.
- */
-export function moveSelectedLines(text: string, lineIndices: number[], direction: 'up' | 'down'): string {
-    const lines = text.split('\n');
-    const selected = Array.from(new Set(lineIndices))
-        .filter(i => Number.isInteger(i) && i >= 0 && i < lines.length)
-        .sort((a, b) => a - b);
-    if (selected.length === 0) return text;
-
-    const blocks = toBlocks(selected);
-
-    if (direction === 'up') {
-        for (const [start, end] of blocks) {
-            if (start === 0) continue;
-            const moved = lines.splice(start - 1, 1)[0];
-            lines.splice(end, 0, moved);
-        }
-    } else {
-        for (let b = blocks.length - 1; b >= 0; b--) {
-            const [start, end] = blocks[b];
-            if (end === lines.length - 1) continue;
-            const moved = lines.splice(end + 1, 1)[0];
-            lines.splice(start, 0, moved);
-        }
-    }
-
-    return lines.join('\n');
-}

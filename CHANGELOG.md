@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `pancho.columnFillSeries` — fill a column block with an incrementing series (start/step).
+- `pancho.repeatLastTimes` — repeat the last command a chosen number of times.
+- Command palette grouping via `category: Pancho` and `enablement: editorIsOpen` (editor commands are disabled without an editor).
+- Context-menu `when` clauses: column commands only appear with multiple selections; keep/remove-lines only with a selection.
+- `npm run l10n:check` and a unit test that fail when a runtime string is missing from `l10n/bundle.l10n.json`.
+- Macro guardrails: cannot start recording while playing, cannot play while recording/playing.
+
+### Changed
+
+- **Native delegation:** 17 commands keep their Pancho menu entry and keyboard shortcut but now delegate to VS Code's own implementation (consistency + native multi-cursor): uppercase/lowercase/title case, comment & block comment, tabs↔spaces, indent/outdent, move / duplicate / insert line, sort A–Z / Z–A and join lines.
+- Status bar counters hide when there is no active editor.
+- Localized previously hardcoded error strings (`align`, `convert`, `jwt`, `timestamp`, `colorInfo`).
+- Removed the oversized `.vsix` binaries and `README_PANCHO.md` from the repository (use GitHub Releases); `.DS_Store` untracked.
+
+### Removed
+
+- Commands already provided by VS Code: `uncommentLine` / `uncommentBlock` (native comment toggle), `findInFiles` / `replaceInFiles` (native global search/replace), `highlightMatches` / `countMatches` (find widget), `encodingInfo` / `changeEncoding` (status bar / native command).
+- Now-unused modules and their tests: `transforms/comments`, `transforms/commentStyles`, `transforms/tabs`, `transforms/search`, `transforms/searchAdvanced`, `features/encoding`, `commands/encoding`.
+- **Total commands:** 141 → 133.
+
+### Testing
+
+- 216 unit tests (removed tests for deleted/delegated code).
+
 ## [1.3.0] - 2026-09-14
 
 Major release focused on safety, multi-cursor support, UX and Notepad++-style power features.

@@ -1,3 +1,5 @@
+import { t } from '../utils/i18n';
+
 export interface ColorInfo {
     hex: string;
     rgb: { r: number; g: number; b: number };
@@ -59,7 +61,7 @@ function rgbToHsl(r: number, g: number, b: number): { h: number; s: number; l: n
 export function colorInfo(text: string): { result: string; error?: string } {
     const color = parseColor(text);
     if (!color) {
-        return { result: text, error: 'Invalid color. Use #RRGGBB or rgb(r,g,b)' };
+        return { result: text, error: t('Invalid color. Use #RRGGBB or rgb(r,g,b)') };
     }
     const { hex, rgb, hsl } = color;
     return {

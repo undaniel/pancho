@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals';
-import { detectColumnBlock, insertAtColumns, deleteColumns, copyColumns, pasteColumns } from '../../src/core/columnBlock';
+import { detectColumnBlock, insertAtColumns, deleteColumns, copyColumns, pasteColumns, fillSeriesAtColumn } from '../../src/core/columnBlock';
 
 const sel = (line: number, column: number, endColumn = column) => ({
   startLine: line,
@@ -57,5 +57,13 @@ describe('column operations', () => {
 
   it('clamps when the column is past the end of a line', () => {
     expect(insertAtColumns('a\nbb', { startLine: 0, endLine: 1, column: 5, endColumn: 5 }, '!')).toBe('a!\nbb!');
+  });
+
+  it('fills an incrementing series into the column', () => {
+    expect(fillSeriesAtColumn('a\nb\nc', { startLine: 0, endLine: 2, column: 0, endColumn: 0 }, 1, 1)).toBe('1a\n2b\n3c');
+  });
+
+  it('pads the series to align multi-digit values', () => {
+    expect(fillSeriesAtColumn('a\nb\nc\nd', { startLine: 0, endLine: 3, column: 0, endColumn: 0 }, 8, 1)).toBe(' 8a\n 9b\n10c\n11d');
   });
 });

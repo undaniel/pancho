@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { Commands } from './registry';
-import { detectColumnBlock, insertAtColumns, deleteColumns, copyColumns, pasteColumns, SelectionLike } from '../core/columnBlock';
+import { detectColumnBlock, insertAtColumns, deleteColumns, copyColumns, pasteColumns, fillSeriesAtColumn, SelectionLike } from '../core/columnBlock';
 import { replaceDocumentText } from '../utils/editor';
 
 function selectionLikes(editor: vscode.TextEditor): SelectionLike[] {
@@ -61,6 +61,32 @@ export function registerColumnCommands(context: vscode.ExtensionContext): void {
             }
             await vscode.env.clipboard.writeText(copyColumns(editor.document.getText(), block));
             vscode.window.showInformationMessage(vscode.l10n.t('Pancho: Column copied to clipboard'));
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand(Commands.COLUMN_FILL_SERIES, async () => {
+            const editor = vscode.window.activeTextEditor;
+            if (!editor) {
+                vscode.window.showWarningMessage(vscode.l10n.t('Pancho: No active editor'));
+                return;
+            }
+            const block = detectColumnBlock(selectionLikes(editor));
+            if (!block) {
+                vscode.window.showWarningMessage(vscode.l10n.t('Pancho: Select a column block (Alt+drag)'));
+                return;
+            }
+            const startInput = await vscode.window.showInputBox({ prompt: vscode.l10n.t('Start value'), value: '1' });
+            if (startInput === undefined) return;
+            const stepInput = await vscode.window.showInputBox({ prompt: vscode.l10n.t('Step'), value: '1' });
+            if (stepInput === undefined) return;
+            const start = Number.parseInt(startInput, 10);
+            const step = Number.parseInt(stepInput, 10);
+            if (Number.isNaN(start) || Number.isNaN(step)) {
+                vscode.window.showWarningMessage(vscode.l10n.t('Pancho: Enter valid numbers'));
+                return;
+            }
+            await replaceDocumentText(text => fillSeriesAtColumn(text, block, start, step));
         })
     );
 

@@ -15,7 +15,7 @@
 
 ### Features
 
-- **139 commands** available from the context menu
+- **133 commands** available from the context menu
 - **Command hub** (`Pancho: Show command menu`) with categories and shortcuts
 - **Multi-cursor & multi-selection** aware: transforms apply per cursor/selection
 - **Repeat last command** (`Ctrl+Shift+.`)
@@ -136,8 +136,6 @@
 | `Pancho: URL decode` | URL-decode |
 | `Pancho: HTML entities encode` | Escape HTML characters |
 | `Pancho: HTML entities decode` | Unescape HTML |
-| `Pancho: Show file encoding` | Detect the current file encoding |
-| `Pancho: Change file encoding...` | Change/reopen with another encoding |
 
 #### Formatting
 | Command | Description |
@@ -153,6 +151,8 @@
 | `Pancho: Format SQL` | Format SQL |
 | `Pancho: Prettify XML` | Pretty-print XML |
 | `Pancho: Minify XML` | Minify XML |
+
+> For JS/TS/JSON/HTML/CSS, VS Code's built-in **Format Document** is syntax-aware and more complete. Pancho's formatters are lightweight (regex-based) and add **minify**, which VS Code does not provide.
 
 #### Hash & binary
 | Command | Description |
@@ -179,10 +179,8 @@
 #### Comment / Uncomment
 | Command | Description |
 |---------|-------------|
-| `Pancho: Comment line` | Comment line |
-| `Pancho: Uncomment line` | Uncomment line |
-| `Pancho: Comment block` | Comment block |
-| `Pancho: Uncomment block` | Uncomment block |
+| `Pancho: Comment line` | Toggle line comment (delegates to VS Code) |
+| `Pancho: Comment block` | Toggle block comment (delegates to VS Code) |
 
 #### Developers
 | Command | Description |
@@ -194,8 +192,6 @@
 | `Pancho: Move line down` | Move line down |
 | `Pancho: Delete lines containing...` | Delete lines by content |
 | `Pancho: Keep only lines containing...` | Keep lines by content |
-| `Pancho: Highlight matches` | Highlight matches |
-| `Pancho: Count matches` | Count occurrences |
 | `Pancho: Transpose characters` | Swap last two chars |
 | `Pancho: Transpose words` | Swap last two words |
 | `Pancho: Transpose lines` | Swap last two lines |
@@ -210,6 +206,7 @@
 | `Pancho: Column: delete` | Delete the column block |
 | `Pancho: Column: copy` | Copy the column block |
 | `Pancho: Column: paste` | Paste into the column block |
+| `Pancho: Column: fill series...` | Fill the column with an incrementing series |
 
 #### Macros
 | Command | Description |
@@ -232,12 +229,6 @@
 | `Pancho: Escape for HTML` | Escape for HTML |
 | `Pancho: Unescape from HTML` | Unescape from HTML |
 
-#### Search
-| Command | Description |
-|---------|-------------|
-| `Pancho: Search in workspace files...` | Search across all files |
-| `Pancho: Replace in workspace files...` | Replace across all files (with dry-run count + confirmation) |
-
 #### Developer Tools
 | Command | Description |
 |---------|-------------|
@@ -255,6 +246,11 @@
 |---------|-------------|
 | `Pancho: Show command menu` | Quick Pick hub of all categories and commands |
 | `Pancho: Repeat last command` | Re-run the previous Pancho command |
+| `Pancho: Repeat last command N times...` | Re-run the previous command N times |
+
+### VS Code integrations
+
+Some commands keep Pancho's menu entry and shortcut but **delegate to VS Code's native implementation** (consistency and multi-cursor support): uppercase / lowercase / title case, comment & block comment, tabs↔spaces, indent/outdent, move / duplicate / insert line, sort A–Z / Z–A and join lines.
 
 ### Keyboard shortcuts
 
@@ -295,7 +291,7 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 
 ### Características
 
-- **139 comandos** accesibles desde el menú contextual
+- **133 comandos** accesibles desde el menú contextual
 - **Hub de comandos** (`Pancho: Mostrar menú de comandos`) con categorías y atajos
 - **Compatible con multi-cursor y multi-selección**: las transformaciones se aplican por cursor/selección
 - **Repetir último comando** (`Ctrl+Shift+.`)
@@ -416,8 +412,6 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | `Pancho: Decodificar URL` | Decodifica URLs |
 | `Pancho: Codificar HTML entities` | Escapa caracteres HTML |
 | `Pancho: Decodificar HTML entities` | Desescapa HTML |
-| `Pancho: Mostrar codificación del archivo` | Detecta la codificación actual |
-| `Pancho: Cambiar codificación del archivo...` | Cambia/reabre con otra codificación |
 
 #### Formateo
 | Comando | Descripción |
@@ -433,6 +427,8 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | `Pancho: Formatear SQL` | SQL con formato |
 | `Pancho: Formatear XML` | XML con indentación |
 | `Pancho: Minificar XML` | XML comprimido |
+
+> Para JS/TS/JSON/HTML/CSS, el **Formatear documento** nativo de VS Code es sintáctico y más completo. Los formatters de Pancho son livianos (basados en regex) y aportan el **minificar**, que VS Code no trae.
 
 #### Hash y binario
 | Comando | Descripción |
@@ -459,10 +455,8 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 #### Comentar / Descomentar
 | Comando | Descripción |
 |---------|-------------|
-| `Pancho: Comentar línea` | Agrega comentario |
-| `Pancho: Descomentar línea` | Quita comentario |
-| `Pancho: Comentar bloque` | Comenta selección |
-| `Pancho: Descomentar bloque` | Descomenta selección |
+| `Pancho: Comentar línea` | Alterna comentario de línea (delega en VS Code) |
+| `Pancho: Comentar bloque` | Alterna comentario de bloque (delega en VS Code) |
 
 #### Desarrolladores
 | Comando | Descripción |
@@ -474,8 +468,6 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | `Pancho: Mover línea abajo` | Baja línea |
 | `Pancho: Eliminar líneas con...` | Elimina líneas por contenido |
 | `Pancho: Mantener solo líneas con...` | Mantiene líneas por contenido |
-| `Pancho: Resaltar coincidencias` | Resalta coincidencias |
-| `Pancho: Contar coincidencias` | Cuenta ocurrencias |
 | `Pancho: Transponer caracteres` | Intercambia últimos 2 chars |
 | `Pancho: Transponer palabras` | Intercambia últimas 2 palabras |
 | `Pancho: Transponer líneas` | Intercambia últimas 2 líneas |
@@ -490,6 +482,7 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | `Pancho: Columna: eliminar` | Elimina el bloque de columna |
 | `Pancho: Columna: copiar` | Copia el bloque de columna |
 | `Pancho: Columna: pegar` | Pega en el bloque de columna |
+| `Pancho: Columna: rellenar serie...` | Rellena la columna con una serie incremental |
 
 #### Macros
 | Comando | Descripción |
@@ -512,12 +505,6 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 | `Pancho: Escapar para HTML` | Escapa caracteres HTML |
 | `Pancho: Desescapar de HTML` | Desescapa de HTML |
 
-#### Buscar
-| Comando | Descripción |
-|---------|-------------|
-| `Pancho: Buscar en archivos del workspace...` | Busca en todos los archivos |
-| `Pancho: Reemplazar en archivos del workspace...` | Reemplaza en todos los archivos (con conteo previo y confirmación) |
-
 #### Herramientas de desarrollo
 | Comando | Descripción |
 |---------|-------------|
@@ -535,6 +522,11 @@ Pancho shows `L:X P:Y C:Z` (Lines, Words, Characters) in the status bar. Updates
 |---------|-------------|
 | `Pancho: Mostrar menú de comandos` | Hub (Quick Pick) con todas las categorías y comandos |
 | `Pancho: Repetir último comando` | Reejecuta el comando anterior de Pancho |
+| `Pancho: Repetir último comando N veces...` | Reejecuta el comando anterior N veces |
+
+### Integraciones con VS Code
+
+Algunos comandos conservan su entrada de menú y atajo de Pancho pero **delegan en la implementación nativa de VS Code** (consistencia y soporte multi-cursor): mayúsculas / minúsculas / título, comentar y comentar bloque, tabs↔espacios, indentar/desindentar, mover / duplicar / insertar línea, ordenar A–Z / Z–A y unir líneas.
 
 ### Atajos de teclado
 

@@ -29,6 +29,10 @@ export function registerMacroCommands(context: vscode.ExtensionContext): void {
 
     context.subscriptions.push(
         vscode.commands.registerCommand(Commands.MACRO_START, () => {
+            if (macroRecorder.isPlaying()) {
+                vscode.window.showWarningMessage(vscode.l10n.t('Pancho: Wait for playback to finish'));
+                return;
+            }
             macroRecorder.start();
             vscode.window.showInformationMessage(vscode.l10n.t('Pancho: Recording macro...'));
         })
@@ -49,6 +53,10 @@ export function registerMacroCommands(context: vscode.ExtensionContext): void {
         vscode.commands.registerCommand(Commands.MACRO_PLAY, async () => {
             if (macroRecorder.isRecording()) {
                 vscode.window.showWarningMessage(vscode.l10n.t('Pancho: Stop the current recording first'));
+                return;
+            }
+            if (macroRecorder.isPlaying()) {
+                vscode.window.showWarningMessage(vscode.l10n.t('Pancho: Macro already playing'));
                 return;
             }
             if (lastMacro.length === 0) {

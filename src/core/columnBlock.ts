@@ -70,6 +70,26 @@ export function copyColumns(text: string, block: ColumnBlock): string {
     return out.join('\n');
 }
 
+export function fillSeriesAtColumn(text: string, block: ColumnBlock, start: number, step: number): string {
+    const lines = text.split('\n');
+    const count = block.endLine - block.startLine + 1;
+    const values: string[] = [];
+    for (let i = 0; i < count; i++) {
+        values.push(String(start + i * step));
+    }
+    const width = values.reduce((max, value) => Math.max(max, value.length), 0);
+
+    for (let i = 0; i < count; i++) {
+        const line = block.startLine + i;
+        if (line >= lines.length) break;
+        const padded = values[i].padStart(width);
+        const startAt = clamp(block.column, lines[line].length);
+        const endAt = clamp(block.endColumn, lines[line].length);
+        lines[line] = lines[line].slice(0, startAt) + padded + lines[line].slice(endAt);
+    }
+    return lines.join('\n');
+}
+
 export function pasteColumns(text: string, block: ColumnBlock, content: string): string {
     const lines = text.split('\n');
     const pasted = content.split(/\r?\n/);

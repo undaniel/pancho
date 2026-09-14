@@ -2,7 +2,7 @@
   "extension.displayName": "Pancho++",
   "extension.description": "Clean and format text like Notepad++",
   "configuration.title": "Pancho",
-
+  "command.category": "Pancho",
   "submenu.panchoMenu.label": "Pancho",
   "submenu.panchoEdicion.label": "Edit",
   "submenu.panchoLineas.label": "Lines",
@@ -17,7 +17,6 @@
   "submenu.panchoComentarios.label": "Comment / Uncomment",
   "submenu.panchoDesarrolladores.label": "Developers",
   "submenu.panchoEscapar.label": "Escape",
-
   "command.pancho.cleanWhitespace.title": "Clean whitespace",
   "command.pancho.cleanLineEndings.title": "Clean line endings",
   "command.pancho.trimLines.title": "Trim lines",
@@ -78,9 +77,7 @@
   "command.pancho.insertDateTime.title": "Date/time (dd-MM-yyyy hh:mm:ss)",
   "command.pancho.loremIpsum.title": "Generate Lorem Ipsum",
   "command.pancho.commentLine.title": "Comment line",
-  "command.pancho.uncommentLine.title": "Uncomment line",
   "command.pancho.commentBlock.title": "Comment block",
-  "command.pancho.uncommentBlock.title": "Uncomment block",
   "command.pancho.generateUUID.title": "Generate UUID",
   "command.pancho.generateRandomString.title": "Generate random string",
   "command.pancho.hexToRgb.title": "Hex to RGB",
@@ -92,8 +89,6 @@
   "command.pancho.moveLineDown.title": "Move line down",
   "command.pancho.deleteLinesContaining.title": "Delete lines containing...",
   "command.pancho.keepOnlyLinesContaining.title": "Keep only lines containing...",
-  "command.pancho.highlightMatches.title": "Highlight matches",
-  "command.pancho.countMatches.title": "Count matches",
   "command.pancho.escapeJSON.title": "Escape for JSON",
   "command.pancho.unescapeJSON.title": "Unescape from JSON",
   "command.pancho.escapeForSQL.title": "Escape for SQL",
@@ -101,7 +96,6 @@
   "command.pancho.escapeForRegex.title": "Escape for regex",
   "command.pancho.escapeForHTML.title": "Escape for HTML",
   "command.pancho.unescapeForHTML.title": "Unescape from HTML",
-
   "setting.tabSize.description": "Tab size in spaces",
   "setting.indentWithSpaces.description": "Use spaces for indentation",
   "setting.defaultEOL.description": "Default end of line",
@@ -113,6 +107,8 @@
   "setting.previewDestructive.description": "Show a diff preview before applying destructive commands",
   "command.pancho.showMenu.title": "Show command menu",
   "command.pancho.repeatLast.title": "Repeat last command",
+  "command.pancho.repeatLastTimes.title": "Repeat last command N times...",
+  "command.pancho.columnFillSeries.title": "Column: fill series...",
   "keybinding.repeatLast.label": "Repeat last Pancho command",
   "command.pancho.columnInsert.title": "Column: insert text...",
   "command.pancho.columnDelete.title": "Column: delete",
@@ -124,12 +120,9 @@
   "command.pancho.macroSave.title": "Macro: save...",
   "command.pancho.macroLoad.title": "Macro: load...",
   "command.pancho.macroList.title": "Macro: list saved",
-  "command.pancho.encodingInfo.title": "Show file encoding",
-  "command.pancho.changeEncoding.title": "Change file encoding...",
   "command.pancho.filterLinesByRegex.title": "Keep lines matching regex...",
   "command.pancho.removeLinesByRegex.title": "Remove lines matching regex...",
   "capabilities.untrustedWorkspaces.description": "Searching workspace files is available; replacing across workspace files is disabled in untrusted workspaces.",
-
   "keybinding.toUpperCase.label": "Convert text to uppercase",
   "keybinding.toLowerCase.label": "Convert text to lowercase",
   "keybinding.trimLines.label": "Trim whitespace on lines",
@@ -138,10 +131,8 @@
   "keybinding.countLines.label": "Count lines",
   "keybinding.sortAscending.label": "Sort lines ascending",
   "keybinding.removeDuplicateLines.label": "Remove duplicate lines",
-
   "color.statusBarBackground.description": "Pancho status bar background color",
   "color.statusBarForeground.description": "Pancho status bar text color",
-
   "walkthrough.title": "Welcome to Pancho",
   "walkthrough.description": "Extension to clean and format text like Notepad++",
   "walkthrough.step.menu.title": "Context menu",
@@ -152,10 +143,7 @@
   "walkthrough.step.keybindings.description": "Pancho includes keyboard shortcuts for the most common operations:\n- `Ctrl+Shift+U`: Uppercase\n- `Ctrl+Shift+L`: Lowercase\n- `Ctrl+Shift+T`: Trim lines\n- `Ctrl+Shift+W`: Count words\n\nSee the full list in the settings.",
   "walkthrough.step.settings.title": "Settings",
   "walkthrough.step.settings.description": "Customize Pancho's behavior in Settings > Extensions > Pancho:\n- Tab size\n- Default end of line\n- Show counters in status bar",
-
-  "submenu.panchoBuscar.label": "Search",
   "submenu.panchoDevTools.label": "Developer Tools",
-
   "command.pancho.toSentenceCase.title": "Convert to sentence case",
   "command.pancho.invertCase.title": "Invert case",
   "command.pancho.randomCase.title": "Random case",
@@ -193,7 +181,5 @@
   "command.pancho.aesEncrypt.title": "AES encrypt...",
   "command.pancho.aesDecrypt.title": "AES decrypt...",
   "command.pancho.colorInfo.title": "Color info",
-  "command.pancho.regexTester.title": "Regex tester...",
-  "command.pancho.findInFiles.title": "Search in workspace files...",
-  "command.pancho.replaceInFiles.title": "Replace in workspace files..."
+  "command.pancho.regexTester.title": "Regex tester..."
 }

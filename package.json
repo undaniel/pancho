@@ -241,10 +241,6 @@
         "label": "%submenu.panchoEscapar.label%"
       },
       {
-        "id": "panchoBuscar",
-        "label": "%submenu.panchoBuscar.label%"
-      },
-      {
         "id": "panchoDevTools",
         "label": "%submenu.panchoDevTools.label%"
       }
@@ -252,559 +248,793 @@
     "commands": [
       {
         "command": "pancho.cleanWhitespace",
-        "title": "%command.pancho.cleanWhitespace.title%"
+        "title": "%command.pancho.cleanWhitespace.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.cleanLineEndings",
-        "title": "%command.pancho.cleanLineEndings.title%"
+        "title": "%command.pancho.cleanLineEndings.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.trimLines",
-        "title": "%command.pancho.trimLines.title%"
+        "title": "%command.pancho.trimLines.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.lineEndingsToSpaces",
-        "title": "%command.pancho.lineEndingsToSpaces.title%"
+        "title": "%command.pancho.lineEndingsToSpaces.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.convertTabsToSpaces",
-        "title": "%command.pancho.convertTabsToSpaces.title%"
+        "title": "%command.pancho.convertTabsToSpaces.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.convertSpacesToTabs",
-        "title": "%command.pancho.convertSpacesToTabs.title%"
+        "title": "%command.pancho.convertSpacesToTabs.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.increaseIndent",
-        "title": "%command.pancho.increaseIndent.title%"
+        "title": "%command.pancho.increaseIndent.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.decreaseIndent",
-        "title": "%command.pancho.decreaseIndent.title%"
+        "title": "%command.pancho.decreaseIndent.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.toUpperCase",
-        "title": "%command.pancho.toUpperCase.title%"
+        "title": "%command.pancho.toUpperCase.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.toLowerCase",
-        "title": "%command.pancho.toLowerCase.title%"
+        "title": "%command.pancho.toLowerCase.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.toTitleCase",
-        "title": "%command.pancho.toTitleCase.title%"
+        "title": "%command.pancho.toTitleCase.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.toWindowsEOL",
-        "title": "%command.pancho.toWindowsEOL.title%"
+        "title": "%command.pancho.toWindowsEOL.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.toUnixEOL",
-        "title": "%command.pancho.toUnixEOL.title%"
+        "title": "%command.pancho.toUnixEOL.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.toMacEOL",
-        "title": "%command.pancho.toMacEOL.title%"
+        "title": "%command.pancho.toMacEOL.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.removeDuplicateLines",
-        "title": "%command.pancho.removeDuplicateLines.title%"
+        "title": "%command.pancho.removeDuplicateLines.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.sortAscending",
-        "title": "%command.pancho.sortAscending.title%"
+        "title": "%command.pancho.sortAscending.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.sortDescending",
-        "title": "%command.pancho.sortDescending.title%"
+        "title": "%command.pancho.sortDescending.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.reverseLines",
-        "title": "%command.pancho.reverseLines.title%"
+        "title": "%command.pancho.reverseLines.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.joinLines",
-        "title": "%command.pancho.joinLines.title%"
+        "title": "%command.pancho.joinLines.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.removeEmptyLines",
-        "title": "%command.pancho.removeEmptyLines.title%"
+        "title": "%command.pancho.removeEmptyLines.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.countWords",
-        "title": "%command.pancho.countWords.title%"
+        "title": "%command.pancho.countWords.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.countCharacters",
-        "title": "%command.pancho.countCharacters.title%"
+        "title": "%command.pancho.countCharacters.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.countLines",
-        "title": "%command.pancho.countLines.title%"
+        "title": "%command.pancho.countLines.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.removeDuplicateWords",
-        "title": "%command.pancho.removeDuplicateWords.title%"
+        "title": "%command.pancho.removeDuplicateWords.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.numberLines",
-        "title": "%command.pancho.numberLines.title%"
+        "title": "%command.pancho.numberLines.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.removeLineNumbers",
-        "title": "%command.pancho.removeLineNumbers.title%"
+        "title": "%command.pancho.removeLineNumbers.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.slugify",
-        "title": "%command.pancho.slugify.title%"
+        "title": "%command.pancho.slugify.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.reverseWords",
-        "title": "%command.pancho.reverseWords.title%"
+        "title": "%command.pancho.reverseWords.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.randomizeLines",
-        "title": "%command.pancho.randomizeLines.title%"
+        "title": "%command.pancho.randomizeLines.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.pasteWithoutLineBreak",
-        "title": "%command.pancho.pasteWithoutLineBreak.title%"
+        "title": "%command.pancho.pasteWithoutLineBreak.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.copyToMultipleLines",
-        "title": "%command.pancho.copyToMultipleLines.title%"
+        "title": "%command.pancho.copyToMultipleLines.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.formatAsCSV",
-        "title": "%command.pancho.formatAsCSV.title%"
+        "title": "%command.pancho.formatAsCSV.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.base64Encode",
-        "title": "%command.pancho.base64Encode.title%"
+        "title": "%command.pancho.base64Encode.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.base64Decode",
-        "title": "%command.pancho.base64Decode.title%"
+        "title": "%command.pancho.base64Decode.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.urlEncode",
-        "title": "%command.pancho.urlEncode.title%"
+        "title": "%command.pancho.urlEncode.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.urlDecode",
-        "title": "%command.pancho.urlDecode.title%"
+        "title": "%command.pancho.urlDecode.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.htmlEntitiesEncode",
-        "title": "%command.pancho.htmlEntitiesEncode.title%"
+        "title": "%command.pancho.htmlEntitiesEncode.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.htmlEntitiesDecode",
-        "title": "%command.pancho.htmlEntitiesDecode.title%"
+        "title": "%command.pancho.htmlEntitiesDecode.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.minifyJSON",
-        "title": "%command.pancho.minifyJSON.title%"
+        "title": "%command.pancho.minifyJSON.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.prettifyJSON",
-        "title": "%command.pancho.prettifyJSON.title%"
+        "title": "%command.pancho.prettifyJSON.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.minifyHTML",
-        "title": "%command.pancho.minifyHTML.title%"
+        "title": "%command.pancho.minifyHTML.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.prettifyHTML",
-        "title": "%command.pancho.prettifyHTML.title%"
+        "title": "%command.pancho.prettifyHTML.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.minifyCSS",
-        "title": "%command.pancho.minifyCSS.title%"
+        "title": "%command.pancho.minifyCSS.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.prettifyCSS",
-        "title": "%command.pancho.prettifyCSS.title%"
+        "title": "%command.pancho.prettifyCSS.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.minifyJS",
-        "title": "%command.pancho.minifyJS.title%"
+        "title": "%command.pancho.minifyJS.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.prettifyJS",
-        "title": "%command.pancho.prettifyJS.title%"
+        "title": "%command.pancho.prettifyJS.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.formatSQL",
-        "title": "%command.pancho.formatSQL.title%"
+        "title": "%command.pancho.formatSQL.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.prettifyXML",
-        "title": "%command.pancho.prettifyXML.title%"
+        "title": "%command.pancho.prettifyXML.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.minifyXML",
-        "title": "%command.pancho.minifyXML.title%"
+        "title": "%command.pancho.minifyXML.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.hashMD5",
-        "title": "%command.pancho.hashMD5.title%"
+        "title": "%command.pancho.hashMD5.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.hashSHA256",
-        "title": "%command.pancho.hashSHA256.title%"
+        "title": "%command.pancho.hashSHA256.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.toBinary",
-        "title": "%command.pancho.toBinary.title%"
+        "title": "%command.pancho.toBinary.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.fromBinary",
-        "title": "%command.pancho.fromBinary.title%"
+        "title": "%command.pancho.fromBinary.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.toHex",
-        "title": "%command.pancho.toHex.title%"
+        "title": "%command.pancho.toHex.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.fromHex",
-        "title": "%command.pancho.fromHex.title%"
+        "title": "%command.pancho.fromHex.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.insertShortTime",
-        "title": "%command.pancho.insertShortTime.title%"
+        "title": "%command.pancho.insertShortTime.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.insertLongTime",
-        "title": "%command.pancho.insertLongTime.title%"
+        "title": "%command.pancho.insertLongTime.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.insertDateTime",
-        "title": "%command.pancho.insertDateTime.title%"
+        "title": "%command.pancho.insertDateTime.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.loremIpsum",
-        "title": "%command.pancho.loremIpsum.title%"
+        "title": "%command.pancho.loremIpsum.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.commentLine",
-        "title": "%command.pancho.commentLine.title%"
-      },
-      {
-        "command": "pancho.uncommentLine",
-        "title": "%command.pancho.uncommentLine.title%"
+        "title": "%command.pancho.commentLine.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.commentBlock",
-        "title": "%command.pancho.commentBlock.title%"
-      },
-      {
-        "command": "pancho.uncommentBlock",
-        "title": "%command.pancho.uncommentBlock.title%"
+        "title": "%command.pancho.commentBlock.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.generateUUID",
-        "title": "%command.pancho.generateUUID.title%"
+        "title": "%command.pancho.generateUUID.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.generateRandomString",
-        "title": "%command.pancho.generateRandomString.title%"
+        "title": "%command.pancho.generateRandomString.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.hexToRgb",
-        "title": "%command.pancho.hexToRgb.title%"
+        "title": "%command.pancho.hexToRgb.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.rgbToHex",
-        "title": "%command.pancho.rgbToHex.title%"
+        "title": "%command.pancho.rgbToHex.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.duplicateLine",
-        "title": "%command.pancho.duplicateLine.title%"
+        "title": "%command.pancho.duplicateLine.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.insertLineBefore",
-        "title": "%command.pancho.insertLineBefore.title%"
+        "title": "%command.pancho.insertLineBefore.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.insertLineAfter",
-        "title": "%command.pancho.insertLineAfter.title%"
+        "title": "%command.pancho.insertLineAfter.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.moveLineUp",
-        "title": "%command.pancho.moveLineUp.title%"
+        "title": "%command.pancho.moveLineUp.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.moveLineDown",
-        "title": "%command.pancho.moveLineDown.title%"
+        "title": "%command.pancho.moveLineDown.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.deleteLinesContaining",
-        "title": "%command.pancho.deleteLinesContaining.title%"
+        "title": "%command.pancho.deleteLinesContaining.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.keepOnlyLinesContaining",
-        "title": "%command.pancho.keepOnlyLinesContaining.title%"
-      },
-      {
-        "command": "pancho.highlightMatches",
-        "title": "%command.pancho.highlightMatches.title%"
-      },
-      {
-        "command": "pancho.countMatches",
-        "title": "%command.pancho.countMatches.title%"
+        "title": "%command.pancho.keepOnlyLinesContaining.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.escapeJSON",
-        "title": "%command.pancho.escapeJSON.title%"
+        "title": "%command.pancho.escapeJSON.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.unescapeJSON",
-        "title": "%command.pancho.unescapeJSON.title%"
+        "title": "%command.pancho.unescapeJSON.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.escapeForSQL",
-        "title": "%command.pancho.escapeForSQL.title%"
+        "title": "%command.pancho.escapeForSQL.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.unescapeForSQL",
-        "title": "%command.pancho.unescapeForSQL.title%"
+        "title": "%command.pancho.unescapeForSQL.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.escapeForRegex",
-        "title": "%command.pancho.escapeForRegex.title%"
+        "title": "%command.pancho.escapeForRegex.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.escapeForHTML",
-        "title": "%command.pancho.escapeForHTML.title%"
+        "title": "%command.pancho.escapeForHTML.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.unescapeForHTML",
-        "title": "%command.pancho.unescapeForHTML.title%"
+        "title": "%command.pancho.unescapeForHTML.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.toSentenceCase",
-        "title": "%command.pancho.toSentenceCase.title%"
+        "title": "%command.pancho.toSentenceCase.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.invertCase",
-        "title": "%command.pancho.invertCase.title%"
+        "title": "%command.pancho.invertCase.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.randomCase",
-        "title": "%command.pancho.randomCase.title%"
+        "title": "%command.pancho.randomCase.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.toKebabCase",
-        "title": "%command.pancho.toKebabCase.title%"
+        "title": "%command.pancho.toKebabCase.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.toSnakeCase",
-        "title": "%command.pancho.toSnakeCase.title%"
+        "title": "%command.pancho.toSnakeCase.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.toCamelCase",
-        "title": "%command.pancho.toCamelCase.title%"
+        "title": "%command.pancho.toCamelCase.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.toPascalCase",
-        "title": "%command.pancho.toPascalCase.title%"
+        "title": "%command.pancho.toPascalCase.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.toConstantCase",
-        "title": "%command.pancho.toConstantCase.title%"
+        "title": "%command.pancho.toConstantCase.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.removeDiacritics",
-        "title": "%command.pancho.removeDiacritics.title%"
+        "title": "%command.pancho.removeDiacritics.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.stripHTMLTags",
-        "title": "%command.pancho.stripHTMLTags.title%"
+        "title": "%command.pancho.stripHTMLTags.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.sortNatural",
-        "title": "%command.pancho.sortNatural.title%"
+        "title": "%command.pancho.sortNatural.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.sortNaturalDescending",
-        "title": "%command.pancho.sortNaturalDescending.title%"
+        "title": "%command.pancho.sortNaturalDescending.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.sortByLength",
-        "title": "%command.pancho.sortByLength.title%"
+        "title": "%command.pancho.sortByLength.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.sortByLengthDescending",
-        "title": "%command.pancho.sortByLengthDescending.title%"
+        "title": "%command.pancho.sortByLengthDescending.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.sortNumeric",
-        "title": "%command.pancho.sortNumeric.title%"
+        "title": "%command.pancho.sortNumeric.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.transposeCharacters",
-        "title": "%command.pancho.transposeCharacters.title%"
+        "title": "%command.pancho.transposeCharacters.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.transposeWords",
-        "title": "%command.pancho.transposeWords.title%"
+        "title": "%command.pancho.transposeWords.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.transposeLines",
-        "title": "%command.pancho.transposeLines.title%"
+        "title": "%command.pancho.transposeLines.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.wrapText",
-        "title": "%command.pancho.wrapText.title%"
+        "title": "%command.pancho.wrapText.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.unwrapText",
-        "title": "%command.pancho.unwrapText.title%"
+        "title": "%command.pancho.unwrapText.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.removeConsecutiveDuplicateLines",
-        "title": "%command.pancho.removeConsecutiveDuplicateLines.title%"
+        "title": "%command.pancho.removeConsecutiveDuplicateLines.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.csvToJSON",
-        "title": "%command.pancho.csvToJSON.title%"
+        "title": "%command.pancho.csvToJSON.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.jsonToCSV",
-        "title": "%command.pancho.jsonToCSV.title%"
+        "title": "%command.pancho.jsonToCSV.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.csvToTSV",
-        "title": "%command.pancho.csvToTSV.title%"
+        "title": "%command.pancho.csvToTSV.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.tsvToCSV",
-        "title": "%command.pancho.tsvToCSV.title%"
+        "title": "%command.pancho.tsvToCSV.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.csvToMarkdown",
-        "title": "%command.pancho.csvToMarkdown.title%"
+        "title": "%command.pancho.csvToMarkdown.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.markdownTableToCSV",
-        "title": "%command.pancho.markdownTableToCSV.title%"
+        "title": "%command.pancho.markdownTableToCSV.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.alignByChar",
-        "title": "%command.pancho.alignByChar.title%"
+        "title": "%command.pancho.alignByChar.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.alignEquals",
-        "title": "%command.pancho.alignEquals.title%"
+        "title": "%command.pancho.alignEquals.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.alignColons",
-        "title": "%command.pancho.alignColons.title%"
+        "title": "%command.pancho.alignColons.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.decodeJWT",
-        "title": "%command.pancho.decodeJWT.title%"
+        "title": "%command.pancho.decodeJWT.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.timestampToISO",
-        "title": "%command.pancho.timestampToISO.title%"
+        "title": "%command.pancho.timestampToISO.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.isoToTimestamp",
-        "title": "%command.pancho.isoToTimestamp.title%"
+        "title": "%command.pancho.isoToTimestamp.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.nowAsTimestamp",
-        "title": "%command.pancho.nowAsTimestamp.title%"
+        "title": "%command.pancho.nowAsTimestamp.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.aesEncrypt",
-        "title": "%command.pancho.aesEncrypt.title%"
+        "title": "%command.pancho.aesEncrypt.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.aesDecrypt",
-        "title": "%command.pancho.aesDecrypt.title%"
+        "title": "%command.pancho.aesDecrypt.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.colorInfo",
-        "title": "%command.pancho.colorInfo.title%"
+        "title": "%command.pancho.colorInfo.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.regexTester",
-        "title": "%command.pancho.regexTester.title%"
-      },
-      {
-        "command": "pancho.findInFiles",
-        "title": "%command.pancho.findInFiles.title%"
-      },
-      {
-        "command": "pancho.replaceInFiles",
-        "title": "%command.pancho.replaceInFiles.title%"
+        "title": "%command.pancho.regexTester.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.showMenu",
-        "title": "%command.pancho.showMenu.title%"
+        "title": "%command.pancho.showMenu.title%",
+        "category": "%command.category%"
       },
       {
         "command": "pancho.repeatLast",
-        "title": "%command.pancho.repeatLast.title%"
+        "title": "%command.pancho.repeatLast.title%",
+        "category": "%command.category%"
+      },
+      {
+        "command": "pancho.repeatLastTimes",
+        "title": "%command.pancho.repeatLastTimes.title%",
+        "category": "%command.category%"
       },
       {
         "command": "pancho.columnInsert",
-        "title": "%command.pancho.columnInsert.title%"
+        "title": "%command.pancho.columnInsert.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.columnDelete",
-        "title": "%command.pancho.columnDelete.title%"
+        "title": "%command.pancho.columnDelete.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.columnCopy",
-        "title": "%command.pancho.columnCopy.title%"
+        "title": "%command.pancho.columnCopy.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.columnPaste",
-        "title": "%command.pancho.columnPaste.title%"
+        "title": "%command.pancho.columnPaste.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
+      },
+      {
+        "command": "pancho.columnFillSeries",
+        "title": "%command.pancho.columnFillSeries.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.macroStart",
-        "title": "%command.pancho.macroStart.title%"
+        "title": "%command.pancho.macroStart.title%",
+        "category": "%command.category%"
       },
       {
         "command": "pancho.macroStop",
-        "title": "%command.pancho.macroStop.title%"
+        "title": "%command.pancho.macroStop.title%",
+        "category": "%command.category%"
       },
       {
         "command": "pancho.macroPlay",
-        "title": "%command.pancho.macroPlay.title%"
+        "title": "%command.pancho.macroPlay.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.macroSave",
-        "title": "%command.pancho.macroSave.title%"
+        "title": "%command.pancho.macroSave.title%",
+        "category": "%command.category%"
       },
       {
         "command": "pancho.macroLoad",
-        "title": "%command.pancho.macroLoad.title%"
+        "title": "%command.pancho.macroLoad.title%",
+        "category": "%command.category%"
       },
       {
         "command": "pancho.macroList",
-        "title": "%command.pancho.macroList.title%"
-      },
-      {
-        "command": "pancho.encodingInfo",
-        "title": "%command.pancho.encodingInfo.title%"
-      },
-      {
-        "command": "pancho.changeEncoding",
-        "title": "%command.pancho.changeEncoding.title%"
+        "title": "%command.pancho.macroList.title%",
+        "category": "%command.category%"
       },
       {
         "command": "pancho.filterLinesByRegex",
-        "title": "%command.pancho.filterLinesByRegex.title%"
+        "title": "%command.pancho.filterLinesByRegex.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.removeLinesByRegex",
-        "title": "%command.pancho.removeLinesByRegex.title%"
+        "title": "%command.pancho.removeLinesByRegex.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       }
     ],
     "menus": {
@@ -819,6 +1049,9 @@
         },
         {
           "command": "pancho.repeatLast"
+        },
+        {
+          "command": "pancho.repeatLastTimes"
         },
         {
           "submenu": "panchoEdicion",
@@ -871,10 +1104,6 @@
         {
           "submenu": "panchoEscapar",
           "label": "%submenu.panchoEscapar.label%"
-        },
-        {
-          "submenu": "panchoBuscar",
-          "label": "%submenu.panchoBuscar.label%"
         },
         {
           "submenu": "panchoDevTools",
@@ -1100,13 +1329,6 @@
         },
         {
           "command": "pancho.htmlEntitiesDecode"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.encodingInfo"
-        },
-        {
-          "command": "pancho.changeEncoding"
         }
       ],
       "panchoFormateo": [
@@ -1203,14 +1425,7 @@
           "command": "pancho.commentLine"
         },
         {
-          "command": "pancho.uncommentLine"
-        },
-        {
-          "separator": "before",
           "command": "pancho.commentBlock"
-        },
-        {
-          "command": "pancho.uncommentBlock"
         }
       ],
       "panchoDesarrolladores": [
@@ -1232,17 +1447,12 @@
         },
         {
           "separator": "before",
-          "command": "pancho.deleteLinesContaining"
+          "command": "pancho.deleteLinesContaining",
+          "when": "editorHasSelection"
         },
         {
-          "command": "pancho.keepOnlyLinesContaining"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.highlightMatches"
-        },
-        {
-          "command": "pancho.countMatches"
+          "command": "pancho.keepOnlyLinesContaining",
+          "when": "editorHasSelection"
         },
         {
           "separator": "before",
@@ -1266,16 +1476,24 @@
         },
         {
           "separator": "before",
-          "command": "pancho.columnInsert"
+          "command": "pancho.columnInsert",
+          "when": "editorHasMultipleSelections"
         },
         {
-          "command": "pancho.columnDelete"
+          "command": "pancho.columnDelete",
+          "when": "editorHasMultipleSelections"
         },
         {
-          "command": "pancho.columnCopy"
+          "command": "pancho.columnCopy",
+          "when": "editorHasMultipleSelections"
         },
         {
-          "command": "pancho.columnPaste"
+          "command": "pancho.columnPaste",
+          "when": "editorHasMultipleSelections"
+        },
+        {
+          "command": "pancho.columnFillSeries",
+          "when": "editorHasMultipleSelections"
         },
         {
           "separator": "before",
@@ -1321,14 +1539,6 @@
         },
         {
           "command": "pancho.unescapeForHTML"
-        }
-      ],
-      "panchoBuscar": [
-        {
-          "command": "pancho.findInFiles"
-        },
-        {
-          "command": "pancho.replaceInFiles"
         }
       ],
       "panchoDevTools": [
@@ -1423,6 +1633,7 @@
     "bundle:production": "node esbuild.config.mjs --production",
     "package:production": "npm run bundle:production",
     "generate:readme": "node scripts/generate-readme.js",
+    "l10n:check": "node scripts/check-l10n.js",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "build": "npm run bundle",

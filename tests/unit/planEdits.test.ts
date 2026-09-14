@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals';
-import { planSelectionEdits, moveSelectedLines, applyPlannedEdits } from '../../src/core/planEdits';
+import { planSelectionEdits, applyPlannedEdits } from '../../src/core/planEdits';
 
 describe('planSelectionEdits', () => {
   it('expands an empty cursor to its whole line', async () => {
@@ -48,31 +48,3 @@ describe('applyPlannedEdits', () => {
   });
 });
 
-describe('moveSelectedLines', () => {
-  const text = 'L0\nL1\nL2\nL3';
-
-  it('moves a single line up', () => {
-    expect(moveSelectedLines(text, [2], 'up')).toBe('L0\nL2\nL1\nL3');
-  });
-
-  it('moves a single line down', () => {
-    expect(moveSelectedLines(text, [1], 'down')).toBe('L0\nL2\nL1\nL3');
-  });
-
-  it('does nothing at the boundaries', () => {
-    expect(moveSelectedLines(text, [0], 'up')).toBe(text);
-    expect(moveSelectedLines(text, [3], 'down')).toBe(text);
-  });
-
-  it('moves a contiguous block up as a unit', () => {
-    expect(moveSelectedLines(text, [1, 2], 'up')).toBe('L1\nL2\nL0\nL3');
-  });
-
-  it('moves a contiguous block down as a unit', () => {
-    expect(moveSelectedLines(text, [1, 2], 'down')).toBe('L0\nL3\nL1\nL2');
-  });
-
-  it('moves non-contiguous selections independently', () => {
-    expect(moveSelectedLines(text, [0, 2], 'down')).toBe('L1\nL0\nL3\nL2');
-  });
-});

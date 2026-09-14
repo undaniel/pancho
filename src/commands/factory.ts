@@ -25,18 +25,11 @@ export type TransformOutput = string | { result: string; error?: string; warning
 export type TransformFn = (text: string, tabSize: number) => TransformOutput | Promise<TransformOutput>;
 export type InsertFn = () => TransformOutput | Promise<TransformOutput>;
 export type InfoFn = () => string | Promise<string>;
-export type LineTransformFn = (text: string, lineIndices: number[], tabSize: number) => TransformOutput | Promise<TransformOutput>;
 export type DocumentTransformFn = (documentText: string, pattern: string, tabSize: number) => TransformOutput | Promise<TransformOutput>;
 
 interface TextCommandOptions {
     command: CommandName;
     transform: TransformFn;
-    needsProgress?: boolean;
-}
-
-interface LineCommandOptions {
-    command: CommandName;
-    transform: LineTransformFn;
     needsProgress?: boolean;
 }
 
@@ -111,16 +104,6 @@ function selectionRanges(editor: vscode.TextEditor): SelectionRange[] {
     }));
 }
 
-function touchedLineIndices(editor: vscode.TextEditor): number[] {
-    const lines = new Set<number>();
-    for (const selection of editor.selections) {
-        for (let line = selection.start.line; line <= selection.end.line; line++) {
-            lines.add(line);
-        }
-    }
-    return Array.from(lines).sort((a, b) => a - b);
-}
-
 export function registerTextCommand(context: vscode.ExtensionContext, options: TextCommandOptions): void {
     const { command, transform, needsProgress = false } = options;
     context.subscriptions.push(
@@ -163,7 +146,11 @@ export function registerTextCommand(context: vscode.ExtensionContext, options: T
                         error = processed.error;
                         warning = processed.warning;
                     } else {
-                        const plan = await planSelectionEdits(fullText, ranges, text => transform(text, tabSize));
+                        const plan = await planSelectionEdits(fullText, ranges, text => transform(text, tabSize), () => token.isCancellationRequested);
+                        if (plan.cancelled) {
+                            cancelled = true;
+                            return;
+                        }
                         if (plan.error) {
                             error = plan.error;
                             return;
@@ -189,53 +176,6 @@ export function registerTextCommand(context: vscode.ExtensionContext, options: T
                 } else if (edits) {
                     await applyEdits(editor, toVscodeEdits(editor.document, edits));
                 }
-            } catch (err) {
-                console.error('[Pancho] Error:', err);
-                vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
-            }
-        })
-    );
-}
-
-export function registerLineCommand(context: vscode.ExtensionContext, options: LineCommandOptions): void {
-    const { command, transform, needsProgress = false } = options;
-    context.subscriptions.push(
-        vscode.commands.registerCommand(command, async () => {
-            try {
-                const editor = vscode.window.activeTextEditor;
-                if (!editor) {
-                    vscode.window.showWarningMessage(vscode.l10n.t('Pancho: No active editor'));
-                    return;
-                }
-
-                const fullText = editor.document.getText();
-                if (!isFileWithinLimit(fullText)) {
-                    vscode.window.showWarningMessage(formatFileTooLargeMessage(fullText));
-                    return;
-                }
-
-                recordCommandAction(context, command);
-
-                const tabSize = getTabSize();
-                const lineIndices = touchedLineIndices(editor);
-                let value: string | undefined;
-                let error: string | undefined;
-                let warning: string | undefined;
-
-                await runOperation(command, fullText.length, needsProgress, async (_progress, token) => {
-                    if (token.isCancellationRequested) return;
-                    const processed = processResult(await transform(fullText, lineIndices, tabSize));
-                    value = processed.value;
-                    error = processed.error;
-                    warning = processed.warning;
-                });
-
-                reportProcessed({ error, warning });
-                if (error || value === undefined) return;
-                if (DESTRUCTIVE_COMMANDS.has(command) && isPreviewEnabled()) {
-                    if (!(await confirmWithPreview(fullText, value, command))) return;
-                }
-                await replaceDocumentText(() => value!);
             } catch (err) {
                 console.error('[Pancho] Error:', err);
                 vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
@@ -396,17 +336,19 @@ export function registerPromptCommand(context: vscode.ExtensionContext, options:
     );
 }
 
-export interface AsyncCommandOptions {
+export interface DelegateCommandOptions {
     command: CommandName;
-    handler: () => Promise<void>;
+    /** Native VS Code command to delegate to. */
+    target: string;
 }
 
-export function registerAsyncCommand(context: vscode.ExtensionContext, options: AsyncCommandOptions): void {
-    const { command, handler } = options;
+export function registerDelegateCommand(context: vscode.ExtensionContext, options: DelegateCommandOptions): void {
+    const { command, target } = options;
     context.subscriptions.push(
         vscode.commands.registerCommand(command, async () => {
             try {
-                await handler();
+                recordCommandAction(context, command);
+                await vscode.commands.executeCommand(target);
             } catch (err) {
                 console.error('[Pancho] Error:', err);
                 vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
