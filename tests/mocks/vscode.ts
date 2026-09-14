@@ -52,6 +52,39 @@ export class WorkspaceEdit {
     delete(): void {}
 }
 
+export class MarkdownString {
+    value = '';
+    appendMarkdown(text: string): this {
+        this.value += text;
+        return this;
+    }
+    appendCodeblock(text: string, language?: string): this {
+        this.value += `\`\`\`${language ?? ''}\n${text}\n\`\`\``;
+        return this;
+    }
+}
+
+export class Hover {
+    constructor(public contents: unknown, public range?: unknown) {}
+}
+
+export const CodeActionKind = {
+    QuickFix: { value: 'quickfix' },
+    Refactor: { value: 'refactor' },
+};
+
+export class CodeAction {
+    command?: { command: string; title: string };
+    constructor(public title: string, public kind?: { value: string }) {}
+}
+
+export const ViewColumn = { One: 1, Two: 2 };
+
+export const languages = {
+    registerHoverProvider: jest.fn(() => ({ dispose: () => {} })),
+    registerCodeActionsProvider: jest.fn(() => ({ dispose: () => {} })),
+};
+
 export const ProgressLocation = { Notification: 15, Window: 10, SourceControl: 1 };
 
 export const StatusBarAlignment = { Left: 1, Right: 2 };
@@ -91,6 +124,15 @@ export const window = {
     withProgress: jest.fn(async (_opts: unknown, task: (...args: unknown[]) => unknown) => task({ report: () => {} }, { isCancellationRequested: false, onCancellationRequested: () => ({ dispose: () => {} }) })),
     createOutputChannel: jest.fn(() => ({ clear: () => {}, appendLine: () => {}, show: () => {}, dispose: () => {} })),
     createStatusBarItem: jest.fn(() => ({ text: '', tooltip: '', command: '', show: () => {}, hide: () => {}, dispose: () => {} })),
+    createWebviewPanel: jest.fn(() => ({
+        webview: { html: '', postMessage: jest.fn(), onDidReceiveMessage: jest.fn(() => ({ dispose: () => {} })) },
+        reveal: jest.fn(),
+        onDidDispose: jest.fn(() => ({ dispose: () => {} })),
+        dispose: jest.fn(),
+    })),
+    showSaveDialog: jest.fn(async () => undefined),
+    showOpenDialog: jest.fn(async () => undefined),
+    state: { focused: true },
 };
 
 function getConfiguration(): { get: <T>(key: string, def: T) => T } {
@@ -111,6 +153,7 @@ export const workspace = {
     registerTextDocumentContentProvider: jest.fn(() => ({ dispose: () => {} })),
     fs: {
         writeFile: jest.fn(async () => {}),
+        readFile: jest.fn(async () => new Uint8Array()),
     },
 };
 

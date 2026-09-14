@@ -50,10 +50,12 @@ function scheduleUpdate(): void {
     updateTimer = setTimeout(() => updateCounters(), 150);
 }
 
-function renderCounts(lines: number, words: number, chars: number): void {
+function renderCounts(lines: number, words: number, chars: number, isSelection = false): void {
     if (!countersItem) return;
-    countersItem.text = `L:${lines} P:${words} C:${chars}`;
-    countersItem.tooltip = vscode.l10n.t('Pancho counters');
+    countersItem.text = `${isSelection ? 'Sel ' : ''}L:${lines} P:${words} C:${chars}`;
+    countersItem.tooltip = isSelection
+        ? vscode.l10n.t('Pancho counters (selection)')
+        : vscode.l10n.t('Pancho counters');
 }
 
 export function updateCounters(): void {
@@ -74,7 +76,7 @@ export function updateCounters(): void {
             countersItem.tooltip = vscode.l10n.t('Document too large to count');
             return;
         }
-        renderCounts(countLines(selectionText), countWords(selectionText), countCharacters(selectionText));
+        renderCounts(countLines(selectionText), countWords(selectionText), countCharacters(selectionText), true);
         return;
     }
 

@@ -105,4 +105,49 @@ export function registerMacroCommands(context: vscode.ExtensionContext): void {
             );
         })
     );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand(Commands.MACRO_EXPORT, async () => {
+            const macros = getSavedMacros(context);
+            const names = Object.keys(macros);
+            if (names.length === 0) {
+                vscode.window.showWarningMessage(vscode.l10n.t('Pancho: No saved macros'));
+                return;
+            }
+            const target = await vscode.window.showSaveDialog({
+                saveLabel: vscode.l10n.t('Export macros'),
+                filters: { JSON: ['json'] },
+            });
+            if (!target) return;
+            await vscode.workspace.fs.writeFile(target, Buffer.from(JSON.stringify(macros, null, 2), 'utf8'));
+            vscode.window.showInformationMessage(vscode.l10n.t('Pancho: Exported {0} macro(s)', names.length));
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand(Commands.MACRO_IMPORT, async () => {
+            const picked = await vscode.window.showOpenDialog({
+                canSelectMany: false,
+                openLabel: vscode.l10n.t('Import macros'),
+                filters: { JSON: ['json'] },
+            });
+            if (!picked || picked.length === 0) return;
+            try {
+                const data = await vscode.workspace.fs.readFile(picked[0]);
+                const parsed = JSON.parse(Buffer.from(data).toString('utf8')) as Record<string, MacroStep[]>;
+                const macros = getSavedMacros(context);
+                let imported = 0;
+                for (const [name, steps] of Object.entries(parsed)) {
+                    if (Array.isArray(steps)) {
+                        macros[name] = steps;
+                        imported++;
+                    }
+                }
+                await context.globalState.update(STORAGE_KEY, macros);
+                vscode.window.showInformationMessage(vscode.l10n.t('Pancho: Imported {0} macro(s)', imported));
+            } catch {
+                vscode.window.showErrorMessage(vscode.l10n.t('Pancho: Invalid macro file'));
+            }
+        })
+    );
 }

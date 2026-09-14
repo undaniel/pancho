@@ -27,6 +27,44 @@ export function sortNumeric(text: string): string {
     }).join('\n');
 }
 
+export interface SortByColumnOptions {
+    delimiter: string;
+    column: number;
+    numeric?: boolean;
+    descending?: boolean;
+    hasHeader?: boolean;
+}
+
+export function sortByColumn(text: string, options: SortByColumnOptions): string {
+    const delimiter = options.delimiter || ',';
+    const column = options.column;
+    const lines = text.split('\n');
+    const header = options.hasHeader ? lines[0] : undefined;
+    const body = options.hasHeader ? lines.slice(1) : lines;
+
+    const keyOf = (line: string): string => (line.split(delimiter)[column] ?? '').trim();
+
+    const compare = (a: string, b: string): number => {
+        const ka = keyOf(a);
+        const kb = keyOf(b);
+        let result: number;
+        if (options.numeric) {
+            const na = parseFloat(ka);
+            const nb = parseFloat(kb);
+            if (isNaN(na) && isNaN(nb)) result = ka.localeCompare(kb);
+            else if (isNaN(na)) result = 1;
+            else if (isNaN(nb)) result = -1;
+            else result = na - nb;
+        } else {
+            result = ka.localeCompare(kb, undefined, { numeric: true, sensitivity: 'base' });
+        }
+        return options.descending ? -result : result;
+    };
+
+    const sorted = [...body].sort(compare);
+    return (header !== undefined ? [header, ...sorted] : sorted).join('\n');
+}
+
 function tokenize(value: string): (string | number)[] {
     const tokens: (string | number)[] = [];
     value.replace(/(\d+)|(\D+)/g, (_, digits, text) => {

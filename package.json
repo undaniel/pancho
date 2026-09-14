@@ -97,6 +97,18 @@
           "type": "boolean",
           "default": false,
           "description": "%setting.previewDestructive.description%"
+        },
+        "pancho.clipboardHistoryEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "%setting.clipboardHistoryEnabled.description%"
+        },
+        "pancho.clipboardHistorySize": {
+          "type": "number",
+          "default": 20,
+          "minimum": 5,
+          "maximum": 100,
+          "description": "%setting.clipboardHistorySize.description%"
         }
       }
     },
@@ -180,6 +192,23 @@
         "when": "editorTextFocus",
         "accessibilityInformation": {
           "label": "%keybinding.repeatLast.label%"
+        }
+      },
+      {
+        "command": "pancho.clipboardHistory",
+        "key": "ctrl+alt+v",
+        "mac": "cmd+alt+v",
+        "when": "editorTextFocus",
+        "accessibilityInformation": {
+          "label": "%keybinding.clipboardHistory.label%"
+        }
+      },
+      {
+        "command": "pancho.regexTesterPanel",
+        "key": "ctrl+alt+r",
+        "mac": "cmd+alt+r",
+        "accessibilityInformation": {
+          "label": "%keybinding.regexTesterPanel.label%"
         }
       }
     ],
@@ -811,6 +840,12 @@
         "enablement": "editorIsOpen"
       },
       {
+        "command": "pancho.sortByColumn",
+        "title": "%command.pancho.sortByColumn.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
+      },
+      {
         "command": "pancho.transposeCharacters",
         "title": "%command.pancho.transposeCharacters.title%",
         "category": "%command.category%",
@@ -949,6 +984,11 @@
         "enablement": "editorIsOpen"
       },
       {
+        "command": "pancho.regexTesterPanel",
+        "title": "%command.pancho.regexTesterPanel.title%",
+        "category": "%command.category%"
+      },
+      {
         "command": "pancho.showMenu",
         "title": "%command.pancho.showMenu.title%",
         "category": "%command.category%"
@@ -1023,6 +1063,22 @@
         "command": "pancho.macroList",
         "title": "%command.pancho.macroList.title%",
         "category": "%command.category%"
+      },
+      {
+        "command": "pancho.macroExport",
+        "title": "%command.pancho.macroExport.title%",
+        "category": "%command.category%"
+      },
+      {
+        "command": "pancho.macroImport",
+        "title": "%command.pancho.macroImport.title%",
+        "category": "%command.category%"
+      },
+      {
+        "command": "pancho.clipboardHistory",
+        "title": "%command.pancho.clipboardHistory.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
       },
       {
         "command": "pancho.filterLinesByRegex",
@@ -1162,6 +1218,9 @@
           "command": "pancho.sortNumeric"
         },
         {
+          "command": "pancho.sortByColumn"
+        },
+        {
           "separator": "before",
           "command": "pancho.reverseLines"
         },
@@ -1233,341 +1292,10 @@
           "command": "pancho.toWindowsEOL"
         },
         {
-          "command": "pancho.toUnixEOL"
-        },
-        {
-          "command": "pancho.toMacEOL"
-        }
-      ],
-      "panchoTextoGeneral": [
-        {
-          "command": "pancho.countWords"
-        },
-        {
-          "command": "pancho.countCharacters"
-        },
-        {
-          "command": "pancho.countLines"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.removeDuplicateWords"
-        },
-        {
-          "command": "pancho.numberLines"
-        },
-        {
-          "command": "pancho.removeLineNumbers"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.slugify"
-        },
-        {
-          "command": "pancho.reverseWords"
-        },
-        {
-          "command": "pancho.removeDiacritics"
-        },
-        {
-          "command": "pancho.stripHTMLTags"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.pasteWithoutLineBreak"
-        },
-        {
-          "command": "pancho.copyToMultipleLines"
-        },
-        {
-          "command": "pancho.formatAsCSV"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.csvToJSON"
-        },
-        {
-          "command": "pancho.jsonToCSV"
-        },
-        {
-          "command": "pancho.csvToTSV"
-        },
-        {
-          "command": "pancho.tsvToCSV"
-        },
-        {
-          "command": "pancho.csvToMarkdown"
-        },
-        {
-          "command": "pancho.markdownTableToCSV"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.filterLinesByRegex"
-        },
-        {
-          "command": "pancho.removeLinesByRegex"
-        }
-      ],
-      "panchoCodificacion": [
-        {
-          "command": "pancho.base64Encode"
-        },
-        {
-          "command": "pancho.base64Decode"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.urlEncode"
-        },
-        {
-          "command": "pancho.urlDecode"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.htmlEntitiesEncode"
-        },
-        {
-          "command": "pancho.htmlEntitiesDecode"
-        }
-      ],
-      "panchoFormateo": [
-        {
-          "command": "pancho.minifyJSON"
-        },
-        {
-          "command": "pancho.prettifyJSON"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.minifyHTML"
-        },
-        {
-          "command": "pancho.prettifyHTML"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.minifyCSS"
-        },
-        {
-          "command": "pancho.prettifyCSS"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.minifyJS"
-        },
-        {
-          "command": "pancho.prettifyJS"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.formatSQL"
-        },
-        {
-          "command": "pancho.prettifyXML"
-        },
-        {
-          "command": "pancho.minifyXML"
-        }
-      ],
-      "panchoHashBinario": [
-        {
-          "command": "pancho.hashMD5"
-        },
-        {
-          "command": "pancho.hashSHA256"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.toBinary"
-        },
-        {
-          "command": "pancho.fromBinary"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.toHex"
-        },
-        {
-          "command": "pancho.fromHex"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.hexToRgb"
-        },
-        {
-          "command": "pancho.rgbToHex"
-        }
-      ],
-      "panchoInsertar": [
-        {
-          "command": "pancho.insertShortTime"
-        },
-        {
-          "command": "pancho.insertLongTime"
-        },
-        {
-          "command": "pancho.insertDateTime"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.loremIpsum"
-        },
-        {
-          "command": "pancho.generateUUID"
-        },
-        {
-          "command": "pancho.generateRandomString"
-        }
-      ],
-      "panchoComentarios": [
-        {
-          "command": "pancho.commentLine"
-        },
-        {
-          "command": "pancho.commentBlock"
-        }
-      ],
-      "panchoDesarrolladores": [
-        {
-          "command": "pancho.duplicateLine"
-        },
-        {
-          "command": "pancho.insertLineBefore"
-        },
-        {
-          "command": "pancho.insertLineAfter"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.moveLineUp"
-        },
-        {
-          "command": "pancho.moveLineDown"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.deleteLinesContaining",
-          "when": "editorHasSelection"
-        },
-        {
-          "command": "pancho.keepOnlyLinesContaining",
-          "when": "editorHasSelection"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.transposeCharacters"
-        },
-        {
-          "command": "pancho.transposeWords"
-        },
-        {
-          "command": "pancho.transposeLines"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.alignEquals"
-        },
-        {
-          "command": "pancho.alignColons"
-        },
-        {
-          "command": "pancho.alignByChar"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.columnInsert",
-          "when": "editorHasMultipleSelections"
-        },
-        {
-          "command": "pancho.columnDelete",
-          "when": "editorHasMultipleSelections"
-        },
-        {
-          "command": "pancho.columnCopy",
-          "when": "editorHasMultipleSelections"
-        },
-        {
-          "command": "pancho.columnPaste",
-          "when": "editorHasMultipleSelections"
-        },
-        {
-          "command": "pancho.columnFillSeries",
-          "when": "editorHasMultipleSelections"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.macroStart"
-        },
-        {
-          "command": "pancho.macroStop"
-        },
-        {
-          "command": "pancho.macroPlay"
-        },
-        {
-          "command": "pancho.macroSave"
-        },
-        {
-          "command": "pancho.macroLoad"
-        },
-        {
-          "command": "pancho.macroList"
-        }
-      ],
-      "panchoEscapar": [
-        {
-          "command": "pancho.escapeJSON"
-        },
-        {
-          "command": "pancho.unescapeJSON"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.escapeForSQL"
-        },
-        {
-          "command": "pancho.unescapeForSQL"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.escapeForRegex"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.escapeForHTML"
-        },
-        {
-          "command": "pancho.unescapeForHTML"
-        }
-      ],
-      "panchoDevTools": [
-        {
-          "command": "pancho.decodeJWT"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.timestampToISO"
-        },
-        {
-          "command": "pancho.isoToTimestamp"
-        },
-        {
-          "command": "pancho.nowAsTimestamp"
-        },
-        {
-          "separator": "before",
-          "command": "pancho.aesEncrypt"
-        },
-        {
-          "command": "pancho.aesDecrypt"
-        },
-        {
-          "separator": "before",
           "command": "pancho.colorInfo"
         },
         {
-          "command": "pancho.regexTester"
+          "command": "pancho.regexTesterPanel"
         }
       ]
     },

@@ -5,8 +5,12 @@ import { registerColumnCommands } from './commands/column';
 import { registerMacroCommands } from './commands/macro';
 import { registerFilterCommands } from './commands/filter';
 import { initStatusBar, updateCounters, showInfo } from './utils/statusBar';
-import { disposeRegexWorker } from './utils/safeRegex';
+import { disposeRegexWorker, prewarmRegexWorker } from './utils/safeRegex';
 import { registerPreviewProvider } from './utils/preview';
+import { registerClipboardCommands } from './commands/clipboard';
+import { registerHoverProvider } from './providers/hover';
+import { registerCodeActionsProvider } from './providers/codeActions';
+import { registerRegexPanel } from './providers/regexPanel';
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log('[Pancho] Extension activating...');
@@ -16,7 +20,12 @@ export function activate(context: vscode.ExtensionContext): void {
     registerColumnCommands(context);
     registerMacroCommands(context);
     registerFilterCommands(context);
+    registerClipboardCommands(context);
     registerPreviewProvider(context);
+    registerHoverProvider(context);
+    registerCodeActionsProvider(context);
+    registerRegexPanel(context);
+    prewarmRegexWorker();
 
     context.subscriptions.push(
             vscode.commands.registerCommand('pancho.showStatusInfo', () => {

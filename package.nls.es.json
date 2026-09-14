@@ -181,5 +181,14 @@
   "command.pancho.aesEncrypt.title": "Cifrar con AES...",
   "command.pancho.aesDecrypt.title": "Descifrar con AES...",
   "command.pancho.colorInfo.title": "Información de color",
-  "command.pancho.regexTester.title": "Probador de regex..."
+  "command.pancho.regexTester.title": "Probador de regex...",
+  "command.pancho.regexTesterPanel.title": "Panel de test de regex",
+  "command.pancho.sortByColumn.title": "Ordenar por columna...",
+  "command.pancho.clipboardHistory.title": "Historial de portapapeles...",
+  "command.pancho.macroExport.title": "Macro: exportar...",
+  "command.pancho.macroImport.title": "Macro: importar...",
+  "setting.clipboardHistoryEnabled.description": "Registra el portapapeles en segundo plano para poder re-pegar desde el historial",
+  "setting.clipboardHistorySize.description": "Numero maximo de entradas del portapapeles a conservar",
+  "keybinding.clipboardHistory.label": "Pegar desde el historial de portapapeles de Pancho",
+  "keybinding.regexTesterPanel.label": "Abrir el panel de test de regex de Pancho"
 }

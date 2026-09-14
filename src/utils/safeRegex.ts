@@ -96,6 +96,20 @@ export async function runRegexJob(job: RegexJob, timeoutMs: number = DEFAULT_TIM
     });
 }
 
+/**
+ * Warms up the worker thread so the first user regex does not pay the
+ * thread-spawn cost. Safe to call multiple times.
+ */
+export function prewarmRegexWorker(): void {
+    const workerFile = resolveWorkerPath();
+    if (!workerFile) return;
+    try {
+        ensureWorker(workerFile);
+    } catch {
+        // Prewarming is best-effort; the fallback path still works.
+    }
+}
+
 export function disposeRegexWorker(): void {
     flushPending({ error: 'exec' });
     resetWorker();

@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals';
-import { sortNatural, sortNaturalDescending } from '../../src/transforms/sort';
+import { sortNatural, sortNaturalDescending, sortByColumn } from '../../src/transforms/sort';
 
 describe('sort natural', () => {
   it('orders numeric suffixes naturally', () => {
@@ -19,5 +19,29 @@ describe('sort natural', () => {
     const sorted = sortNatural(lines.join('\n')).split('\n');
     expect(sorted[0]).toBe('item0');
     expect(sorted[sorted.length - 1]).toBe('item19999');
+  });
+});
+
+describe('sort by column', () => {
+  it('sorts by a zero-based column', () => {
+    const input = ['b,3', 'a,1', 'c,2'].join('\n');
+    expect(sortByColumn(input, { delimiter: ',', column: 0 })).toBe(['a,1', 'b,3', 'c,2'].join('\n'));
+    expect(sortByColumn(input, { delimiter: ',', column: 1, numeric: true })).toBe(['a,1', 'c,2', 'b,3'].join('\n'));
+  });
+
+  it('sorts numerically when asked', () => {
+    const input = ['x,10', 'x,2', 'x,1'].join('\n');
+    expect(sortByColumn(input, { delimiter: ',', column: 1, numeric: true })).toBe(['x,1', 'x,2', 'x,10'].join('\n'));
+  });
+
+  it('keeps the header in place', () => {
+    const input = ['name,age', 'luis,30', 'ana,25'].join('\n');
+    expect(sortByColumn(input, { delimiter: ',', column: 1, numeric: true, hasHeader: true }))
+      .toBe(['name,age', 'ana,25', 'luis,30'].join('\n'));
+  });
+
+  it('supports tab delimiters', () => {
+    const input = ['b\t2', 'a\t1'].join('\n');
+    expect(sortByColumn(input, { delimiter: '\t', column: 0 })).toBe(['a\t1', 'b\t2'].join('\n'));
   });
 });

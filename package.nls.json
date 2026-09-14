@@ -181,5 +181,14 @@
   "command.pancho.aesEncrypt.title": "AES encrypt...",
   "command.pancho.aesDecrypt.title": "AES decrypt...",
   "command.pancho.colorInfo.title": "Color info",
-  "command.pancho.regexTester.title": "Regex tester..."
+  "command.pancho.regexTester.title": "Regex tester...",
+  "command.pancho.regexTesterPanel.title": "Regex tester panel",
+  "command.pancho.sortByColumn.title": "Sort by column...",
+  "command.pancho.clipboardHistory.title": "Clipboard history...",
+  "command.pancho.macroExport.title": "Macro: export...",
+  "command.pancho.macroImport.title": "Macro: import...",
+  "setting.clipboardHistoryEnabled.description": "Record the clipboard in the background so it can be re-pasted from the history",
+  "setting.clipboardHistorySize.description": "Maximum number of clipboard entries to keep",
+  "keybinding.clipboardHistory.label": "Paste from Pancho clipboard history",
+  "keybinding.regexTesterPanel.label": "Open the Pancho regex tester panel"
 }

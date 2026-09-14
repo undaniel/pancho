@@ -71,14 +71,22 @@ function localize(value: string | undefined, nls: Record<string, string>): strin
     return value.replace(/%([^%]+)%/g, (match, key) => nls[key] ?? match);
 }
 
+const RECENT_KEY = 'pancho.recentCommands';
+const MAX_RECENTS = 5;
+
+export function collectTitles(manifest: Manifest | undefined, nls: Record<string, string>): Map<string, string> {
+    const titles = new Map<string, string>();
+    for (const command of manifest?.contributes?.commands ?? []) {
+        titles.set(command.command, localize(command.title, nls));
+    }
+    return titles;
+}
+
 export function buildCategories(manifest: Manifest | undefined, nls: Record<string, string>): Category[] {
     const contributes = manifest?.contributes;
     if (!contributes) return [];
 
-    const titles = new Map<string, string>();
-    for (const command of contributes.commands ?? []) {
-        titles.set(command.command, localize(command.title, nls));
-    }
+    const titles = collectTitles(manifest, nls);
 
     const submenuLabels = new Map<string, string>();
     for (const submenu of contributes.submenus ?? []) {
@@ -111,10 +119,21 @@ export function buildCategories(manifest: Manifest | undefined, nls: Record<stri
 }
 
 async function showMenu(context: vscode.ExtensionContext): Promise<void> {
-    const categories = buildCategories(findManifest(), readNls(context));
+    const manifest = findManifest();
+    const nls = readNls(context);
+    const categories = buildCategories(manifest, nls);
     if (categories.length === 0) {
         vscode.window.showWarningMessage(vscode.l10n.t('Pancho: No commands available'));
         return;
+    }
+
+    const titles = collectTitles(manifest, nls);
+    const recents = context.globalState.get<string[]>(RECENT_KEY, []);
+    const recentEntries = recents
+        .filter(command => titles.has(command))
+        .map(command => ({ command, title: titles.get(command)! }));
+    if (recentEntries.length > 0) {
+        categories.unshift({ id: 'recent', label: vscode.l10n.t('Pancho: Recently used'), entries: recentEntries });
     }
 
     const categoryPick = await vscode.window.showQuickPick(
@@ -136,6 +155,10 @@ async function showMenu(context: vscode.ExtensionContext): Promise<void> {
         { placeHolder: categoryPick.category.label, matchOnDescription: true }
     );
     if (!commandPick) return;
+
+    const nextRecents = [commandPick.command, ...recents.filter(command => command !== commandPick.command)]
+        .slice(0, MAX_RECENTS);
+    await context.globalState.update(RECENT_KEY, nextRecents);
 
     await vscode.commands.executeCommand(commandPick.command);
 }

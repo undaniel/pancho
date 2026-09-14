@@ -16,7 +16,7 @@ import { toSentenceCase, invertCase, randomCase, toKebabCase, toSnakeCase, toCam
 import { trimLines } from '../transforms/lineUtils';
 import { formatShortDateTime, formatLongDateTime, formatCustomDateTime } from '../transforms/dateTime';
 import { removeDuplicateLines, removeConsecutiveDuplicateLines, reverseLines, removeEmptyLines } from '../transforms/lines';
-import { sortNatural, sortNaturalDescending, sortByLength, sortByLengthDescending, sortNumeric } from '../transforms/sort';
+import { sortNatural, sortNaturalDescending, sortByLength, sortByLengthDescending, sortNumeric, sortByColumn } from '../transforms/sort';
 import { removeDiacritics, stripHTMLTags, wrapText, unwrapText } from '../transforms/text';
 import { transposeCharacters, transposeWords, transposeLines } from '../transforms/transpose';
 import { toWindowsEOL, toUnixEOL, toMacEOL } from '../transforms/eol';
@@ -137,6 +137,19 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
     registerTextCommand(context, { command: Commands.SORT_BY_LENGTH, transform: (text) => sortByLength(text) });
     registerTextCommand(context, { command: Commands.SORT_BY_LENGTH_DESCENDING, transform: (text) => sortByLengthDescending(text) });
     registerTextCommand(context, { command: Commands.SORT_NUMERIC, transform: (text) => sortNumeric(text) });
+    registerPromptCommand(context, {
+        command: Commands.SORT_BY_COLUMN,
+        prompts: [
+            { label: vscode.l10n.t('Delimiter'), placeholder: ',' },
+            { label: vscode.l10n.t('Column number (0-based)'), placeholder: '0' },
+            { label: vscode.l10n.t('Numeric sort? (y/n)'), placeholder: 'n' },
+        ],
+        transform: (text, delimiter, column, numeric) => sortByColumn(text, {
+            delimiter: delimiter || ',',
+            column: Math.max(0, parseInt(column || '0', 10) || 0),
+            numeric: /^y(es)?$/i.test(numeric || ''),
+        }),
+    });
     registerTextCommand(context, { command: Commands.TRANSPOSE_CHARS, transform: (text) => transposeCharacters(text) });
     registerTextCommand(context, { command: Commands.TRANSPOSE_WORDS, transform: (text) => transposeWords(text) });
     registerTextCommand(context, { command: Commands.TRANSPOSE_LINES, transform: (text) => transposeLines(text) });

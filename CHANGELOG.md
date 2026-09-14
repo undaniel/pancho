@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `pancho.columnFillSeries` — fill a column block with an incrementing series (start/step).
 - `pancho.repeatLastTimes` — repeat the last command a chosen number of times.
+- `pancho.sortByColumn` — sort rows by a chosen column (delimiter + index + numeric).
+- `pancho.clipboardHistory` (keybinding `Ctrl+Alt+V`) — pick and paste a previous clipboard entry.
+- `pancho.regexTesterPanel` (keybinding `Ctrl+Alt+R`) — Webview panel with live matches, groups and replace preview + apply.
+- `pancho.macroExport` / `pancho.macroImport` — share saved macros as JSON.
+- **Hover provider:** hovering a JWT, timestamp, hex/RGB color or printable Base64 shows the decoded value inline.
+- **Code Actions provider:** selecting a JWT / JSON / CSV / color / Base64 / timestamp offers one-click Pancho conversions (`Ctrl+.`).
+- Command hub now shows a **Recently used** category on top.
+- Settings `pancho.clipboardHistoryEnabled` / `pancho.clipboardHistorySize`.
 - Command palette grouping via `category: Pancho` and `enablement: editorIsOpen` (editor commands are disabled without an editor).
 - Context-menu `when` clauses: column commands only appear with multiple selections; keep/remove-lines only with a selection.
 - `npm run l10n:check` and a unit test that fail when a runtime string is missing from `l10n/bundle.l10n.json`.
@@ -19,7 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **Native delegation:** 17 commands keep their Pancho menu entry and keyboard shortcut but now delegate to VS Code's own implementation (consistency + native multi-cursor): uppercase/lowercase/title case, comment & block comment, tabs↔spaces, indent/outdent, move / duplicate / insert line, sort A–Z / Z–A and join lines.
-- Status bar counters hide when there is no active editor.
+- Status bar counters now show `Sel L:x P:y C:z` while there is a selection, and hide when there is no active editor.
+- The regex worker is pre-warmed on activation so the first regex does not pay the thread-spawn cost.
 - Localized previously hardcoded error strings (`align`, `convert`, `jwt`, `timestamp`, `colorInfo`).
 - Removed the oversized `.vsix` binaries and `README_PANCHO.md` from the repository (use GitHub Releases); `.DS_Store` untracked.
 
@@ -27,11 +36,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Commands already provided by VS Code: `uncommentLine` / `uncommentBlock` (native comment toggle), `findInFiles` / `replaceInFiles` (native global search/replace), `highlightMatches` / `countMatches` (find widget), `encodingInfo` / `changeEncoding` (status bar / native command).
 - Now-unused modules and their tests: `transforms/comments`, `transforms/commentStyles`, `transforms/tabs`, `transforms/search`, `transforms/searchAdvanced`, `features/encoding`, `commands/encoding`.
-- **Total commands:** 141 → 133.
+- **Total commands:** 141 → 138 (after removing 8 redundant and adding 5 new).
 
 ### Testing
 
-- 216 unit tests (removed tests for deleted/delegated code).
+- 245 unit tests.
+
+### Docs
+
+- **Restructured documentation** so the Marketplace README stays short (653 → 164 lines):
+  - `README.md` — English overview: install, features, top 10, why, privacy, how to use, shortcuts, settings, contributing.
+  - `docs/commands.md` / `docs/commands.es.md` — the full 138-command reference.
+  - `docs/README.es.md` — the Spanish guide.
+  - `docs/demos.md` — hover, quick fixes, regex panel, columns, clipboard, sorting and macros examples.
+- README: install/why/top-10 sections, Marketplace & Open VSX badges, table of contents, contributing guide and keyboard-shortcut conflict notes; removed stale claims for deleted commands.
+- `.vscodeignore`: also ignore `**/*.vsix` and `.github/**`.
 
 ## [1.3.0] - 2026-09-14
 
