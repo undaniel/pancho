@@ -20,6 +20,8 @@ dist/transforms/**
 dist/utils/**
 dist/test/**
 images/README.md
+images/icon-large.png
+coverage/**
 *.webp
 !pancho.webp
 **/*.vsix
