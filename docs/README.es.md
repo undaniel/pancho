@@ -86,7 +86,7 @@ Más ejemplos en [demos.md](./demos.md).
 
 ## Comandos
 
-Los **138 comandos** se agrupan en: Edición, Líneas, Mayúsculas y minúsculas, Tabulaciones, Fin de línea, Texto general, Codificación, Formateo, Hash y binario, Insertar, Comentar, Desarrolladores, Columnas, Macros, Escapar, Herramientas de desarrollo y Hub de comandos.
+Los **138 comandos** se agrupan en siete categorías para que el menú contextual sea corto: **Editar**, **Líneas**, **Texto y mayúsculas**, **Convertir**, **Escapar**, **Desarrollo** y **Macros y columnas**, más el **Hub de comandos**.
 
 Lista completa con descripciones: **[Comandos de Pancho](./commands.es.md)**.
 

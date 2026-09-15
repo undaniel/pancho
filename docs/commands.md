@@ -1,32 +1,39 @@
 # Pancho commands
 
-Full list of the **138 commands** shipped by Pancho, grouped by the same categories
-you see in the context menu (`Right-click → Pancho`). Every command is also
-available from the Command Palette under `Pancho:`.
+Full list of the **138 commands** shipped by Pancho, grouped into the same
+categories you see in the context menu (`Right-click → Pancho`). Every command is
+also available from the Command Palette under `Pancho:`.
 
 > [!TIP]
 > The in-editor **command hub** (`Pancho: Show command menu`) lists the same
 > categories with their keyboard shortcuts and your recently used commands.
 
-- [Editing](#editing)
+- [Edit](#edit)
+  - [Editing](#editing)
+  - [Indentation](#indentation)
+  - [End of line](#end-of-line)
 - [Lines](#lines)
-- [Case](#case)
-- [Indentation](#indentation)
-- [End of line](#end-of-line)
-- [General text](#general-text)
-- [Encoding](#encoding)
-- [Formatting](#formatting)
-- [Hash & binary](#hash--binary)
-- [Insert](#insert)
-- [Comment](#comment--uncomment)
-- [Developers](#developers)
-- [Columns](#columns)
-- [Macros](#macros)
+- [Text & Case](#text--case)
+  - [Case](#case)
+  - [General text](#general-text)
+- [Convert](#convert)
+  - [Encoding](#encoding)
+  - [Formatting](#formatting)
+  - [Hash & binary](#hash--binary)
 - [Escape](#escape)
-- [Developer Tools](#developer-tools)
+- [Dev tools](#dev-tools)
+  - [Comment](#comment--uncomment)
+  - [Insert](#insert)
+  - [Developers](#developers)
+  - [Developer Tools](#developer-tools)
+- [Macros & Columns](#macros--columns)
+  - [Macros](#macros)
+  - [Columns](#columns)
 - [Command hub](#command-hub)
 
-## Editing
+## Edit
+
+### Editing
 | Command | Description |
 |---------|-------------|
 | `Pancho: Clean whitespace` | Remove multiple spaces |
@@ -35,6 +42,21 @@ available from the Command Palette under `Pancho:`.
 | `Pancho: Convert line endings to spaces` | Line breaks → spaces |
 | `Pancho: Wrap text...` | Wrap at column width |
 | `Pancho: Unwrap text` | Remove line breaks |
+
+### Indentation
+| Command | Description |
+|---------|-------------|
+| `Pancho: Convert tabs to spaces` | Tabs → spaces |
+| `Pancho: Convert spaces to tabs` | Spaces → tabs |
+| `Pancho: Increase indent` | Increase indent |
+| `Pancho: Decrease indent` | Decrease indent |
+
+### End of line
+| Command | Description |
+|---------|-------------|
+| `Pancho: Convert to Windows (CRLF)` | Windows format |
+| `Pancho: Convert to Unix (LF)` | Unix/Mac format |
+| `Pancho: Convert to Mac (CR)` | Classic Mac format |
 
 ## Lines
 | Command | Description |
@@ -54,7 +76,9 @@ available from the Command Palette under `Pancho:`.
 | `Pancho: Join lines` | Join into a single line |
 | `Pancho: Remove empty lines` | Remove blank lines |
 
-## Case
+## Text & Case
+
+### Case
 | Command | Description |
 |---------|-------------|
 | `Pancho: Convert to UPPERCASE` | UPPERCASE |
@@ -69,22 +93,7 @@ available from the Command Palette under `Pancho:`.
 | `Pancho: Convert to kebab-case` | kebab-case |
 | `Pancho: Convert to CONSTANT_CASE` | CONSTANT_CASE |
 
-## Indentation
-| Command | Description |
-|---------|-------------|
-| `Pancho: Convert tabs to spaces` | Tabs → spaces |
-| `Pancho: Convert spaces to tabs` | Spaces → tabs |
-| `Pancho: Increase indent` | Increase indent |
-| `Pancho: Decrease indent` | Decrease indent |
-
-## End of line
-| Command | Description |
-|---------|-------------|
-| `Pancho: Convert to Windows (CRLF)` | Windows format |
-| `Pancho: Convert to Unix (LF)` | Unix/Mac format |
-| `Pancho: Convert to Mac (CR)` | Classic Mac format |
-
-## General text
+### General text
 | Command | Description |
 |---------|-------------|
 | `Pancho: Count words` | Count words |
@@ -111,7 +120,9 @@ available from the Command Palette under `Pancho:`.
 | `Pancho: Keep lines matching regex...` | Keep only matching lines |
 | `Pancho: Remove lines matching regex...` | Remove matching lines |
 
-## Encoding
+## Convert
+
+### Encoding
 | Command | Description |
 |---------|-------------|
 | `Pancho: Base64 encode` | Encode to Base64 |
@@ -121,7 +132,7 @@ available from the Command Palette under `Pancho:`.
 | `Pancho: HTML entities encode` | Escape HTML characters |
 | `Pancho: HTML entities decode` | Unescape HTML |
 
-## Formatting
+### Formatting
 | Command | Description |
 |---------|-------------|
 | `Pancho: Minify JSON` | Minify JSON |
@@ -138,7 +149,7 @@ available from the Command Palette under `Pancho:`.
 
 > For JS/TS/JSON/HTML/CSS, VS Code's built-in **Format Document** is syntax-aware and more complete. Pancho's formatters are lightweight (regex-based) and add **minify**, which VS Code does not provide.
 
-## Hash & binary
+### Hash & binary
 | Command | Description |
 |---------|-------------|
 | `Pancho: MD5 hash` | MD5 hash |
@@ -150,7 +161,26 @@ available from the Command Palette under `Pancho:`.
 | `Pancho: Hex to RGB` | Hex color → RGB |
 | `Pancho: RGB to Hex` | RGB → Hex color |
 
-## Insert
+## Escape
+| Command | Description |
+|---------|-------------|
+| `Pancho: Escape for JSON` | Escape for JSON |
+| `Pancho: Unescape from JSON` | Unescape from JSON |
+| `Pancho: Escape for SQL` | Escape for SQL |
+| `Pancho: Unescape from SQL` | Unescape from SQL |
+| `Pancho: Escape for regex` | Escape for regex |
+| `Pancho: Escape for HTML` | Escape for HTML |
+| `Pancho: Unescape from HTML` | Unescape from HTML |
+
+## Dev tools
+
+### Comment / Uncomment
+| Command | Description |
+|---------|-------------|
+| `Pancho: Comment line` | Toggle line comment (delegates to VS Code) |
+| `Pancho: Comment block` | Toggle block comment (delegates to VS Code) |
+
+### Insert
 | Command | Description |
 |---------|-------------|
 | `Pancho: Short date/time` | Short date/time |
@@ -160,13 +190,7 @@ available from the Command Palette under `Pancho:`.
 | `Pancho: Generate UUID` | UUID v4 |
 | `Pancho: Generate random string` | Random string |
 
-## Comment / Uncomment
-| Command | Description |
-|---------|-------------|
-| `Pancho: Comment line` | Toggle line comment (delegates to VS Code) |
-| `Pancho: Comment block` | Toggle block comment (delegates to VS Code) |
-
-## Developers
+### Developers
 | Command | Description |
 |---------|-------------|
 | `Pancho: Duplicate line` | Duplicate current line |
@@ -183,39 +207,7 @@ available from the Command Palette under `Pancho:`.
 | `Pancho: Align by :` | Align by colon |
 | `Pancho: Align by character...` | Align by custom char |
 
-## Columns
-| Command | Description |
-|---------|-------------|
-| `Pancho: Column: insert text...` | Insert text at the column block |
-| `Pancho: Column: delete` | Delete the column block |
-| `Pancho: Column: copy` | Copy the column block |
-| `Pancho: Column: paste` | Paste into the column block |
-| `Pancho: Column: fill series...` | Fill the column with an incrementing series |
-
-## Macros
-| Command | Description |
-|---------|-------------|
-| `Pancho: Macro: start recording` | Start recording a macro |
-| `Pancho: Macro: stop recording` | Stop and keep the macro |
-| `Pancho: Macro: play` | Replay the last macro |
-| `Pancho: Macro: save...` | Save the last macro |
-| `Pancho: Macro: load...` | Load a saved macro |
-| `Pancho: Macro: list saved` | List saved macros |
-| `Pancho: Macro: export...` | Export saved macros to a JSON file |
-| `Pancho: Macro: import...` | Import macros from a JSON file |
-
-## Escape
-| Command | Description |
-|---------|-------------|
-| `Pancho: Escape for JSON` | Escape for JSON |
-| `Pancho: Unescape from JSON` | Unescape from JSON |
-| `Pancho: Escape for SQL` | Escape for SQL |
-| `Pancho: Unescape from SQL` | Unescape from SQL |
-| `Pancho: Escape for regex` | Escape for regex |
-| `Pancho: Escape for HTML` | Escape for HTML |
-| `Pancho: Unescape from HTML` | Unescape from HTML |
-
-## Developer Tools
+### Developer Tools
 | Command | Description |
 |---------|-------------|
 | `Pancho: Decode JWT` | Decode JWT token |
@@ -227,6 +219,29 @@ available from the Command Palette under `Pancho:`.
 | `Pancho: Color info` | Show HEX + RGB + HSL |
 | `Pancho: Regex tester...` | Quick regex test from an input box |
 | `Pancho: Regex tester panel` | Full panel with live matches, groups and replace preview |
+
+## Macros & Columns
+
+### Macros
+| Command | Description |
+|---------|-------------|
+| `Pancho: Macro: start recording` | Start recording a macro |
+| `Pancho: Macro: stop recording` | Stop and keep the macro |
+| `Pancho: Macro: play` | Replay the last macro |
+| `Pancho: Macro: save...` | Save the last macro |
+| `Pancho: Macro: load...` | Load a saved macro |
+| `Pancho: Macro: list saved` | List saved macros |
+| `Pancho: Macro: export...` | Export saved macros to a JSON file |
+| `Pancho: Macro: import...` | Import macros from a JSON file |
+
+### Columns
+| Command | Description |
+|---------|-------------|
+| `Pancho: Column: insert text...` | Insert text at the column block |
+| `Pancho: Column: delete` | Delete the column block |
+| `Pancho: Column: copy` | Copy the column block |
+| `Pancho: Column: paste` | Paste into the column block |
+| `Pancho: Column: fill series...` | Fill the column with an incrementing series |
 
 ## Command hub
 | Command | Description |

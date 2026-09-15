@@ -86,9 +86,9 @@ More examples in [docs/demos.md](./docs/demos.md).
 
 ## Commands
 
-The **138 commands** are grouped into: Editing, Lines, Case, Indentation, End of line,
-General text, Encoding, Formatting, Hash & binary, Insert, Comment, Developers,
-Columns, Macros, Escape, Developer Tools and the Command hub.
+The **138 commands** are grouped into seven categories so the context menu stays
+short: **Edit**, **Lines**, **Text & Case**, **Convert**, **Escape**, **Dev tools** and
+**Macros & Columns**, plus the **Command hub**.
 
 Full list with descriptions: **[docs/commands.md](./docs/commands.md)** (English) ·
 **[docs/commands.es.md](./docs/commands.es.md)** (Español).

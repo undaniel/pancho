@@ -9,24 +9,31 @@ están disponibles desde la Paleta de comandos como `Pancho:`.
 > mismas categorías con sus atajos y tus comandos usados recientemente.
 
 - [Edición](#edición)
+  - [Editar](#editar)
+  - [Tabulaciones](#tabulaciones)
+  - [Fin de línea](#fin-de-línea)
 - [Líneas](#líneas)
-- [Mayúsculas y minúsculas](#mayúsculas-y-minúsculas)
-- [Tabulaciones](#tabulaciones)
-- [Fin de línea](#fin-de-línea)
-- [Texto general](#texto-general)
-- [Codificación](#codificación)
-- [Formateo](#formateo)
-- [Hash y binario](#hash-y-binario)
-- [Insertar](#insertar)
-- [Comentar](#comentar--descomentar)
-- [Desarrolladores](#desarrolladores)
-- [Columnas](#columnas)
-- [Macros](#macros)
+- [Texto y mayúsculas](#texto-y-mayúsculas)
+  - [Mayúsculas y minúsculas](#mayúsculas-y-minúsculas)
+  - [Texto general](#texto-general)
+- [Convertir](#convertir)
+  - [Codificación](#codificación)
+  - [Formateo](#formateo)
+  - [Hash y binario](#hash-y-binario)
 - [Escapar](#escapar)
-- [Herramientas de desarrollo](#herramientas-de-desarrollo)
+- [Desarrollo](#desarrollo)
+  - [Comentar](#comentar--descomentar)
+  - [Insertar](#insertar)
+  - [Desarrolladores](#desarrolladores)
+  - [Herramientas de desarrollo](#herramientas-de-desarrollo)
+- [Macros y columnas](#macros-y-columnas)
+  - [Macros](#macros)
+  - [Columnas](#columnas)
 - [Hub de comandos](#hub-de-comandos)
 
-## Edición
+## Editar
+
+### Editar
 | Comando | Descripción |
 |---------|-------------|
 | `Pancho: Limpiar espacios en blanco` | Elimina espacios múltiples |
@@ -35,6 +42,21 @@ están disponibles desde la Paleta de comandos como `Pancho:`.
 | `Pancho: Convertir saltos de línea a espacios` | Convierte saltos a espacios |
 | `Pancho: Ajustar texto...` | Ajusta a ancho de columna |
 | `Pancho: Desajustar texto` | Quita saltos de línea |
+
+### Tabulaciones
+| Comando | Descripción |
+|---------|-------------|
+| `Pancho: Convertir tabs a espacios` | Reemplaza tabs |
+| `Pancho: Convertir espacios a tabs` | Reemplaza espacios |
+| `Pancho: Aumentar indentación` | Agrega indentación |
+| `Pancho: Disminuir indentación` | Quita indentación |
+
+### Fin de línea
+| Comando | Descripción |
+|---------|-------------|
+| `Pancho: Convertir a Windows (CRLF)` | Formato Windows |
+| `Pancho: Convertir a Unix (LF)` | Formato Unix/Mac |
+| `Pancho: Convertir a Mac (CR)` | Formato Mac clásico |
 
 ## Líneas
 | Comando | Descripción |
@@ -54,7 +76,9 @@ están disponibles desde la Paleta de comandos como `Pancho:`.
 | `Pancho: Unir líneas` | Combina líneas en una |
 | `Pancho: Eliminar líneas vacías` | Quita líneas en blanco |
 
-## Mayúsculas y minúsculas
+## Texto y mayúsculas
+
+### Mayúsculas y minúsculas
 | Comando | Descripción |
 |---------|-------------|
 | `Pancho: Convertir a MAYÚSCULAS` | TODO EN MAYÚSCULAS |
@@ -69,22 +93,7 @@ están disponibles desde la Paleta de comandos como `Pancho:`.
 | `Pancho: Convertir a kebab-case` | kebab-case |
 | `Pancho: Convertir a CONSTANT_CASE` | CONSTANT_CASE |
 
-## Tabulaciones
-| Comando | Descripción |
-|---------|-------------|
-| `Pancho: Convertir tabs a espacios` | Reemplaza tabs |
-| `Pancho: Convertir espacios a tabs` | Reemplaza espacios |
-| `Pancho: Aumentar indentación` | Agrega indentación |
-| `Pancho: Disminuir indentación` | Quita indentación |
-
-## Fin de línea
-| Comando | Descripción |
-|---------|-------------|
-| `Pancho: Convertir a Windows (CRLF)` | Formato Windows |
-| `Pancho: Convertir a Unix (LF)` | Formato Unix/Mac |
-| `Pancho: Convertir a Mac (CR)` | Formato Mac clásico |
-
-## Texto general
+### Texto general
 | Comando | Descripción |
 |---------|-------------|
 | `Pancho: Contar palabras` | Cuenta palabras |
@@ -111,7 +120,9 @@ están disponibles desde la Paleta de comandos como `Pancho:`.
 | `Pancho: Mantener líneas que coinciden con regex...` | Mantiene solo las líneas que coinciden |
 | `Pancho: Eliminar líneas que coinciden con regex...` | Elimina las líneas que coinciden |
 
-## Codificación
+## Convertir
+
+### Codificación
 | Comando | Descripción |
 |---------|-------------|
 | `Pancho: Codificar Base64` | Codifica a Base64 |
@@ -121,7 +132,7 @@ están disponibles desde la Paleta de comandos como `Pancho:`.
 | `Pancho: Codificar HTML entities` | Escapa caracteres HTML |
 | `Pancho: Decodificar HTML entities` | Desescapa HTML |
 
-## Formateo
+### Formateo
 | Comando | Descripción |
 |---------|-------------|
 | `Pancho: Minificar JSON` | JSON en una línea |
@@ -138,7 +149,7 @@ están disponibles desde la Paleta de comandos como `Pancho:`.
 
 > Para JS/TS/JSON/HTML/CSS, el **Formatear documento** nativo de VS Code es sintáctico y más completo. Los formatters de Pancho son livianos (basados en regex) y aportan el **minificar**, que VS Code no trae.
 
-## Hash y binario
+### Hash y binario
 | Comando | Descripción |
 |---------|-------------|
 | `Pancho: Hash MD5` | Genera hash MD5 |
@@ -150,7 +161,26 @@ están disponibles desde la Paleta de comandos como `Pancho:`.
 | `Pancho: Hex a RGB` | Convierte color hex a RGB |
 | `Pancho: RGB a Hex` | Convierte RGB a hex |
 
-## Insertar
+## Escapar
+| Comando | Descripción |
+|---------|-------------|
+| `Pancho: Escapar para JSON` | Escapa caracteres JSON |
+| `Pancho: Desescapar de JSON` | Desescapa de JSON |
+| `Pancho: Escapar para SQL` | Escapa comillas SQL |
+| `Pancho: Desescapar de SQL` | Desescapa de SQL |
+| `Pancho: Escapar para Regex` | Escapa caracteres regex |
+| `Pancho: Escapar para HTML` | Escapa caracteres HTML |
+| `Pancho: Desescapar de HTML` | Desescapa de HTML |
+
+## Desarrollo
+
+### Comentar / Descomentar
+| Comando | Descripción |
+|---------|-------------|
+| `Pancho: Comentar línea` | Alterna comentario de línea (delega en VS Code) |
+| `Pancho: Comentar bloque` | Alterna comentario de bloque (delega en VS Code) |
+
+### Insertar
 | Comando | Descripción |
 |---------|-------------|
 | `Pancho: Fecha y hora corta` | Inserta fecha/hora corta |
@@ -160,13 +190,7 @@ están disponibles desde la Paleta de comandos como `Pancho:`.
 | `Pancho: Generar UUID` | Genera UUID v4 |
 | `Pancho: Generar cadena aleatoria` | Genera string aleatorio |
 
-## Comentar / Descomentar
-| Comando | Descripción |
-|---------|-------------|
-| `Pancho: Comentar línea` | Alterna comentario de línea (delega en VS Code) |
-| `Pancho: Comentar bloque` | Alterna comentario de bloque (delega en VS Code) |
-
-## Desarrolladores
+### Desarrolladores
 | Comando | Descripción |
 |---------|-------------|
 | `Pancho: Duplicar línea` | Duplica línea actual |
@@ -183,39 +207,7 @@ están disponibles desde la Paleta de comandos como `Pancho:`.
 | `Pancho: Alinear por :` | Alinea por dos puntos |
 | `Pancho: Alinear por carácter...` | Alinea por carácter custom |
 
-## Columnas
-| Comando | Descripción |
-|---------|-------------|
-| `Pancho: Columna: insertar texto...` | Inserta texto en el bloque de columna |
-| `Pancho: Columna: eliminar` | Elimina el bloque de columna |
-| `Pancho: Columna: copiar` | Copia el bloque de columna |
-| `Pancho: Columna: pegar` | Pega en el bloque de columna |
-| `Pancho: Columna: rellenar serie...` | Rellena la columna con una serie incremental |
-
-## Macros
-| Comando | Descripción |
-|---------|-------------|
-| `Pancho: Macro: empezar grabación` | Empieza a grabar una macro |
-| `Pancho: Macro: detener grabación` | Detiene y conserva la macro |
-| `Pancho: Macro: reproducir` | Reproduce la última macro |
-| `Pancho: Macro: guardar...` | Guarda la última macro |
-| `Pancho: Macro: cargar...` | Carga una macro guardada |
-| `Pancho: Macro: listar guardadas` | Lista las macros guardadas |
-| `Pancho: Macro: exportar...` | Exporta las macros guardadas a un archivo JSON |
-| `Pancho: Macro: importar...` | Importa macros desde un archivo JSON |
-
-## Escapar
-| Comando | Descripción |
-|---------|-------------|
-| `Pancho: Escapar para JSON` | Escapa caracteres JSON |
-| `Pancho: Desescapar de JSON` | Desescapa de JSON |
-| `Pancho: Escapar para SQL` | Escapa comillas SQL |
-| `Pancho: Desescapar de SQL` | Desescapa de SQL |
-| `Pancho: Escapar para Regex` | Escapa caracteres regex |
-| `Pancho: Escapar para HTML` | Escapa caracteres HTML |
-| `Pancho: Desescapar de HTML` | Desescapa de HTML |
-
-## Herramientas de desarrollo
+### Herramientas de desarrollo
 | Comando | Descripción |
 |---------|-------------|
 | `Pancho: Decodificar JWT` | Decodifica token JWT |
@@ -227,6 +219,29 @@ están disponibles desde la Paleta de comandos como `Pancho:`.
 | `Pancho: Información de color` | Muestra HEX + RGB + HSL |
 | `Pancho: Probador de regex...` | Prueba rápida de regex desde un input |
 | `Pancho: Panel de test de regex` | Panel completo con coincidencias en vivo, grupos y reemplazo |
+
+## Macros y columnas
+
+### Macros
+| Comando | Descripción |
+|---------|-------------|
+| `Pancho: Macro: empezar grabación` | Empieza a grabar una macro |
+| `Pancho: Macro: detener grabación` | Detiene y conserva la macro |
+| `Pancho: Macro: reproducir` | Reproduce la última macro |
+| `Pancho: Macro: guardar...` | Guarda la última macro |
+| `Pancho: Macro: cargar...` | Carga una macro guardada |
+| `Pancho: Macro: listar guardadas` | Lista las macros guardadas |
+| `Pancho: Macro: exportar...` | Exporta las macros guardadas a un archivo JSON |
+| `Pancho: Macro: importar...` | Importa macros desde un archivo JSON |
+
+### Columnas
+| Comando | Descripción |
+|---------|-------------|
+| `Pancho: Columna: insertar texto...` | Inserta texto en el bloque de columna |
+| `Pancho: Columna: eliminar` | Elimina el bloque de columna |
+| `Pancho: Columna: copiar` | Copia el bloque de columna |
+| `Pancho: Columna: pegar` | Pega en el bloque de columna |
+| `Pancho: Columna: rellenar serie...` | Rellena la columna con una serie incremental |
 
 ## Hub de comandos
 | Comando | Descripción |
