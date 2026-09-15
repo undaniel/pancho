@@ -10,6 +10,8 @@
 
 > Clean, format and transform text like Notepad++
 
+<img src="./pancho.webp" alt="Pancho" width="256" />
+
 **Language:** English · [Español](./docs/README.es.md)
 
 **Contents:** [Install](#install) · [Features](#features) · [Top 10](#top-10-commands) · [Why Pancho?](#why-pancho) · [Privacy](#privacy--security) · [How to use](#how-to-use) · [Commands](#commands) · [Demos](./docs/demos.md) · [Shortcuts](#keyboard-shortcuts) · [Settings](#settings) · [Contributing](#contributing)

@@ -10,6 +10,8 @@
 
 > Limpia, formatea y transforma texto como Notepad++
 
+<img src="../pancho.webp" alt="Pancho" width="256" />
+
 **Idioma:** [English](../README.md) · Español
 
 **Índice:** [Características](#características) · [Top 10](#top-10-comandos) · [Cómo usar](#cómo-usar) · [Comandos](#comandos) · [Demos](./demos.md) · [Atajos](#atajos-de-teclado) · [Configuración](#configuración)
