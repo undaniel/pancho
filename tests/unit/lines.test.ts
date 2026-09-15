@@ -1,10 +1,7 @@
 import { describe, it, expect } from '@jest/globals';
 import {
   removeDuplicateLines,
-  sortLinesAscending,
-  sortLinesDescending,
   reverseLines,
-  joinLines,
   removeEmptyLines,
   removeLinesContaining,
   removeAllSpaces,
@@ -27,32 +24,6 @@ describe('lines.ts', () => {
     });
   });
 
-  describe('sortLinesAscending', () => {
-    it('should sort lines alphabetically ascending', () => {
-      const input = 'cherry\napple\nbanana';
-      expect(sortLinesAscending(input)).toBe('apple\nbanana\ncherry');
-    });
-
-    it('should handle already sorted', () => {
-      expect(sortLinesAscending('a\nb\nc')).toBe('a\nb\nc');
-    });
-
-    it('should handle empty string', () => {
-      expect(sortLinesAscending('')).toBe('');
-    });
-  });
-
-  describe('sortLinesDescending', () => {
-    it('should sort lines alphabetically descending', () => {
-      const input = 'apple\nbanana\ncherry';
-      expect(sortLinesDescending(input)).toBe('cherry\nbanana\napple');
-    });
-
-    it('should handle empty string', () => {
-      expect(sortLinesDescending('')).toBe('');
-    });
-  });
-
   describe('reverseLines', () => {
     it('should reverse line order', () => {
       const input = 'line1\nline2\nline3';
@@ -65,23 +36,6 @@ describe('lines.ts', () => {
 
     it('should handle empty string', () => {
       expect(reverseLines('')).toBe('');
-    });
-  });
-
-  describe('joinLines', () => {
-    it('should join lines with space by default', () => {
-      const input = 'hello\nworld';
-      expect(joinLines(input)).toBe('hello world');
-    });
-
-    it('should join lines with custom separator', () => {
-      const input = 'hello\nworld';
-      expect(joinLines(input, ', ')).toBe('hello, world');
-    });
-
-    it('should trim and filter empty lines', () => {
-      const input = '  hello  \n\nworld  ';
-      expect(joinLines(input)).toBe('hello world');
     });
   });
 

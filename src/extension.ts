@@ -1,11 +1,31 @@
 import * as vscode from 'vscode';
 import { registerAllCommands } from './commands';
+import { registerMenuCommands } from './commands/menu';
+import { registerColumnCommands } from './commands/column';
+import { registerMacroCommands } from './commands/macro';
+import { registerFilterCommands } from './commands/filter';
 import { initStatusBar, updateCounters, showInfo } from './utils/statusBar';
+import { disposeRegexWorker, prewarmRegexWorker } from './utils/safeRegex';
+import { registerPreviewProvider } from './utils/preview';
+import { registerClipboardCommands } from './commands/clipboard';
+import { registerHoverProvider } from './providers/hover';
+import { registerCodeActionsProvider } from './providers/codeActions';
+import { registerRegexPanel } from './providers/regexPanel';
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log('[Pancho] Extension activating...');
     initStatusBar(context);
     registerAllCommands(context);
+    registerMenuCommands(context);
+    registerColumnCommands(context);
+    registerMacroCommands(context);
+    registerFilterCommands(context);
+    registerClipboardCommands(context);
+    registerPreviewProvider(context);
+    registerHoverProvider(context);
+    registerCodeActionsProvider(context);
+    registerRegexPanel(context);
+    prewarmRegexWorker();
 
     context.subscriptions.push(
             vscode.commands.registerCommand('pancho.showStatusInfo', () => {
@@ -21,7 +41,11 @@ export function activate(context: vscode.ExtensionContext): void {
         })
     );
 
+    context.subscriptions.push({ dispose: disposeRegexWorker });
+
     console.log('[Pancho] Extension activated successfully!');
 }
 
-export function deactivate(): void {}
+export function deactivate(): void {
+    disposeRegexWorker();
+}

@@ -1,5 +1,7 @@
+import { t } from '../utils/i18n';
+
 export function alignByChar(text: string, char: string): { result: string; error?: string } {
-    if (!char) return { result: text, error: 'Character is required' };
+    if (!char) return { result: text, error: t('Character is required') };
     const lines = text.split('\n').filter(l => l.length > 0);
     if (lines.length < 2) return { result: text };
 

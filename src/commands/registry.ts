@@ -59,9 +59,7 @@ export const Commands = {
     INSERT_DATE_TIME: 'pancho.insertDateTime',
     LOREM_IPSUM: 'pancho.loremIpsum',
     COMMENT_LINE: 'pancho.commentLine',
-    UNCOMMENT_LINE: 'pancho.uncommentLine',
     COMMENT_BLOCK: 'pancho.commentBlock',
-    UNCOMMENT_BLOCK: 'pancho.uncommentBlock',
     GENERATE_UUID: 'pancho.generateUUID',
     GENERATE_RANDOM_STRING: 'pancho.generateRandomString',
     HEX_TO_RGB: 'pancho.hexToRgb',
@@ -73,8 +71,6 @@ export const Commands = {
     MOVE_LINE_DOWN: 'pancho.moveLineDown',
     DELETE_LINES_CONTAINING: 'pancho.deleteLinesContaining',
     KEEP_ONLY_LINES_CONTAINING: 'pancho.keepOnlyLinesContaining',
-    HIGHLIGHT_MATCHES: 'pancho.highlightMatches',
-    COUNT_MATCHES: 'pancho.countMatches',
     ESCAPE_JSON: 'pancho.escapeJSON',
     UNESCAPE_JSON: 'pancho.unescapeJSON',
     ESCAPE_FOR_SQL: 'pancho.escapeForSQL',
@@ -99,6 +95,7 @@ export const Commands = {
     SORT_BY_LENGTH: 'pancho.sortByLength',
     SORT_BY_LENGTH_DESCENDING: 'pancho.sortByLengthDescending',
     SORT_NUMERIC: 'pancho.sortNumeric',
+    SORT_BY_COLUMN: 'pancho.sortByColumn',
     TRANSPOSE_CHARS: 'pancho.transposeCharacters',
     TRANSPOSE_WORDS: 'pancho.transposeWords',
     TRANSPOSE_LINES: 'pancho.transposeLines',
@@ -128,10 +125,36 @@ export const Commands = {
     AES_DECRYPT: 'pancho.aesDecrypt',
     COLOR_INFO: 'pancho.colorInfo',
     REGEX_TESTER: 'pancho.regexTester',
+    REGEX_TESTER_PANEL: 'pancho.regexTesterPanel',
 
-    // Bloque E: búsqueda avanzada
-    FIND_IN_FILES: 'pancho.findInFiles',
-    REPLACE_IN_FILES: 'pancho.replaceInFiles',
+    // Bloque F: UX
+    SHOW_MENU: 'pancho.showMenu',
+    REPEAT_LAST: 'pancho.repeatLast',
+    REPEAT_LAST_TIMES: 'pancho.repeatLastTimes',
+
+    // Bloque G: columnas
+    COLUMN_INSERT: 'pancho.columnInsert',
+    COLUMN_DELETE: 'pancho.columnDelete',
+    COLUMN_COPY: 'pancho.columnCopy',
+    COLUMN_PASTE: 'pancho.columnPaste',
+    COLUMN_FILL_SERIES: 'pancho.columnFillSeries',
+
+    // Bloque H: macros
+    MACRO_START: 'pancho.macroStart',
+    MACRO_STOP: 'pancho.macroStop',
+    MACRO_PLAY: 'pancho.macroPlay',
+    MACRO_SAVE: 'pancho.macroSave',
+    MACRO_LOAD: 'pancho.macroLoad',
+    MACRO_LIST: 'pancho.macroList',
+    MACRO_EXPORT: 'pancho.macroExport',
+    MACRO_IMPORT: 'pancho.macroImport',
+
+    // Bloque J: filtros
+    FILTER_LINES_BY_REGEX: 'pancho.filterLinesByRegex',
+    REMOVE_LINES_BY_REGEX: 'pancho.removeLinesByRegex',
+
+    // Historial de portapapeles
+    CLIPBOARD_HISTORY: 'pancho.clipboardHistory',
 } as const;
 
 export type CommandName = typeof Commands[keyof typeof Commands];

@@ -1,14 +1,14 @@
-export function formatShortDateTime(): string {
+export function formatShortDateTime(locale?: string): string {
     const now = new Date();
-    const dateStr = now.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    const timeStr = now.toLocaleTimeString('es-ES', { hour: 'numeric', minute: '2-digit' });
+    const dateStr = now.toLocaleDateString(locale, { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const timeStr = now.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' });
     return `${dateStr} ${timeStr}`;
 }
 
-export function formatLongDateTime(): string {
+export function formatLongDateTime(locale?: string): string {
     const now = new Date();
-    const dateStr = now.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-    const timeStr = now.toLocaleTimeString('es-ES', { hour: 'numeric', minute: '2-digit' });
+    const dateStr = now.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    const timeStr = now.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' });
     return `${dateStr} ${timeStr}`;
 }
 

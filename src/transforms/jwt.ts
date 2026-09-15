@@ -1,7 +1,9 @@
+import { t } from '../utils/i18n';
+
 export function decodeJWT(token: string): { result: string; error?: string } {
     const parts = token.trim().split('.');
     if (parts.length < 2) {
-        return { result: token, error: 'Invalid JWT: needs 3 parts separated by dots' };
+        return { result: token, error: t('Invalid JWT: needs 3 parts separated by dots') };
     }
     try {
         const decode = (part: string): unknown => {
@@ -27,6 +29,6 @@ export function decodeJWT(token: string): { result: string; error?: string } {
 
         return { result: JSON.stringify(output, null, 2) };
     } catch (e) {
-        return { result: token, error: 'Invalid JWT: cannot decode base64/JSON' };
+        return { result: token, error: t('Invalid JWT: cannot decode base64/JSON') };
     }
 }

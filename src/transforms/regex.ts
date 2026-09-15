@@ -1,34 +1,47 @@
+import { t } from '../utils/i18n';
+import { runRegexJob } from '../utils/safeRegex';
+import type { RegexErrorCode } from '../utils/regexCore';
+
 export interface RegexTestResult {
     matches: { match: string; index: number; groups: string[] }[];
     error?: string;
 }
 
-export function testRegex(pattern: string, flags: string, text: string): RegexTestResult {
-    if (!pattern) return { matches: [], error: 'Empty pattern' };
-    try {
-        const regex = new RegExp(pattern, flags.includes('g') ? flags : flags + 'g');
-        const matches: { match: string; index: number; groups: string[] }[] = [];
-        let m: RegExpExecArray | null;
-        let safety = 0;
-        while ((m = regex.exec(text)) !== null && safety < 10000) {
-            matches.push({
-                match: m[0],
-                index: m.index,
-                groups: m.slice(1).map(g => g ?? ''),
-            });
-            if (m.index === regex.lastIndex) regex.lastIndex++;
-            safety++;
-        }
-        return { matches };
-    } catch (e) {
-        return { matches: [], error: 'Invalid regex: ' + String(e) };
+function describeError(code: RegexErrorCode | undefined): string {
+    switch (code) {
+        case 'empty':
+            return t('Empty pattern');
+        case 'complex':
+            return t('Pattern too complex (possible catastrophic backtracking)');
+        case 'timeout':
+            return t('Pattern took too long (possible catastrophic backtracking)');
+        case 'invalid':
+            return t('Invalid pattern');
+        default:
+            return t('Invalid pattern');
     }
 }
 
-export function formatRegexResult(pattern: string, flags: string, text: string): { result: string; error?: string } {
-    const r = testRegex(pattern, flags, text);
+export async function testRegex(pattern: string, flags: string, text: string, timeoutMs?: number): Promise<RegexTestResult> {
+    if (!pattern) return { matches: [], error: t('Empty pattern') };
+    const result = await runRegexJob(
+        {
+            pattern,
+            flags: flags.includes('g') ? flags : flags + 'g',
+            text,
+            mode: 'exec',
+            maxMatches: 10000,
+        },
+        timeoutMs
+    );
+    if (result.error) return { matches: [], error: describeError(result.error) };
+    return { matches: result.matches ?? [] };
+}
+
+export async function formatRegexResult(pattern: string, flags: string, text: string, timeoutMs?: number): Promise<{ result: string; error?: string }> {
+    const r = await testRegex(pattern, flags, text, timeoutMs);
     if (r.error) return { result: text, error: r.error };
-    if (r.matches.length === 0) return { result: 'No matches found' };
+    if (r.matches.length === 0) return { result: t('No matches found') };
     const lines = r.matches.map((m, i) => {
         const base = `[${i + 1}] "${m.match}" @${m.index}`;
         return m.groups.length > 0 ? base + `  groups: ${JSON.stringify(m.groups)}` : base;
