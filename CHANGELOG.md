@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Command palette subcategories (`Pancho: Edit`, `Pancho: Lines`, `Pancho: Text Case`, …) for easier discovery.
 - Tests: fuzz/property tests, command-manifest drift guard and enabled-switch coverage.
 - **DX:** `.vscode/` is now committed (`launch.json`, `tasks.json`, `extensions.json`, `settings.json`) so `F5` works on a fresh clone; GitHub Actions CI (typecheck, tests, l10n check, bundle).
+- **Single command manifest:** `src/commands/registry.ts` is the single source for the command list (id, category, enablement); `npm run commands:sync` regenerates `contributes.commands` and a test keeps menus/keybindings/titles in sync.
 - `pancho.columnFillSeries` — fill a column block with an incrementing series (start/step).
 - `pancho.repeatLastTimes` — repeat the last command a chosen number of times.
 - `pancho.sortByColumn` — sort rows by a chosen column (delimiter + index + numeric).
@@ -34,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Context menu consolidated:** 14 submenus collapsed into 7 groups — **Edit**, **Lines**, **Text & Case**, **Convert**, **Escape**, **Dev tools** and **Macros & Columns** — leaving 10 entries at the top level (categories grouped first, action commands at the bottom). Fixes a regression where 9 category definitions (62 commands) were missing from the menus; all 138 commands are back in the context menu and the hub.
+- **Context menu consolidated:** 14 submenus collapsed into 7 groups — **Edit**, **Lines**, **Text & Case**, **Convert**, **Escape**, **Dev tools** and **Macros & Columns** — leaving 10 entries at the top level (categories grouped first, action commands at the bottom). Fixes a regression where 9 category definitions (62 commands) were missing from the menus; all 143 commands are back in the context menu and the hub.
 - **Native delegation:** 17 commands keep their Pancho menu entry and keyboard shortcut but now delegate to VS Code's own implementation (consistency + native multi-cursor): uppercase/lowercase/title case, comment & block comment, tabs↔spaces, indent/outdent, move / duplicate / insert line, sort A–Z / Z–A and join lines.
 - Status bar counters now show `Sel L:x P:y C:z` while there is a selection, and hide when there is no active editor.
 - Counters are localized (`W` → `P` in Spanish), use `document.lineCount` for the free line count and debounce at 300 ms.
@@ -54,17 +55,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Commands already provided by VS Code: `uncommentLine` / `uncommentBlock` (native comment toggle), `findInFiles` / `replaceInFiles` (native global search/replace), `highlightMatches` / `countMatches` (find widget), `encodingInfo` / `changeEncoding` (status bar / native command).
 - Now-unused modules and their tests: `transforms/comments`, `transforms/commentStyles`, `transforms/tabs`, `transforms/search`, `transforms/searchAdvanced`, `features/encoding`, `commands/encoding`.
-- **Total commands:** 141 → 138 (after removing 8 redundant and adding 5 new).
+- **Total commands:** 143 (net after removing redundant commands and adding new ones).
 
 ### Testing
 
-- 261 unit tests.
+- 267 unit tests.
 
 ### Docs
 
 - **Restructured documentation** so the Marketplace README stays short (653 → 164 lines):
   - `README.md` — English overview: install, features, top 10, why, privacy, how to use, shortcuts, settings, contributing.
-  - `docs/commands.md` / `docs/commands.es.md` — the full 138-command reference.
+  - `docs/commands.md` / `docs/commands.es.md` — the full 143-command reference.
   - `docs/README.es.md` — the Spanish guide.
   - `docs/demos.md` — hover, quick fixes, regex panel, columns, clipboard, sorting and macros examples.
 - README: install/why/top-10 sections, Marketplace & Open VSX badges, table of contents, contributing guide and keyboard-shortcut conflict notes; removed stale claims for deleted commands.

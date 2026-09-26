@@ -941,6 +941,28 @@
         "category": "%command.category%"
       },
       {
+        "command": "pancho.showFavorites",
+        "title": "%command.pancho.showFavorites.title%",
+        "category": "%command.category%"
+      },
+      {
+        "command": "pancho.toggleFavorite",
+        "title": "%command.pancho.toggleFavorite.title%",
+        "category": "%command.category%"
+      },
+      {
+        "command": "pancho.formatDocument",
+        "title": "%command.pancho.formatDocument.title%",
+        "category": "%category.pancho.edit%",
+        "enablement": "editorIsOpen"
+      },
+      {
+        "command": "pancho.formatSelection",
+        "title": "%command.pancho.formatSelection.title%",
+        "category": "%category.pancho.edit%",
+        "enablement": "editorHasSelection"
+      },
+      {
         "command": "pancho.columnInsert",
         "title": "%command.pancho.columnInsert.title%",
         "category": "%category.pancho.macros%",
@@ -1012,12 +1034,6 @@
         "category": "%category.pancho.macros%"
       },
       {
-        "command": "pancho.clipboardHistory",
-        "title": "%command.pancho.clipboardHistory.title%",
-        "category": "%category.pancho.textCase%",
-        "enablement": "editorIsOpen"
-      },
-      {
         "command": "pancho.filterLinesByRegex",
         "title": "%command.pancho.filterLinesByRegex.title%",
         "category": "%category.pancho.textCase%",
@@ -1030,31 +1046,15 @@
         "enablement": "editorIsOpen"
       },
       {
-        "command": "pancho.showStatusInfo",
-        "title": "%command.pancho.showStatusInfo.title%",
-        "category": "%command.category%"
-      },
-      {
-        "command": "pancho.showFavorites",
-        "title": "%command.pancho.showFavorites.title%",
-        "category": "%command.category%"
-      },
-      {
-        "command": "pancho.toggleFavorite",
-        "title": "%command.pancho.toggleFavorite.title%",
-        "category": "%command.category%"
-      },
-      {
-        "command": "pancho.formatDocument",
-        "title": "%command.pancho.formatDocument.title%",
-        "category": "%category.pancho.edit%",
+        "command": "pancho.clipboardHistory",
+        "title": "%command.pancho.clipboardHistory.title%",
+        "category": "%category.pancho.textCase%",
         "enablement": "editorIsOpen"
       },
       {
-        "command": "pancho.formatSelection",
-        "title": "%command.pancho.formatSelection.title%",
-        "category": "%category.pancho.edit%",
-        "enablement": "editorHasSelection"
+        "command": "pancho.showStatusInfo",
+        "title": "%command.pancho.showStatusInfo.title%",
+        "category": "%command.category%"
       }
     ],
     "menus": {
@@ -1670,6 +1670,7 @@
     "package:production": "npm run bundle:production",
     "generate:readme": "node scripts/generate-readme.js",
     "l10n:check": "node scripts/check-l10n.js",
+    "commands:sync": "npm run compile && node scripts/generate-commands.js",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "build": "npm run bundle",
