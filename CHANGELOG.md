@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Settings `pancho.enabled` (master switch for commands, counters and providers) and `pancho.previewAllChanges` (diff + confirm before applying any whole-document change).
+- `pancho.showFavorites` / `pancho.toggleFavorite` — pin commands; favorites float to the top of the hub.
+- `pancho.formatDocument` / `pancho.formatSelection` — delegate to VS Code's native formatters.
+- Regex panel: pattern history, saved expressions (name + pattern + flags) and named-group display.
+- Clipboard history Quick Pick now shows a multi-line preview of each entry.
+- Command palette subcategories (`Pancho: Edit`, `Pancho: Lines`, `Pancho: Text Case`, …) for easier discovery.
+- Tests: fuzz/property tests, command-manifest drift guard and enabled-switch coverage.
+- **DX:** `.vscode/` is now committed (`launch.json`, `tasks.json`, `extensions.json`, `settings.json`) so `F5` works on a fresh clone; GitHub Actions CI (typecheck, tests, l10n check, bundle).
 - `pancho.columnFillSeries` — fill a column block with an incrementing series (start/step).
 - `pancho.repeatLastTimes` — repeat the last command a chosen number of times.
 - `pancho.sortByColumn` — sort rows by a chosen column (delimiter + index + numeric).
@@ -29,9 +37,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Context menu consolidated:** 14 submenus collapsed into 7 groups — **Edit**, **Lines**, **Text & Case**, **Convert**, **Escape**, **Dev tools** and **Macros & Columns** — leaving 10 entries at the top level (categories grouped first, action commands at the bottom). Fixes a regression where 9 category definitions (62 commands) were missing from the menus; all 138 commands are back in the context menu and the hub.
 - **Native delegation:** 17 commands keep their Pancho menu entry and keyboard shortcut but now delegate to VS Code's own implementation (consistency + native multi-cursor): uppercase/lowercase/title case, comment & block comment, tabs↔spaces, indent/outdent, move / duplicate / insert line, sort A–Z / Z–A and join lines.
 - Status bar counters now show `Sel L:x P:y C:z` while there is a selection, and hide when there is no active editor.
-- The regex worker is pre-warmed on activation so the first regex does not pay the thread-spawn cost.
+- Counters are localized (`W` → `P` in Spanish), use `document.lineCount` for the free line count and debounce at 300 ms.
+- The regex worker starts lazily on first use instead of being pre-warmed on activation.
+- Command hub is now a single Quick Pick (favorites, then recents, then the full catalogue).
+- Errors are reported with `showErrorMessage`; warnings remain for input validation.
+- Dropped five default keybindings that shadowed VS Code core commands (`Ctrl+Shift+L/T/W/N/S`).
+- `pancho.showStatusInfo` is declared in the manifest (usable from the palette).
 - Localized previously hardcoded error strings (`align`, `convert`, `jwt`, `timestamp`, `colorInfo`).
 - Removed the oversized `.vsix` binaries and `README_PANCHO.md` from the repository (use GitHub Releases); `.DS_Store` untracked.
+
+### Fixed
+
+- `preview.ts` no longer leaks the full before/after document copies: the preview cache is released once the user decides and is bounded in size.
 
 ### Removed
 
@@ -41,7 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Testing
 
-- 245 unit tests.
+- 261 unit tests.
 
 ### Docs
 

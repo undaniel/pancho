@@ -13,6 +13,7 @@ export interface RegexMatch {
     match: string;
     index: number;
     groups: string[];
+    namedGroups?: Record<string, string>;
 }
 
 export interface RegexJobResult {
@@ -56,6 +57,9 @@ export function executeRegexJob(job: RegexJob): RegexJobResult {
                 match: m[0],
                 index: m.index,
                 groups: m.slice(1).map(g => g ?? ''),
+                namedGroups: m.groups
+                    ? Object.fromEntries(Object.entries(m.groups).map(([name, value]) => [name, value ?? '']))
+                    : undefined,
             });
             if (m.index === regex.lastIndex) regex.lastIndex++;
         }

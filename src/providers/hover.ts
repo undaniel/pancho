@@ -1,9 +1,11 @@
 import * as vscode from 'vscode';
 import { buildHover, findHoverCandidate } from '../transforms/hoverInfo';
+import { isEnabled } from '../utils/config';
 
 export function registerHoverProvider(context: vscode.ExtensionContext): void {
     const provider: vscode.HoverProvider = {
         provideHover(document, position) {
+            if (!isEnabled()) return undefined;
             const lineStart = document.lineAt(position.line).range.start;
             const character = document.offsetAt(position) - document.offsetAt(lineStart);
             const candidate = findHoverCandidate(document.lineAt(position.line).text, character);

@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { Commands } from '../commands/registry';
 import { ContentKind, detectContent } from '../transforms/detectContent';
 import { t } from '../utils/i18n';
+import { isEnabled } from '../utils/config';
 
 interface ActionSpec {
     command: string;
@@ -36,6 +37,7 @@ const SPECS: Record<ContentKind, ActionSpec[]> = {
 export function registerCodeActionsProvider(context: vscode.ExtensionContext): void {
     const provider: vscode.CodeActionProvider = {
         provideCodeActions(document, range) {
+            if (!isEnabled()) return undefined;
             if (range.isEmpty) return undefined;
             const text = document.getText(range);
             const kinds = detectContent(text);

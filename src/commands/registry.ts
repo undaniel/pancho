@@ -131,6 +131,10 @@ export const Commands = {
     SHOW_MENU: 'pancho.showMenu',
     REPEAT_LAST: 'pancho.repeatLast',
     REPEAT_LAST_TIMES: 'pancho.repeatLastTimes',
+    FAVORITES_SHOW: 'pancho.showFavorites',
+    FAVORITE_TOGGLE: 'pancho.toggleFavorite',
+    FORMAT_DOCUMENT: 'pancho.formatDocument',
+    FORMAT_SELECTION: 'pancho.formatSelection',
 
     // Bloque G: columnas
     COLUMN_INSERT: 'pancho.columnInsert',
