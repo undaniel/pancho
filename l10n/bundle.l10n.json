@@ -122,5 +122,21 @@
   "Saved": "Saved",
   "Sel L:{0} W:{1} C:{2}": "Sel L:{0} W:{1} C:{2}",
   "Smart actions": "Smart actions",
-  "No smart actions for the current content": "No smart actions for the current content"
+  "No smart actions for the current content": "No smart actions for the current content",
+  "Done": "Done",
+  "Export to clipboard": "Export to clipboard",
+  "Import from clipboard": "Import from clipboard",
+  "Invalid pipeline JSON": "Invalid pipeline JSON",
+  "Manage pipelines": "Manage pipelines",
+  "New pipeline...": "New pipeline...",
+  "Pipeline": "Pipeline",
+  "Pipeline failed at {0}: {1}": "Pipeline failed at {0}: {1}",
+  "Pipeline step {0}": "Pipeline step {0}",
+  "Pipelines copied to the clipboard": "Pipelines copied to the clipboard",
+  "Run pipeline": "Run pipeline",
+  "Save this pipeline as (leave empty to skip)": "Save this pipeline as (leave empty to skip)",
+  "The pipeline produced no changes": "The pipeline produced no changes",
+  "This pipeline has no valid steps": "This pipeline has no valid steps",
+  "{0} pipeline(s) imported": "{0} pipeline(s) imported",
+  "{0} step(s)": "{0} step(s)"
 }

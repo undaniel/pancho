@@ -1,6 +1,6 @@
 # Pancho commands
 
-Full list of the **144 commands** shipped by Pancho, grouped into the same
+Full list of the **146 commands** shipped by Pancho, grouped into the same
 categories you see in the context menu (`Right-click → Pancho`). Every command is
 also available from the Command Palette under `Pancho:`.
 
@@ -254,3 +254,5 @@ also available from the Command Palette under `Pancho:`.
 | `Pancho: Show Favorites` | Pick a command from your favorites |
 | `Pancho: Edit Favorites` | Add or remove favorite commands |
 | `Pancho: Smart actions` | Content-aware picker: JWT, JSON, CSV, color, Base64 or timestamp actions |
+| `Pancho: Run pipeline` | Chain transforms in order, with a diff preview and optional save |
+| `Pancho: Manage pipelines` | Delete, export or import saved pipelines |

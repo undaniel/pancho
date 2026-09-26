@@ -1,6 +1,6 @@
 # Comandos de Pancho
 
-Lista completa de los **144 comandos** que trae Pancho, agrupados en las mismas
+Lista completa de los **146 comandos** que trae Pancho, agrupados en las mismas
 categorías que ves en el menú contextual (`Clic derecho → Pancho`). Todos también
 están disponibles desde la Paleta de comandos como `Pancho:`.
 
@@ -254,3 +254,5 @@ están disponibles desde la Paleta de comandos como `Pancho:`.
 | `Pancho: Mostrar favoritos` | Elige un comando de tus favoritos |
 | `Pancho: Editar favoritos` | Agrega o quita comandos favoritos |
 | `Pancho: Acciones inteligentes` | Selector según el contenido: JWT, JSON, CSV, color, Base64 o timestamp |
+| `Pancho: Ejecutar pipeline` | Encadena transformaciones en orden, con diff y guardado opcional |
+| `Pancho: Gestionar pipelines` | Elimina, exporta o importa pipelines guardados |

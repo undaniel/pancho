@@ -28,7 +28,7 @@
 
 ## Features
 
-- **144 commands** available from the context menu
+- **146 commands** available from the context menu
 - **Command hub** (`Pancho: Show command menu`) with categories, shortcuts and recently used
 - **Multi-cursor & multi-selection** aware: transforms apply per cursor/selection
 - **Repeat last command** (`Ctrl+Shift+.`)
@@ -86,7 +86,7 @@ More examples in [docs/demos.md](./docs/demos.md).
 
 ## Commands
 
-The **144 commands** are grouped into seven categories so the context menu stays
+The **146 commands** are grouped into seven categories so the context menu stays
 short: **Edit**, **Lines**, **Text & Case**, **Convert**, **Escape**, **Dev tools** and
 **Macros & Columns**, plus the **Command hub**.
 

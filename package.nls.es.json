@@ -193,5 +193,7 @@
   "command.pancho.toggleFavorite.title": "Editar favoritos",
   "command.pancho.formatDocument.title": "Formatear documento (nativo)",
   "command.pancho.formatSelection.title": "Formatear selección (nativo)",
-  "command.pancho.smartActions.title": "Acciones inteligentes"
+  "command.pancho.smartActions.title": "Acciones inteligentes",
+  "command.pancho.runPipeline.title": "Ejecutar pipeline",
+  "command.pancho.managePipelines.title": "Gestionar pipelines"
 }

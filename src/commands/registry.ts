@@ -151,6 +151,8 @@ const Manifest = {
     FAVORITES_SHOW: { id: 'pancho.showFavorites', category: 'actions' },
     FAVORITE_TOGGLE: { id: 'pancho.toggleFavorite', category: 'actions' },
     SMART_ACTIONS: { id: 'pancho.smartActions', category: 'actions', enablement: 'editorIsOpen' },
+    RUN_PIPELINE: { id: 'pancho.runPipeline', category: 'actions', enablement: 'editorIsOpen' },
+    MANAGE_PIPELINES: { id: 'pancho.managePipelines', category: 'actions' },
     FORMAT_DOCUMENT: { id: 'pancho.formatDocument', category: 'edit', enablement: 'editorIsOpen' },
     FORMAT_SELECTION: { id: 'pancho.formatSelection', category: 'edit', enablement: 'editorHasSelection' },
 
