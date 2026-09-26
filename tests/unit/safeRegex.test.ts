@@ -1,5 +1,8 @@
 import { describe, it, expect } from '@jest/globals';
+import * as path from 'path';
 import { isPotentiallyCatastrophic, runRegexJob } from '../../src/utils/safeRegex';
+
+const SLOW_WORKER = path.join(__dirname, '..', 'fixtures', 'regexSlowWorker.js');
 
 describe('safeRegex', () => {
   describe('isPotentiallyCatastrophic', () => {
@@ -50,6 +53,42 @@ describe('safeRegex', () => {
     it('returns empty for an empty pattern', async () => {
       const result = await runRegexJob({ pattern: '', flags: 'g', text: 'x', mode: 'exec' });
       expect(result.error).toBe('empty');
+    });
+
+    it('returns cancelled when the signal is already aborted', async () => {
+      const controller = new AbortController();
+      controller.abort();
+      const result = await runRegexJob(
+        { pattern: 'a', flags: 'g', text: 'banana', mode: 'count' },
+        { signal: controller.signal }
+      );
+      expect(result.error).toBe('cancelled');
+    });
+
+    it('cancels a job running in the worker', async () => {
+      const controller = new AbortController();
+      const promise = runRegexJob(
+        { pattern: 'a', flags: 'g', text: 'a', mode: 'exec' },
+        { signal: controller.signal, workerFile: SLOW_WORKER }
+      );
+      controller.abort();
+      expect((await promise).error).toBe('cancelled');
+    });
+
+    it('runs a later job in the worker after a cancellation', async () => {
+      const controller = new AbortController();
+      const cancelled = runRegexJob(
+        { pattern: 'a', flags: 'g', text: 'a', mode: 'exec' },
+        { signal: controller.signal, workerFile: SLOW_WORKER }
+      );
+      controller.abort();
+      await cancelled;
+      const result = await runRegexJob(
+        { pattern: 'a', flags: 'g', text: 'a', mode: 'exec' },
+        { workerFile: SLOW_WORKER }
+      );
+      expect(result.error).toBeUndefined();
+      expect(result.matches).toEqual([]);
     });
   });
 });

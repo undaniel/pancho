@@ -23,7 +23,7 @@ export interface RegexJobResult {
     error?: RegexErrorCode;
 }
 
-export type RegexErrorCode = 'invalid' | 'timeout' | 'complex' | 'exec' | 'empty';
+export type RegexErrorCode = 'invalid' | 'timeout' | 'complex' | 'exec' | 'empty' | 'cancelled';
 
 const DEFAULT_MAX_MATCHES = 10000;
 

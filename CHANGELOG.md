@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Native delegation:** 17 commands keep their Pancho menu entry and keyboard shortcut but now delegate to VS Code's own implementation (consistency + native multi-cursor): uppercase/lowercase/title case, comment & block comment, tabs↔spaces, indent/outdent, move / duplicate / insert line, sort A–Z / Z–A and join lines.
 - Status bar counters now show `Sel L:x P:y C:z` while there is a selection, and hide when there is no active editor.
 - Counters are localized (`W` → `P` in Spanish), use `document.lineCount` for the free line count and debounce at 300 ms.
-- The regex worker starts lazily on first use instead of being pre-warmed on activation.
+- The regex worker starts lazily on first use instead of being pre-warmed on activation, and now supports **real cancellation**: aborting a job terminates its worker (the regex panel discards stale evaluations while typing) while an idle worker is reused for the next job.
 - Command hub is now a single Quick Pick (favorites, then recents, then the full catalogue).
 - Errors are reported with `showErrorMessage`; warnings remain for input validation.
 - Dropped five default keybindings that shadowed VS Code core commands (`Ctrl+Shift+L/T/W/N/S`).
@@ -59,7 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Testing
 
-- 267 unit tests.
+- 270 unit tests.
 
 ### Docs
 

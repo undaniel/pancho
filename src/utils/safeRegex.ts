@@ -7,16 +7,19 @@ export { isPotentiallyCatastrophic } from './regexCore';
 export type { RegexJob, RegexJobResult, RegexMatch } from './regexCore';
 
 const DEFAULT_TIMEOUT_MS = 2000;
+const MAX_IDLE_WORKERS = 1;
 
-interface PendingJob {
-    resolve: (result: RegexJobResult) => void;
-    timer: NodeJS.Timeout;
+export interface RegexRunOptions {
+    timeoutMs?: number;
+    /** Aborting terminates the worker, cancelling the in-flight evaluation. */
+    signal?: AbortSignal;
+    /** Override the worker script (used by tests). */
+    workerFile?: string;
 }
 
-let worker: Worker | null = null;
-let nextId = 1;
 let workerPath: string | null | undefined;
-const pending = new Map<number, PendingJob>();
+const idle: Worker[] = [];
+const active = new Set<Worker>();
 
 function resolveWorkerPath(): string | null {
     if (workerPath !== undefined) return workerPath;
@@ -34,69 +37,85 @@ function resolveWorkerPath(): string | null {
     return workerPath;
 }
 
-function ensureWorker(workerFile: string): Worker {
-    if (worker) return worker;
-    const w = new Worker(workerFile);
-    w.on('message', (message: { id: number } & RegexJobResult) => {
-        const job = pending.get(message.id);
-        if (!job) return;
-        clearTimeout(job.timer);
-        pending.delete(message.id);
-        job.resolve(message);
-    });
-    w.on('error', () => {
-        resetWorker();
-        flushPending({ error: 'exec' });
-    });
-    w.on('exit', () => {
-        if (worker === w) worker = null;
-    });
-    worker = w;
-    return w;
+function acquireWorker(workerFile: string): Worker {
+    const worker = idle.pop() ?? new Worker(workerFile);
+    worker.ref();
+    return worker;
 }
 
-function resetWorker(): void {
-    const w = worker;
-    worker = null;
-    if (w) {
-        w.removeAllListeners();
-        void w.terminate();
-    }
+function retireWorker(worker: Worker): void {
+    active.delete(worker);
+    worker.removeAllListeners();
+    void worker.terminate();
 }
 
-function flushPending(result: RegexJobResult): void {
-    for (const [, job] of pending) {
-        clearTimeout(job.timer);
-        job.resolve(result);
+function parkWorker(worker: Worker): void {
+    active.delete(worker);
+    worker.removeAllListeners();
+    if (idle.length >= MAX_IDLE_WORKERS) {
+        void worker.terminate();
+        return;
     }
-    pending.clear();
+    worker.on('exit', () => {
+        const index = idle.indexOf(worker);
+        if (index !== -1) idle.splice(index, 1);
+    });
+    worker.unref();
+    idle.push(worker);
 }
 
-export async function runRegexJob(job: RegexJob, timeoutMs: number = DEFAULT_TIMEOUT_MS): Promise<RegexJobResult> {
-    if (!job.pattern) return { error: 'empty' };
-    if (isPotentiallyCatastrophic(job.pattern)) return { error: 'complex' };
+export function runRegexJob(job: RegexJob, options: RegexRunOptions = {}): Promise<RegexJobResult> {
+    const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+    const signal = options.signal;
 
-    const workerFile = resolveWorkerPath();
-    if (!workerFile) {
-        return executeRegexJob(job);
-    }
+    if (!job.pattern) return Promise.resolve({ error: 'empty' });
+    if (isPotentiallyCatastrophic(job.pattern)) return Promise.resolve({ error: 'complex' });
+    if (signal?.aborted) return Promise.resolve({ error: 'cancelled' });
 
-    const w = ensureWorker(workerFile);
-    const id = nextId++;
+    const workerFile = options.workerFile ?? resolveWorkerPath();
+    if (!workerFile) return Promise.resolve(executeRegexJob(job));
 
     return new Promise<RegexJobResult>(resolve => {
-        const timer = setTimeout(() => {
-            pending.delete(id);
-            resetWorker();
-            resolve({ error: 'timeout' });
-        }, Math.max(50, timeoutMs));
+        const worker = acquireWorker(workerFile);
+        active.add(worker);
 
-        pending.set(id, { resolve, timer });
-        w.postMessage({ ...job, id });
+        let settled = false;
+        let timer: NodeJS.Timeout | undefined;
+
+        function settle(result: RegexJobResult, reusable: boolean): void {
+            if (settled) return;
+            settled = true;
+            if (timer) clearTimeout(timer);
+            signal?.removeEventListener('abort', onAbort);
+            if (reusable) parkWorker(worker);
+            else retireWorker(worker);
+            resolve(result);
+        }
+
+        function onAbort(): void {
+            settle({ error: 'cancelled' }, false);
+        }
+
+        worker.on('message', (message: RegexJobResult) => settle(message, true));
+        worker.on('error', () => settle({ error: 'exec' }, false));
+        worker.on('exit', () => settle({ error: 'exec' }, false));
+
+        timer = setTimeout(() => settle({ error: 'timeout' }, false), Math.max(50, timeoutMs));
+        signal?.addEventListener('abort', onAbort, { once: true });
+
+        worker.postMessage(job);
     });
 }
 
 export function disposeRegexWorker(): void {
-    flushPending({ error: 'exec' });
-    resetWorker();
+    for (const worker of active) {
+        worker.removeAllListeners();
+        void worker.terminate();
+    }
+    active.clear();
+    while (idle.length) {
+        const worker = idle.pop()!;
+        worker.removeAllListeners();
+        void worker.terminate();
+    }
 }

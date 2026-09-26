@@ -260,23 +260,34 @@ export function registerRegexPanel(context: vscode.ExtensionContext): void {
             saved: readSaved(context),
         });
 
+        let testAbort: AbortController | undefined;
+        let replaceAbort: AbortController | undefined;
+
         panel.webview.onDidReceiveMessage(async (message: {
             type: string; pattern: string; flags: string; text: string; replacement?: string; name?: string;
         }) => {
             const timeout = getRegexTimeoutMs();
             if (message.type === 'test') {
+                testAbort?.abort();
+                const controller = new AbortController();
+                testAbort = controller;
                 const history = await recordHistory(context, message.pattern);
                 if (history) await panel.webview.postMessage({ type: 'history', history });
                 const result = await runRegexJob(
                     { pattern: message.pattern, flags: normalizeFlags(message.flags), text: message.text, mode: 'exec', maxMatches: 10000 },
-                    timeout
+                    { timeoutMs: timeout, signal: controller.signal }
                 );
+                if (result.error === 'cancelled') return;
                 await panel.webview.postMessage({ type: 'result', matches: result.matches ?? [], error: result.error });
             } else if (message.type === 'replace') {
+                replaceAbort?.abort();
+                const controller = new AbortController();
+                replaceAbort = controller;
                 const result = await runRegexJob(
                     { pattern: message.pattern, flags: normalizeFlags(message.flags), text: message.text, mode: 'replace', replacement: message.replacement ?? '' },
-                    timeout
+                    { timeoutMs: timeout, signal: controller.signal }
                 );
+                if (result.error === 'cancelled') return;
                 await panel.webview.postMessage({ type: 'replaceResult', result: result.result ?? message.text, count: result.count ?? 0, error: result.error });
             } else if (message.type === 'apply') {
                 await applyReplacement(message.pattern, message.flags, message.replacement ?? '');
@@ -293,6 +304,8 @@ export function registerRegexPanel(context: vscode.ExtensionContext): void {
         });
 
         panel.onDidDispose(() => {
+            testAbort?.abort();
+            replaceAbort?.abort();
             if (currentPanel === panel) currentPanel = undefined;
         }, null, context.subscriptions);
     });
@@ -309,7 +322,7 @@ async function applyReplacement(pattern: string, flags: string, replacement: str
     const source = isSelection ? target : editor.document.getText();
     const result = await runRegexJob(
         { pattern, flags: normalizeFlags(flags), text: source, mode: 'replace', replacement },
-        getRegexTimeoutMs()
+        { timeoutMs: getRegexTimeoutMs() }
     );
     if (result.error || result.result === undefined) {
         vscode.window.showWarningMessage(t('Pancho: {0}', t('Invalid pattern')));
