@@ -120,5 +120,7 @@
   "Pancho: {0} favorite(s) saved": "Pancho: {0} favorito(s) guardado(s)",
   "Save": "Guardar",
   "Saved": "Guardados",
-  "Sel L:{0} W:{1} C:{2}": "Sel L:{0} P:{1} C:{2}"
+  "Sel L:{0} W:{1} C:{2}": "Sel L:{0} P:{1} C:{2}",
+  "Smart actions": "Acciones inteligentes",
+  "No smart actions for the current content": "No hay acciones inteligentes para el contenido actual"
 }

@@ -192,5 +192,6 @@
   "command.pancho.showFavorites.title": "Mostrar favoritos",
   "command.pancho.toggleFavorite.title": "Editar favoritos",
   "command.pancho.formatDocument.title": "Formatear documento (nativo)",
-  "command.pancho.formatSelection.title": "Formatear selección (nativo)"
+  "command.pancho.formatSelection.title": "Formatear selección (nativo)",
+  "command.pancho.smartActions.title": "Acciones inteligentes"
 }

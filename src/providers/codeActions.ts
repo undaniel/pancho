@@ -4,7 +4,7 @@ import { ContentKind, detectContent } from '../transforms/detectContent';
 import { t } from '../utils/i18n';
 import { isEnabled } from '../utils/config';
 
-interface ActionSpec {
+export interface ActionSpec {
     command: string;
     title: string;
 }
@@ -34,24 +34,33 @@ const SPECS: Record<ContentKind, ActionSpec[]> = {
     ],
 };
 
+/** Content-aware actions for a piece of text, deduplicated by command. */
+export function smartActionsFor(text: string): ActionSpec[] {
+    const seen = new Set<string>();
+    const actions: ActionSpec[] = [];
+    for (const kind of detectContent(text)) {
+        for (const spec of SPECS[kind]) {
+            if (seen.has(spec.command)) continue;
+            seen.add(spec.command);
+            actions.push(spec);
+        }
+    }
+    return actions;
+}
+
 export function registerCodeActionsProvider(context: vscode.ExtensionContext): void {
     const provider: vscode.CodeActionProvider = {
         provideCodeActions(document, range) {
             if (!isEnabled()) return undefined;
             if (range.isEmpty) return undefined;
-            const text = document.getText(range);
-            const kinds = detectContent(text);
-            if (kinds.length === 0) return undefined;
+            const specs = smartActionsFor(document.getText(range));
+            if (specs.length === 0) return undefined;
 
-            const actions: vscode.CodeAction[] = [];
-            for (const kind of kinds) {
-                for (const spec of SPECS[kind]) {
-                    const action = new vscode.CodeAction(spec.title, vscode.CodeActionKind.Refactor);
-                    action.command = { command: spec.command, title: spec.title };
-                    actions.push(action);
-                }
-            }
-            return actions;
+            return specs.map(spec => {
+                const action = new vscode.CodeAction(spec.title, vscode.CodeActionKind.Refactor);
+                action.command = { command: spec.command, title: spec.title };
+                return action;
+            });
         },
     };
     context.subscriptions.push(

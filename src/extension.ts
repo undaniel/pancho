@@ -11,6 +11,7 @@ import { registerClipboardCommands } from './commands/clipboard';
 import { registerHoverProvider } from './providers/hover';
 import { registerCodeActionsProvider } from './providers/codeActions';
 import { registerRegexPanel } from './providers/regexPanel';
+import { registerSmartActions } from './commands/smartActions';
 import { registerCommand } from './utils/register';
 
 export function activate(context: vscode.ExtensionContext): void {
@@ -26,6 +27,7 @@ export function activate(context: vscode.ExtensionContext): void {
     registerHoverProvider(context);
     registerCodeActionsProvider(context);
     registerRegexPanel(context);
+    registerSmartActions(context);
 
     registerCommand(context, 'pancho.showStatusInfo', () => {
         showInfo(vscode.l10n.t('Pancho - Clean and format text like Notepad++'));

@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Settings `pancho.enabled` (master switch for commands, counters and providers) and `pancho.previewAllChanges` (diff + confirm before applying any whole-document change).
 - `pancho.showFavorites` / `pancho.toggleFavorite` — pin commands; favorites float to the top of the hub.
+- `pancho.smartActions` — one content-aware picker that offers the right action for the text under the cursor (JWT, JSON, CSV, color, Base64, timestamp).
 - `pancho.formatDocument` / `pancho.formatSelection` — delegate to VS Code's native formatters.
 - Regex panel: pattern history, saved expressions (name + pattern + flags) and named-group display.
 - Clipboard history Quick Pick now shows a multi-line preview of each entry.
@@ -36,7 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Context menu consolidated:** 14 submenus collapsed into 7 groups — **Edit**, **Lines**, **Text & Case**, **Convert**, **Escape**, **Dev tools** and **Macros & Columns** — leaving 10 entries at the top level (categories grouped first, action commands at the bottom). Fixes a regression where 9 category definitions (62 commands) were missing from the menus; all 143 commands are back in the context menu and the hub.
+- **Context menu consolidated:** 14 submenus collapsed into 7 groups — **Edit**, **Lines**, **Text & Case**, **Convert**, **Escape**, **Dev tools** and **Macros & Columns** — leaving 10 entries at the top level (categories grouped first, action commands at the bottom). Fixes a regression where 9 category definitions (62 commands) were missing from the menus; all 144 commands are back in the context menu and the hub.
 - **Native delegation:** 17 commands keep their Pancho menu entry and keyboard shortcut but now delegate to VS Code's own implementation (consistency + native multi-cursor): uppercase/lowercase/title case, comment & block comment, tabs↔spaces, indent/outdent, move / duplicate / insert line, sort A–Z / Z–A and join lines.
 - Status bar counters now show `Sel L:x P:y C:z` while there is a selection, and hide when there is no active editor.
 - Counters are localized (`W` → `P` in Spanish), use `document.lineCount` for the free line count and debounce at 300 ms.
@@ -60,17 +61,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Commands already provided by VS Code: `uncommentLine` / `uncommentBlock` (native comment toggle), `findInFiles` / `replaceInFiles` (native global search/replace), `highlightMatches` / `countMatches` (find widget), `encodingInfo` / `changeEncoding` (status bar / native command).
 - Now-unused modules and their tests: `transforms/comments`, `transforms/commentStyles`, `transforms/tabs`, `transforms/search`, `transforms/searchAdvanced`, `features/encoding`, `commands/encoding`.
-- **Total commands:** 143 (net after removing redundant commands and adding new ones).
+- **Total commands:** 144 (net after removing redundant commands and adding new ones).
 
 ### Testing
 
-- 282 unit tests.
+- 286 unit tests.
 
 ### Docs
 
 - **Restructured documentation** so the Marketplace README stays short (653 → 164 lines):
   - `README.md` — English overview: install, features, top 10, why, privacy, how to use, shortcuts, settings, contributing.
-  - `docs/commands.md` / `docs/commands.es.md` — the full 143-command reference.
+  - `docs/commands.md` / `docs/commands.es.md` — the full 144-command reference.
   - `docs/README.es.md` — the Spanish guide.
   - `docs/demos.md` — hover, quick fixes, regex panel, columns, clipboard, sorting and macros examples.
 - README: install/why/top-10 sections, Marketplace & Open VSX badges, table of contents, contributing guide and keyboard-shortcut conflict notes; removed stale claims for deleted commands.
