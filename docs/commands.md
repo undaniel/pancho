@@ -1,6 +1,6 @@
 # Pancho commands
 
-Full list of the **138 commands** shipped by Pancho, grouped into the same
+Full list of the **143 commands** shipped by Pancho, grouped into the same
 categories you see in the context menu (`Right-click → Pancho`). Every command is
 also available from the Command Palette under `Pancho:`.
 
@@ -42,6 +42,8 @@ also available from the Command Palette under `Pancho:`.
 | `Pancho: Convert line endings to spaces` | Line breaks → spaces |
 | `Pancho: Wrap text...` | Wrap at column width |
 | `Pancho: Unwrap text` | Remove line breaks |
+| `Pancho: Format Document (native)` | Run VS Code's native formatter |
+| `Pancho: Format Selection (native)` | Run VS Code's native formatter on the selection |
 
 ### Indentation
 | Command | Description |
@@ -249,3 +251,5 @@ also available from the Command Palette under `Pancho:`.
 | `Pancho: Show command menu` | Quick Pick hub of all categories and commands (with recently used on top) |
 | `Pancho: Repeat last command` | Re-run the previous Pancho command |
 | `Pancho: Repeat last command N times...` | Re-run the previous command N times |
+| `Pancho: Show Favorites` | Pick a command from your favorites |
+| `Pancho: Edit Favorites` | Add or remove favorite commands |

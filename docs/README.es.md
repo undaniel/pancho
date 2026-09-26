@@ -28,7 +28,7 @@
 
 ## Características
 
-- **138 comandos** accesibles desde el menú contextual
+- **143 comandos** accesibles desde el menú contextual
 - **Hub de comandos** (`Pancho: Mostrar menú de comandos`) con categorías, atajos y usados recientemente
 - **Compatible con multi-cursor y multi-selección**: las transformaciones se aplican por cursor/selección
 - **Repetir último comando** (`Ctrl+Shift+.`)
@@ -86,7 +86,7 @@ Más ejemplos en [demos.md](./demos.md).
 
 ## Comandos
 
-Los **138 comandos** se agrupan en siete categorías para que el menú contextual sea corto: **Editar**, **Líneas**, **Texto y mayúsculas**, **Convertir**, **Escapar**, **Desarrollo** y **Macros y columnas**, más el **Hub de comandos**.
+Los **143 comandos** se agrupan en siete categorías para que el menú contextual sea corto: **Editar**, **Líneas**, **Texto y mayúsculas**, **Convertir**, **Escapar**, **Desarrollo** y **Macros y columnas**, más el **Hub de comandos**.
 
 Lista completa con descripciones: **[Comandos de Pancho](./commands.es.md)**.
 
