@@ -246,11 +246,21 @@ export function registerDocumentCommand(context: vscode.ExtensionContext, option
                 return;
             }
 
-            const processed = processResult(await transform(fullText, pattern, getTabSize()));
-            reportProcessed(processed);
-            if (processed.error) return;
-            if (wantsPreview(command) && !(await confirmWithPreview(fullText, processed.value, command))) return;
-            await replaceDocumentText(() => processed.value);
+            let processed: { value: string; error?: string; warning?: string } | undefined;
+            let cancelled = false;
+            await runOperation(command, fullText.length, false, async (_progress, token) => {
+                if (token.isCancellationRequested) {
+                    cancelled = true;
+                    return;
+                }
+                processed = processResult(await transform(fullText, pattern, getTabSize()));
+            });
+            if (cancelled || !processed) return;
+            const result = processed;
+            reportProcessed(result);
+            if (result.error) return;
+            if (wantsPreview(command) && !(await confirmWithPreview(fullText, result.value, command))) return;
+            await replaceDocumentText(() => result.value);
         } catch (err) {
             console.error('[Pancho] Error:', err);
             vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
@@ -299,19 +309,31 @@ export function registerPromptCommand(context: vscode.ExtensionContext, options:
             let edits: PlannedEdit[] | undefined;
             let error: string | undefined;
             let warning: string | undefined;
+            let cancelled = false;
 
-            if (wholeDocument) {
-                const processed = processResult(await transform(fullText, ...answers));
-                value = processed.value;
-                error = processed.error;
-                warning = processed.warning;
-            } else {
-                const plan = await planSelectionEdits(fullText, ranges, text => transform(text, ...answers));
-                if (plan.error) error = plan.error;
-                warning = plan.warning;
-                edits = plan.edits;
-            }
+            await runOperation(command, fullText.length, false, async (_progress, token) => {
+                if (token.isCancellationRequested) {
+                    cancelled = true;
+                    return;
+                }
+                if (wholeDocument) {
+                    const processed = processResult(await transform(fullText, ...answers));
+                    value = processed.value;
+                    error = processed.error;
+                    warning = processed.warning;
+                } else {
+                    const plan = await planSelectionEdits(fullText, ranges, text => transform(text, ...answers), () => token.isCancellationRequested);
+                    if (plan.cancelled) {
+                        cancelled = true;
+                        return;
+                    }
+                    if (plan.error) error = plan.error;
+                    warning = plan.warning;
+                    edits = plan.edits;
+                }
+            });
 
+            if (cancelled) return;
             reportProcessed({ error, warning });
             if (error) return;
 

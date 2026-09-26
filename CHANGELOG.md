@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Clipboard history Quick Pick now shows a multi-line preview of each entry.
 - Command palette subcategories (`Pancho: Edit`, `Pancho: Lines`, `Pancho: Text Case`, …) for easier discovery.
 - Tests: fuzz/property tests, command-manifest drift guard and enabled-switch coverage.
+- **Performance budgets** as unit tests (`npm run bench`): 12 pure transforms over 20k lines / ~400 KB JSON fail on time regressions.
 - **DX:** `.vscode/` is now committed (`launch.json`, `tasks.json`, `extensions.json`, `settings.json`) so `F5` works on a fresh clone; GitHub Actions CI (typecheck, tests, l10n check, bundle).
 - **Single command manifest:** `src/commands/registry.ts` is the single source for the command list (id, category, enablement); `npm run commands:sync` regenerates `contributes.commands` and a test keeps menus/keybindings/titles in sync.
 - `pancho.columnFillSeries` — fill a column block with an incrementing series (start/step).
@@ -43,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Command hub is now a single Quick Pick (favorites, then recents, then the full catalogue).
 - Errors are reported with `showErrorMessage`; warnings remain for input validation.
 - `pancho.previewDestructive` now defaults to `true`: destructive commands show a diff before applying (previously opt-in).
+- Whole-document and prompt commands now run inside a cancellable progress notification on large inputs, like text commands.
 - Dropped five default keybindings that shadowed VS Code core commands (`Ctrl+Shift+L/T/W/N/S`).
 - `pancho.showStatusInfo` is declared in the manifest (usable from the palette).
 - Localized previously hardcoded error strings (`align`, `convert`, `jwt`, `timestamp`, `colorInfo`).
@@ -62,7 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Testing
 
-- 270 unit tests.
+- 282 unit tests.
 
 ### Docs
 
