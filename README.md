@@ -128,7 +128,7 @@ Some commands keep Pancho's menu entry and shortcut but **delegate to VS Code's 
 | `pancho.loremIpsumWordCount` | `50` | Lorem Ipsum word count |
 | `pancho.randomStringLength` | `16` | Random string length |
 | `pancho.regexTimeoutMs` | `2000` | Max time (ms) a regex may run before aborting |
-| `pancho.previewDestructive` | `false` | Show a diff preview before destructive commands |
+| `pancho.previewDestructive` | `true` | Show a diff preview before destructive commands |
 | `pancho.clipboardHistoryEnabled` | `true` | Record the clipboard in the background |
 | `pancho.clipboardHistorySize` | `20` | Max clipboard entries to keep |
 

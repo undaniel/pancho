@@ -32,7 +32,7 @@ export function clearPreviewCache(): void {
 }
 
 export function isPreviewEnabled(): boolean {
-    return vscode.workspace.getConfiguration('pancho').get<boolean>('previewDestructive', false);
+    return vscode.workspace.getConfiguration('pancho').get<boolean>('previewDestructive', true);
 }
 
 export async function confirmWithPreview(original: string, modified: string, label: string): Promise<boolean> {

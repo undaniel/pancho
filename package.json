@@ -105,7 +105,7 @@
         },
         "pancho.previewDestructive": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "description": "%setting.previewDestructive.description%"
         },
         "pancho.clipboardHistoryEnabled": {
@@ -1607,39 +1607,47 @@
         }
       ]
     },
-    "markdownWalkthrough": [
+    "walkthroughs": [
       {
         "id": "pancho.walkthrough",
         "title": "%walkthrough.title%",
         "description": "%walkthrough.description%",
         "steps": [
           {
+            "id": "pancho.walkthrough.menu",
             "title": "%walkthrough.step.menu.title%",
             "description": "%walkthrough.step.menu.description%",
             "media": {
               "svg": "media/walkthrough.svg"
-            }
+            },
+            "completionEvents": ["onCommand:pancho.showMenu"]
           },
           {
+            "id": "pancho.walkthrough.categories",
             "title": "%walkthrough.step.categories.title%",
             "description": "%walkthrough.step.categories.description%",
             "media": {
               "svg": "media/categories.svg"
-            }
+            },
+            "completionEvents": ["onCommand:pancho.showFavorites"]
           },
           {
+            "id": "pancho.walkthrough.keybindings",
             "title": "%walkthrough.step.keybindings.title%",
             "description": "%walkthrough.step.keybindings.description%",
             "media": {
               "svg": "media/keybindings.svg"
-            }
+            },
+            "completionEvents": ["onCommand:pancho.toUpperCase"]
           },
           {
+            "id": "pancho.walkthrough.settings",
             "title": "%walkthrough.step.settings.title%",
             "description": "%walkthrough.step.settings.description%",
             "media": {
               "svg": "media/settings.svg"
-            }
+            },
+            "completionEvents": ["onCommand:pancho.showStatusInfo"]
           }
         ]
       }

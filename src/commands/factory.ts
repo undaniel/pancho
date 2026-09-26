@@ -23,6 +23,11 @@ function recordCommandAction(context: vscode.ExtensionContext, command: CommandN
     macroRecorder.record({ type: 'command', command });
 }
 
+/** Diff preview is asked for destructive commands (default on) or, optionally, for every change. */
+function wantsPreview(command: CommandName): boolean {
+    return (DESTRUCTIVE_COMMANDS.has(command) && isPreviewEnabled()) || isPreviewAllEnabled();
+}
+
 export type TransformOutput = string | { result: string; error?: string; warning?: string };
 export type TransformFn = (text: string, tabSize: number) => TransformOutput | Promise<TransformOutput>;
 export type InsertFn = () => TransformOutput | Promise<TransformOutput>;
@@ -167,8 +172,7 @@ export function registerTextCommand(context: vscode.ExtensionContext, options: T
             if (error) return;
             if (wholeDocument && value === undefined) return;
 
-            const wantsPreview = (DESTRUCTIVE_COMMANDS.has(command) && isPreviewEnabled()) || isPreviewAllEnabled();
-            if (wantsPreview) {
+            if (wantsPreview(command)) {
                 const modified = wholeDocument ? value! : applyPlannedEdits(fullText, edits ?? []);
                 if (!(await confirmWithPreview(fullText, modified, command))) return;
             }
@@ -245,7 +249,7 @@ export function registerDocumentCommand(context: vscode.ExtensionContext, option
             const processed = processResult(await transform(fullText, pattern, getTabSize()));
             reportProcessed(processed);
             if (processed.error) return;
-            if ((isPreviewEnabled() || isPreviewAllEnabled()) && !(await confirmWithPreview(fullText, processed.value, command))) return;
+            if (wantsPreview(command) && !(await confirmWithPreview(fullText, processed.value, command))) return;
             await replaceDocumentText(() => processed.value);
         } catch (err) {
             console.error('[Pancho] Error:', err);
@@ -311,7 +315,7 @@ export function registerPromptCommand(context: vscode.ExtensionContext, options:
             reportProcessed({ error, warning });
             if (error) return;
 
-            if ((isPreviewEnabled() || isPreviewAllEnabled())) {
+            if (wantsPreview(command)) {
                 const modified = wholeDocument ? value : applyPlannedEdits(fullText, edits ?? []);
                 if (modified !== undefined && !(await confirmWithPreview(fullText, modified, command))) return;
             }

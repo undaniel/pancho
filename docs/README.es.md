@@ -125,7 +125,7 @@ Algunos comandos conservan su entrada de menú y atajo de Pancho pero **delegan 
 | `pancho.loremIpsumWordCount` | `50` | Palabras en Lorem Ipsum |
 | `pancho.randomStringLength` | `16` | Longitud de string aleatorio |
 | `pancho.regexTimeoutMs` | `2000` | Tiempo máximo (ms) de una regex antes de abortar |
-| `pancho.previewDestructive` | `false` | Mostrar diff antes de comandos destructivos |
+| `pancho.previewDestructive` | `true` | Mostrar diff antes de comandos destructivos |
 | `pancho.clipboardHistoryEnabled` | `true` | Registra el portapapeles en segundo plano |
 | `pancho.clipboardHistorySize` | `20` | Máximo de entradas del portapapeles |
 
