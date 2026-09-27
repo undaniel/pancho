@@ -209,6 +209,9 @@ export class Uri {
     get fsPath(): string {
         return this.value;
     }
+    get path(): string {
+        return this.value;
+    }
     toString(): string {
         return this.value;
     }

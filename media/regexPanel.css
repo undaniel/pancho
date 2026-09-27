@@ -1,0 +1,119 @@
+body {
+  font-family: var(--vscode-font-family);
+  color: var(--vscode-foreground);
+  padding: 12px;
+}
+h2 {
+  margin: 0 0 8px;
+  font-size: 1.1em;
+  font-weight: 600;
+}
+section {
+  border-top: 1px solid var(--vscode-panel-border);
+  padding-top: 10px;
+  margin-top: 10px;
+}
+section:first-of-type {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+label {
+  display: block;
+  margin: 8px 0 2px;
+  font-size: 0.85em;
+  color: var(--vscode-descriptionForeground);
+}
+input[type=text],
+textarea,
+select {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--vscode-input-background);
+  color: var(--vscode-input-foreground);
+  border: 1px solid var(--vscode-input-border, transparent);
+  padding: 4px 6px;
+  border-radius: 2px;
+  font-family: inherit;
+}
+input[type=text]:focus,
+textarea:focus,
+select:focus {
+  outline: 1px solid var(--vscode-focusBorder);
+  outline-offset: -1px;
+}
+textarea {
+  min-height: 120px;
+  font-family: var(--vscode-editor-font-family);
+  font-size: var(--vscode-editor-font-size, 13px);
+}
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.row.spaced {
+  margin-top: 8px;
+}
+.row > .field {
+  flex: 1;
+  min-width: 120px;
+}
+.row > .flags {
+  flex: 0 0 90px;
+}
+button {
+  border: none;
+  padding: 5px 12px;
+  cursor: pointer;
+  border-radius: 2px;
+  font-family: inherit;
+}
+button.primary {
+  background: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+}
+button.primary:hover {
+  background: var(--vscode-button-hoverBackground);
+}
+button.secondary {
+  background: var(--vscode-button-secondaryBackground);
+  color: var(--vscode-button-secondaryForeground);
+}
+button.secondary:hover {
+  background: var(--vscode-button-secondaryHoverBackground, var(--vscode-button-secondaryBackground));
+}
+.toolbar {
+  margin-top: 8px;
+}
+.toolbar button {
+  min-width: 34px;
+}
+#result {
+  margin-top: 8px;
+  min-height: 1.2em;
+}
+#highlights {
+  margin-top: 8px;
+  padding: 6px;
+  border: 1px solid var(--vscode-panel-border);
+  max-height: 240px;
+  overflow: auto;
+  white-space: pre-wrap;
+  font-family: var(--vscode-editor-font-family);
+  font-size: var(--vscode-editor-font-size, 13px);
+}
+mark {
+  background: var(--vscode-editor-findMatchHighlightBackground);
+  color: inherit;
+}
+mark.active {
+  outline: 1px solid var(--vscode-focusBorder);
+}
+.error {
+  color: var(--vscode-errorForeground);
+}
+.muted {
+  color: var(--vscode-descriptionForeground);
+}

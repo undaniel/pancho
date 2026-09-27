@@ -1,0 +1,15 @@
+banana
+apple
+cherry
+apple
+date
+cherry
+elderberry
+fig
+apple
+grape
+
+name,role,city
+Ada,Engineer,London
+Linus,Maintainer,Helsinki
+Grace,Admiral,New York

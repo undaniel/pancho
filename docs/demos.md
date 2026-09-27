@@ -54,9 +54,10 @@ accidental catastrophic pattern cannot freeze the editor.
 
 ## Clipboard history
 
-Copy a few things, then run **Pancho: Clipboard history** (`Ctrl+Alt+V`) and pick
-an entry to paste at the cursor. Configure it with `pancho.clipboardHistoryEnabled`
-and `pancho.clipboardHistorySize`.
+Clipboard history is **off by default** for privacy. Enable
+`pancho.clipboardHistoryEnabled`, copy a few things, then run
+**Pancho: Clipboard history** (`Ctrl+Alt+V`) and pick an entry to paste at the
+cursor. Tune the number of entries with `pancho.clipboardHistorySize`.
 
 ## Sorting tables
 

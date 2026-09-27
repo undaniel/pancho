@@ -153,7 +153,7 @@
         },
         "pancho.clipboardHistoryEnabled": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "order": 10,
           "description": "%setting.clipboardHistoryEnabled.description%",
           "markdownDescription": "%setting.clipboardHistoryEnabled.markdownDescription%"
@@ -1018,6 +1018,12 @@
         "enablement": "editorIsOpen"
       },
       {
+        "command": "pancho.compareWithClipboard",
+        "title": "%command.pancho.compareWithClipboard.title%",
+        "category": "%command.category%",
+        "enablement": "editorIsOpen"
+      },
+      {
         "command": "pancho.runPipeline",
         "title": "%command.pancho.runPipeline.title%",
         "category": "%command.category%",
@@ -1231,6 +1237,11 @@
           "command": "pancho.managePipelines",
           "group": "2_actions",
           "order": 8
+        },
+        {
+          "command": "pancho.compareWithClipboard",
+          "group": "2_actions",
+          "order": 9
         },
         {
           "command": "pancho.showLogs",
@@ -1856,6 +1867,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "bench": "jest tests/unit/benchmark.test.ts",
+    "capture": "node scripts/capture/index.mjs",
     "test:integration": "tsc -p tsconfig.test.json && vscode-test --config .vscode-test.mjs",
     "package": "vsce package",
     "publish": "vsce publish"

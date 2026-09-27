@@ -33,6 +33,8 @@ import { timestampToISO, isoToTimestamp, nowAsTimestamp } from '../transforms/ti
 import { aesEncrypt, aesDecrypt } from '../transforms/aes';
 import { colorInfo } from '../transforms/colorInfo';
 import { formatRegexResult } from '../transforms/regex';
+import { registerCommand } from '../utils/register';
+import { compareWithClipboard } from '../utils/compare';
 
 export function registerAllCommands(context: vscode.ExtensionContext): void {
     // ===== Delegated to native VS Code commands (menu/shortcut kept) =====
@@ -201,4 +203,6 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
         ],
         transform: (text, pattern, flags) => formatRegexResult(pattern, flags || 'g', text, getRegexTimeoutMs()),
     });
+
+    registerCommand(context, Commands.COMPARE_WITH_CLIPBOARD, () => compareWithClipboard());
 }
