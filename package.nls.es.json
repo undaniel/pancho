@@ -90,7 +90,7 @@
   "setting.loremIpsumWordCount.description": "Cantidad de palabras en Lorem Ipsum",
   "setting.randomStringLength.description": "Longitud de cadena aleatoria generada",
   "setting.regexTimeoutMs.description": "Tiempo máximo (ms) que puede ejecutarse una operación regex antes de abortarse (protege contra backtracking catastrófico)",
-  "setting.previewDestructive.description": "Mostrar una vista previa (diff) antes de aplicar comandos destructivos",
+  "setting.previewDestructive.description": "Mostrar una vista previa (diff) antes de comandos que eliminan o reordenan contenido",
   "command.pancho.showMenu.title": "Mostrar menú de comandos",
   "command.pancho.repeatLast.title": "Repetir último comando",
   "command.pancho.repeatLastTimes.title": "Repetir último comando N veces...",

@@ -90,7 +90,7 @@
   "setting.loremIpsumWordCount.description": "Word count for Lorem Ipsum",
   "setting.randomStringLength.description": "Generated random string length",
   "setting.regexTimeoutMs.description": "Maximum time (ms) a regex operation may run before being aborted (protects against catastrophic backtracking)",
-  "setting.previewDestructive.description": "Show a diff preview before applying destructive commands",
+  "setting.previewDestructive.description": "Show a diff preview before commands that delete or reorder content",
   "command.pancho.showMenu.title": "Show command menu",
   "command.pancho.repeatLast.title": "Repeat last command",
   "command.pancho.repeatLastTimes.title": "Repeat last command N times...",

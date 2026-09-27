@@ -45,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The regex worker starts lazily on first use instead of being pre-warmed on activation, and now supports **real cancellation**: aborting a job terminates its worker (the regex panel discards stale evaluations while typing) while an idle worker is reused for the next job.
 - Command hub is now a single Quick Pick (favorites, then recents, then the full catalogue).
 - Errors are reported with `showErrorMessage`; warnings remain for input validation.
-- `pancho.previewDestructive` now defaults to `true`: destructive commands show a diff before applying (previously opt-in).
+- `pancho.previewDestructive` now defaults to `true`, but only for commands that delete or reorder content (dedupe, sort, delete/keep lines, transposes, randomize); plain conversions no longer ask for a diff.
 - Whole-document and prompt commands now run inside a cancellable progress notification on large inputs, like text commands.
 - Dropped five default keybindings that shadowed VS Code core commands (`Ctrl+Shift+L/T/W/N/S`).
 - `pancho.showStatusInfo` is declared in the manifest (usable from the palette).
