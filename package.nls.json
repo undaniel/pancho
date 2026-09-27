@@ -109,6 +109,7 @@
   "command.pancho.filterLinesByRegex.title": "Keep lines matching regex...",
   "command.pancho.removeLinesByRegex.title": "Remove lines matching regex...",
   "capabilities.untrustedWorkspaces.description": "Searching workspace files is available; replacing across workspace files is disabled in untrusted workspaces.",
+  "capabilities.virtualWorkspaces.description": "Pancho works on the text of open editors, so it is fully available in virtual workspaces.",
   "keybinding.toUpperCase.label": "Convert text to uppercase",
   "keybinding.countCharacters.label": "Count characters",
   "keybinding.removeDuplicateLines.label": "Remove duplicate lines",
@@ -222,5 +223,7 @@
   "command.pancho.formatSelection.title": "Format Selection (native)",
   "command.pancho.smartActions.title": "Smart actions",
   "command.pancho.runPipeline.title": "Run pipeline",
-  "command.pancho.managePipelines.title": "Manage pipelines"
+  "command.pancho.managePipelines.title": "Manage pipelines",
+  "command.pancho.showLogs.title": "Show logs",
+  "command.pancho.reportIssue.title": "Report issue"
 }

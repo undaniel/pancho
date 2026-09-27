@@ -5,3 +5,4 @@ coverage/
 *.tsbuildinfo
 *.vsix
 .DS_Store
+.vscode-test/

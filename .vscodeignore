@@ -26,3 +26,6 @@ coverage/**
 !pancho.webp
 **/*.vsix
 .github/**
+dist-tests/**
+.vscode-test/**
+.vscode-test.mjs

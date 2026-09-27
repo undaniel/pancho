@@ -17,6 +17,7 @@ import { DESTRUCTIVE_COMMANDS } from './destructive';
 import { macroRecorder } from '../macro/recorder';
 import { registerCommand } from '../utils/register';
 import { isPreviewAllEnabled } from '../utils/config';
+import { logError } from '../utils/logger';
 
 function recordCommandAction(context: vscode.ExtensionContext, command: CommandName): void {
     void recordLastCommand(context, command);
@@ -183,7 +184,7 @@ export function registerTextCommand(context: vscode.ExtensionContext, options: T
                 await applyEdits(editor, toVscodeEdits(editor.document, edits));
             }
         } catch (err) {
-            console.error('[Pancho] Error:', err);
+            logError(`Command ${command} failed`, err);
             vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
         }
     });
@@ -205,7 +206,7 @@ export function registerInsertCommand(context: vscode.ExtensionContext, options:
             macroRecorder.record({ type: 'insert', text: processed.value });
             await insertAtCursors(processed.value);
         } catch (err) {
-            console.error('[Pancho] Error:', err);
+            logError(`Command ${command} failed`, err);
             vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
         }
     });
@@ -217,7 +218,7 @@ export function registerInfoCommand(context: vscode.ExtensionContext, options: I
         try {
             vscode.window.showInformationMessage(await info());
         } catch (err) {
-            console.error('[Pancho] Error:', err);
+            logError(`Command ${command} failed`, err);
             vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
         }
     });
@@ -262,7 +263,7 @@ export function registerDocumentCommand(context: vscode.ExtensionContext, option
             if (wantsPreview(command) && !(await confirmWithPreview(fullText, result.value, command))) return;
             await replaceDocumentText(() => result.value);
         } catch (err) {
-            console.error('[Pancho] Error:', err);
+            logError(`Command ${command} failed`, err);
             vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
         }
     });
@@ -349,7 +350,7 @@ export function registerPromptCommand(context: vscode.ExtensionContext, options:
                 await applyEdits(editor, toVscodeEdits(editor.document, edits));
             }
         } catch (err) {
-            console.error('[Pancho] Error:', err);
+            logError(`Command ${command} failed`, err);
             vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
         }
     });
@@ -368,7 +369,7 @@ export function registerDelegateCommand(context: vscode.ExtensionContext, option
             recordCommandAction(context, command);
             await vscode.commands.executeCommand(target);
         } catch (err) {
-            console.error('[Pancho] Error:', err);
+            logError(`Command ${command} failed`, err);
             vscode.window.showErrorMessage(vscode.l10n.t('Pancho: {0}', String(err)));
         }
     });

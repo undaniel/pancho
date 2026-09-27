@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
-import * as path from 'path';
 import { Commands } from './registry';
 import { registerRepeatCommand } from '../utils/history';
 import { registerCommand } from '../utils/register';
 import { t } from '../utils/i18n';
 import { fireCommandListsChanged } from '../utils/events';
+import { createAndRunPipeline } from './pipeline';
+
+const NEW_PIPELINE_ACTION = '__pancho_new_pipeline__';
 
 interface CatalogEntry {
     command: string;
@@ -49,32 +50,34 @@ function findManifest(): Manifest | undefined {
     return extension?.packageJSON as Manifest | undefined;
 }
 
-const nlsCache = new Map<string, Record<string, string>>();
+let cachedNls: Record<string, string> = {};
 
-function readNls(context: vscode.ExtensionContext): Record<string, string> {
+/**
+ * Loads `package.nls*.json` through the VS Code file system so it works on the
+ * desktop and on the web (where Node's `fs` is unavailable). Called once on
+ * activation, before any menu is built.
+ */
+export async function initNls(context: vscode.ExtensionContext): Promise<void> {
     const language = vscode.env.language || 'en';
-    const cached = nlsCache.get(language);
-    if (cached) return cached;
-
-    const candidates = [`package.nls.${language}.json`];
     const base = language.split('-')[0];
+    const candidates = [`package.nls.${language}.json`];
     if (base !== language) candidates.push(`package.nls.${base}.json`);
     candidates.push('package.nls.json');
 
-    let result: Record<string, string> = {};
     for (const candidate of candidates) {
         try {
-            const fullPath = path.join(context.extensionPath, candidate);
-            if (fs.existsSync(fullPath)) {
-                result = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
-                break;
-            }
+            const bytes = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, candidate));
+            cachedNls = JSON.parse(new TextDecoder().decode(bytes)) as Record<string, string>;
+            return;
         } catch {
             // Try the next candidate.
         }
     }
-    nlsCache.set(language, result);
-    return result;
+    cachedNls = {};
+}
+
+function readNls(): Record<string, string> {
+    return cachedNls;
 }
 
 function localize(value: string | undefined, nls: Record<string, string>): string {
@@ -139,7 +142,7 @@ export interface CatalogCommand {
 
 /** Flat list of the commands shown in the menu, for the Activity Bar views. */
 export function buildCommandCatalog(context: vscode.ExtensionContext): CatalogCommand[] {
-    return flatten(buildCategories(findManifest(), readNls(context))).map(entry => ({
+    return flatten(buildCategories(findManifest(), readNls())).map(entry => ({
         command: entry.command,
         title: entry.title,
         categoryLabel: entry.categoryLabel,
@@ -195,7 +198,7 @@ async function executePick(
 
 async function showMenu(context: vscode.ExtensionContext): Promise<void> {
     const manifest = findManifest();
-    const nls = readNls(context);
+    const nls = readNls();
     const categories = buildCategories(manifest, nls);
     if (categories.length === 0) {
         vscode.window.showWarningMessage(t('Pancho: No commands available'));
@@ -214,10 +217,17 @@ async function showMenu(context: vscode.ExtensionContext): Promise<void> {
     ];
 
     const pick = await vscode.window.showQuickPick(
-        prioritized.map(entry => toPickItem(entry, recents, favorites)),
+        [
+            { label: `$(add) ${t('New pipeline from selected commands...')}`, command: NEW_PIPELINE_ACTION },
+            ...prioritized.map(entry => toPickItem(entry, recents, favorites)),
+        ],
         { placeHolder: t('Pancho: Choose a command'), matchOnDescription: true }
     );
     if (!pick) return;
+    if (pick.command === NEW_PIPELINE_ACTION) {
+        await createAndRunPipeline(context);
+        return;
+    }
 
     const nextRecents = [pick.command, ...context.globalState.get<string[]>(RECENT_KEY, []).filter(c => c !== pick.command)]
         .slice(0, MAX_RECENTS);
@@ -229,7 +239,7 @@ async function showMenu(context: vscode.ExtensionContext): Promise<void> {
 
 async function showFavorites(context: vscode.ExtensionContext): Promise<void> {
     const manifest = findManifest();
-    const nls = readNls(context);
+    const nls = readNls();
     const categories = buildCategories(manifest, nls);
     const favorites = readCommandSet(context, FAVORITES_KEY);
     const recents = readCommandSet(context, RECENT_KEY, MAX_RECENTS);
@@ -244,7 +254,7 @@ async function showFavorites(context: vscode.ExtensionContext): Promise<void> {
 
 async function toggleFavorites(context: vscode.ExtensionContext): Promise<void> {
     const manifest = findManifest();
-    const nls = readNls(context);
+    const nls = readNls();
     const categories = buildCategories(manifest, nls);
     const entries = flatten(categories);
     const current = readCommandSet(context, FAVORITES_KEY);

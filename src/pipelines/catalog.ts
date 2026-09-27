@@ -7,6 +7,7 @@ import { toSentenceCase, toKebabCase, toSnakeCase, toCamelCase, toConstantCase }
 import { base64Encode, base64Decode, urlEncode, urlDecode, minify as minifyJSON, prettify as prettifyJSON } from '../transforms/webDev';
 import { escapeJSON } from '../transforms/escape';
 import { csvToJSON, jsonToCSV } from '../transforms/convert';
+import { t } from '../utils/i18n';
 
 export type PipelineTransform = (text: string) => string | { result: string; error?: string };
 
@@ -51,6 +52,43 @@ export const PIPELINE_STEPS: readonly PipelineStep[] = [
 export function pipelineStep(command: string): PipelineStep | undefined {
     return PIPELINE_STEPS.find(step => step.command === command);
 }
+
+export interface PipelineRecipe {
+    /** English label; render with `t(recipe.name)`. */
+    name: string;
+    /** Step command ids; every one must exist in PIPELINE_STEPS. */
+    steps: readonly string[];
+}
+
+/** Curated, ready-to-run pipelines shown in the pipeline picker. */
+export const PIPELINE_RECIPES: readonly PipelineRecipe[] = [
+    {
+        name: t('Clean up a list'),
+        steps: [
+            'pancho.cleanWhitespace',
+            'pancho.trimLines',
+            'pancho.removeEmptyLines',
+            'pancho.removeConsecutiveDuplicateLines',
+            'pancho.sortNatural',
+        ],
+    },
+    {
+        name: t('Title to URL slug'),
+        steps: ['pancho.trimLines', 'pancho.toKebabCase', 'pancho.slugify'],
+    },
+    {
+        name: t('CSV to pretty JSON'),
+        steps: ['pancho.csvToJSON', 'pancho.prettifyJSON'],
+    },
+    {
+        name: t('Normalise sentences'),
+        steps: ['pancho.trimLines', 'pancho.toSentenceCase', 'pancho.removeDuplicateWords'],
+    },
+    {
+        name: t('Minify JSON then Base64'),
+        steps: ['pancho.minifyJSON', 'pancho.base64Encode'],
+    },
+];
 
 export interface PipelineRunResult {
     result: string;

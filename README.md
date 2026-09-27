@@ -28,13 +28,15 @@
 
 ## Features
 
-- **146 commands** available from the context menu
+- **148 commands** available from the context menu
 - **Command hub** (`Pancho: Show command menu`) with categories, shortcuts and recently used
 - **Multi-cursor & multi-selection** aware: transforms apply per cursor/selection
 - **Repeat last command** (`Ctrl+Shift+.`)
 - **Diff preview** for commands that delete or reorder content (on by default)
 - **Activity Bar view** with your **Favorites**, **Recent** commands and **Pipelines**
 - **Pipelines**: chain transforms in order, preview the result, save and share them
+- **Works in the browser** (`vscode.dev`), on the desktop and on Remote/WSL/Containers
+- **Settings Sync** for favorites, pipelines, saved regex and macros
 - **Smart actions**: one picker for the content under the cursor (JWT, JSON, CSV, color, Base64, timestamp)
 - **Content-aware hover** with one-click actions
 - **Column mode**: insert / delete / copy / paste column blocks
@@ -90,7 +92,7 @@ More examples in [docs/demos.md](./docs/demos.md).
 
 ## Commands
 
-The **146 commands** are grouped into seven categories so the context menu stays
+The **148 commands** are grouped into seven categories so the context menu stays
 short: **Edit**, **Lines**, **Text & Case**, **Convert**, **Escape**, **Dev tools** and
 **Macros & Columns**, plus the **Command hub**.
 

@@ -39,10 +39,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Settings now ship **`markdownDescription`** with examples, `enumDescriptions` for the EOL choice and an explicit display `order`.
 - Hover shows the matching command and **Smart actions** as clickable links, with theme icons.
 - `docs/marketplace.md` — Marketplace checklist (short description, categories, keywords, screenshot/GIF capture list).
+- **Settings Sync:** favorites, saved pipelines, saved regex patterns and macros follow you across machines (`globalState.setKeysForSync`); clipboard history, recents and regex history stay local.
+- **Support & diagnostics:** a `Pancho` **Output Channel** with a central logger, plus `pancho.showLogs` and `pancho.reportIssue` (opens a prefilled GitHub issue with your environment).
+- **Pipeline recipes:** five ready-to-run presets (clean up a list, title→slug, CSV→JSON, normalise sentences, minify+B64) in the pipeline picker, and a **New pipeline from selected commands** entry at the top of the command hub.
+- **Web support (vscode.dev):** a `browser` bundle removes every Node-only API (Buffer, `fs`, `crypto`, `worker_threads`) behind a portable layer built on `TextEncoder`/`atob`/WebCrypto, with a dependency-free MD5/SHA-256 and worker-less regex fallback.
+- **Marketplace metadata:** `galleryBanner`, `homepage`, `bugs` and `qna`.
+- Declared `capabilities.virtualWorkspaces` and `extensionKind` for virtual workspaces and Remote/WSL/Containers.
+- **Accessibility:** `accessibilityInformation` (label + role) on the status bar items and the Activity Bar tree items.
+- **Integration tests** now run for real (`@vscode/test-cli` + `@vscode/test-electron`), plus an **OS matrix** (Ubuntu/Windows/macOS) in CI.
 
 ### Changed
 
-- **Context menu consolidated:** 14 submenus collapsed into 7 groups — **Edit**, **Lines**, **Text & Case**, **Convert**, **Escape**, **Dev tools** and **Macros & Columns** — leaving 10 entries at the top level (categories grouped first, action commands at the bottom). Fixes a regression where 9 category definitions (62 commands) were missing from the menus; all 146 commands are back in the context menu and the hub.
+- **Context menu consolidated:** 14 submenus collapsed into 7 groups — **Edit**, **Lines**, **Text & Case**, **Convert**, **Escape**, **Dev tools** and **Macros & Columns** — leaving 10 entries at the top level (categories grouped first, action commands at the bottom). Fixes a regression where 9 category definitions (62 commands) were missing from the menus; all 148 commands are back in the context menu and the hub.
 - **Native delegation:** 17 commands keep their Pancho menu entry and keyboard shortcut but now delegate to VS Code's own implementation (consistency + native multi-cursor): uppercase/lowercase/title case, comment & block comment, tabs↔spaces, indent/outdent, move / duplicate / insert line, sort A–Z / Z–A and join lines.
 - Status bar counters now show `{lines} lines · {words} words · {chars} chars` (prefixed with `Sel:` while there is a selection), and hide when there is no active editor.
 - The Pancho status bar item now opens the **command hub**, uses the contributed brand colors and offers a clearer tooltip; the counters are clickable and show a detailed breakdown.

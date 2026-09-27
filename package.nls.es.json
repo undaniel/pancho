@@ -109,6 +109,7 @@
   "command.pancho.filterLinesByRegex.title": "Mantener líneas que coinciden con regex...",
   "command.pancho.removeLinesByRegex.title": "Eliminar líneas que coinciden con regex...",
   "capabilities.untrustedWorkspaces.description": "La búsqueda en archivos está disponible; el reemplazo en archivos del workspace está deshabilitado en workspaces no confiables.",
+  "capabilities.virtualWorkspaces.description": "Pancho trabaja sobre el texto de los editores abiertos, así que está disponible por completo en workspaces virtuales.",
   "keybinding.toUpperCase.label": "Convertir texto a mayúsculas",
   "keybinding.countCharacters.label": "Contar caracteres",
   "keybinding.removeDuplicateLines.label": "Eliminar líneas duplicadas",
@@ -222,5 +223,7 @@
   "command.pancho.formatSelection.title": "Formatear selección (nativo)",
   "command.pancho.smartActions.title": "Acciones inteligentes",
   "command.pancho.runPipeline.title": "Ejecutar pipeline",
-  "command.pancho.managePipelines.title": "Gestionar pipelines"
+  "command.pancho.managePipelines.title": "Gestionar pipelines",
+  "command.pancho.showLogs.title": "Mostrar registros",
+  "command.pancho.reportIssue.title": "Reportar problema"
 }

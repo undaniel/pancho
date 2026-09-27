@@ -149,5 +149,13 @@
   "selection": "selección",
   "{0} lines · {1} words · {2} chars": "{0} líneas · {1} palabras · {2} caracteres",
   "{0} match(es)": "{0} coincidencia(s)",
-  "{0} replaced": "{0} reemplazados"
+  "{0} replaced": "{0} reemplazados",
+  "Pancho status bar: open the command menu": "Barra de estado de Pancho: abrir el menú de comandos",
+  "Recipe": "Receta",
+  "New pipeline from selected commands...": "Nuevo pipeline a partir de los comandos seleccionados...",
+  "Clean up a list": "Limpiar una lista",
+  "Title to URL slug": "Título a slug de URL",
+  "CSV to pretty JSON": "CSV a JSON formateado",
+  "Normalise sentences": "Normalizar frases",
+  "Minify JSON then Base64": "Minificar JSON y luego Base64"
 }

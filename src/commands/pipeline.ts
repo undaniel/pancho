@@ -4,7 +4,7 @@ import { registerCommand } from '../utils/register';
 import { t } from '../utils/i18n';
 import { confirmWithPreview } from '../utils/preview';
 import { replaceDocumentText } from '../utils/editor';
-import { PIPELINE_STEPS, PipelineStep, pipelineStep, runPipelineSteps } from '../pipelines/catalog';
+import { PIPELINE_STEPS, PIPELINE_RECIPES, PipelineRecipe, PipelineStep, pipelineStep, runPipelineSteps } from '../pipelines/catalog';
 import { readPipelines, writePipelines, parsePipelines, SavedPipeline } from '../pipelines/store';
 import { fireCommandListsChanged } from '../utils/events';
 
@@ -12,6 +12,7 @@ interface StepItem extends vscode.QuickPickItem {
     command?: string;
     done?: boolean;
     savedPipeline?: SavedPipeline;
+    recipe?: PipelineRecipe;
     action?: 'export' | 'import' | 'delete';
 }
 
@@ -73,6 +74,31 @@ async function applyPipeline(editor: vscode.TextEditor, stepIds: string[]): Prom
     }
 }
 
+/** Asks for a name and stores the pipeline; a blank name skips saving. */
+async function maybeSavePipeline(context: vscode.ExtensionContext, stepIds: string[]): Promise<void> {
+    const name = await vscode.window.showInputBox({
+        prompt: t('Save this pipeline as (leave empty to skip)'),
+    });
+    if (!name) return;
+    const pipelines = readPipelines(context).filter(pipeline => pipeline.name !== name);
+    pipelines.push({ name, steps: stepIds });
+    await writePipelines(context, pipelines);
+    fireCommandListsChanged();
+}
+
+/** Builds a pipeline step by step and runs it on the active editor. */
+export async function createAndRunPipeline(context: vscode.ExtensionContext): Promise<void> {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+        vscode.window.showWarningMessage(t('Pancho: No active editor'));
+        return;
+    }
+    const stepIds = await pickNewPipeline();
+    if (!stepIds) return;
+    await maybeSavePipeline(context, stepIds);
+    await applyPipeline(editor, stepIds);
+}
+
 export function registerPipelineCommands(context: vscode.ExtensionContext): void {
     registerCommand(context, Commands.RUN_PIPELINE, async (arg?: unknown) => {
         const editor = vscode.window.activeTextEditor;
@@ -98,9 +124,19 @@ export function registerPipelineCommands(context: vscode.ExtensionContext): void
                 description: t('{0} step(s)', String(pipeline.steps.length)),
                 savedPipeline: pipeline,
             })),
+            ...PIPELINE_RECIPES.map(recipe => ({
+                label: `$(bookmark) ${recipe.name}`,
+                description: t('Recipe'),
+                recipe,
+            })),
         ];
         const picked = await vscode.window.showQuickPick<StepItem>(items, { title: t('Run pipeline') });
         if (!picked) return;
+
+        if (picked.recipe) {
+            await applyPipeline(editor, [...picked.recipe.steps]);
+            return;
+        }
 
         let stepIds: string[] | undefined;
         if (picked.savedPipeline) {
@@ -108,15 +144,7 @@ export function registerPipelineCommands(context: vscode.ExtensionContext): void
         } else {
             stepIds = await pickNewPipeline();
             if (!stepIds) return;
-            const name = await vscode.window.showInputBox({
-                prompt: t('Save this pipeline as (leave empty to skip)'),
-            });
-            if (name) {
-                const pipelines = saved.filter(pipeline => pipeline.name !== name);
-                pipelines.push({ name, steps: stepIds });
-                await writePipelines(context, pipelines);
-                fireCommandListsChanged();
-            }
+            await maybeSavePipeline(context, stepIds);
         }
 
         await applyPipeline(editor, stepIds);

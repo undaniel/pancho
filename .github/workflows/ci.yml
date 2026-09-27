@@ -7,9 +7,11 @@ env:
   FORCE_COLOR: 1
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [22.x]
     steps:
       - uses: actions/checkout@v5
@@ -23,3 +25,19 @@ jobs:
       - run: npm test
       - run: npm run l10n:check
       - run: npm run bundle
+
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22.x
+          cache: npm
+      - run: npm ci
+      - run: npm run bundle
+      - name: Install xvfb
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+      - name: Run integration tests (headless)
+        run: xvfb-run -a npm run test:integration

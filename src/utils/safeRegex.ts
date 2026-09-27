@@ -1,6 +1,3 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import { Worker } from 'worker_threads';
 import { executeRegexJob, RegexJob, RegexJobResult, isPotentiallyCatastrophic } from './regexCore';
 
 export { isPotentiallyCatastrophic } from './regexCore';
@@ -17,39 +14,64 @@ export interface RegexRunOptions {
     workerFile?: string;
 }
 
+interface WorkerInstance {
+    ref(): void;
+    unref(): void;
+    removeAllListeners(): void;
+    terminate(): void | Promise<number>;
+    on(event: 'message', listener: (message: RegexJobResult) => void): void;
+    on(event: 'error' | 'exit', listener: () => void): void;
+    postMessage(message: RegexJob): void;
+}
+
+type WorkerConstructor = new (file: string) => WorkerInstance;
+
+/**
+ * `worker_threads` is only available on Node. On the web we fall back to running
+ * the job in-process (the catastrophic-pattern guard still applies). The lazy
+ * `require` keeps the web bundle free of Node built-ins.
+ */
+function loadWorkerConstructor(): WorkerConstructor | null {
+    try {
+        return (require('node:worker_threads') as { Worker: WorkerConstructor }).Worker;
+    } catch {
+        return null;
+    }
+}
+
 let workerPath: string | null | undefined;
-const idle: Worker[] = [];
-const active = new Set<Worker>();
+const idle: WorkerInstance[] = [];
+const active = new Set<WorkerInstance>();
 
 function resolveWorkerPath(): string | null {
     if (workerPath !== undefined) return workerPath;
-    const candidates = [
-        path.join(__dirname, 'workers', 'regexWorker.js'),
-        path.join(__dirname, '..', 'workers', 'regexWorker.js'),
-    ];
-    workerPath = candidates.find(p => {
-        try {
-            return fs.existsSync(p);
-        } catch {
-            return false;
-        }
-    }) ?? null;
+    try {
+        const fs = require('fs') as typeof import('fs');
+        const path = require('path') as typeof import('path');
+        const candidates = [
+            path.join(__dirname, 'workers', 'regexWorker.js'),
+            path.join(__dirname, '..', 'workers', 'regexWorker.js'),
+        ];
+        workerPath = candidates.find(candidate => fs.existsSync(candidate)) ?? null;
+    } catch {
+        workerPath = null;
+    }
     return workerPath;
 }
 
-function acquireWorker(workerFile: string): Worker {
-    const worker = idle.pop() ?? new Worker(workerFile);
+function acquireWorker(WorkerCtor: WorkerConstructor, workerFile: string): WorkerInstance {
+    const worker = idle.pop() ?? new WorkerCtor(workerFile);
     worker.ref();
     return worker;
 }
 
-function retireWorker(worker: Worker): void {
+function retireWorker(worker: WorkerInstance): void {
     active.delete(worker);
     worker.removeAllListeners();
     void worker.terminate();
 }
 
-function parkWorker(worker: Worker): void {
+function parkWorker(worker: WorkerInstance): void {
     active.delete(worker);
     worker.removeAllListeners();
     if (idle.length >= MAX_IDLE_WORKERS) {
@@ -72,15 +94,18 @@ export function runRegexJob(job: RegexJob, options: RegexRunOptions = {}): Promi
     if (isPotentiallyCatastrophic(job.pattern)) return Promise.resolve({ error: 'complex' });
     if (signal?.aborted) return Promise.resolve({ error: 'cancelled' });
 
+    const WorkerCtor = loadWorkerConstructor();
+    if (!WorkerCtor) return Promise.resolve(executeRegexJob(job));
+
     const workerFile = options.workerFile ?? resolveWorkerPath();
     if (!workerFile) return Promise.resolve(executeRegexJob(job));
 
     return new Promise<RegexJobResult>(resolve => {
-        const worker = acquireWorker(workerFile);
+        const worker = acquireWorker(WorkerCtor, workerFile);
         active.add(worker);
 
         let settled = false;
-        let timer: NodeJS.Timeout | undefined;
+        let timer: ReturnType<typeof setTimeout> | undefined;
 
         function settle(result: RegexJobResult, reusable: boolean): void {
             if (settled) return;
@@ -96,7 +121,7 @@ export function runRegexJob(job: RegexJob, options: RegexRunOptions = {}): Promi
             settle({ error: 'cancelled' }, false);
         }
 
-        worker.on('message', (message: RegexJobResult) => settle(message, true));
+        worker.on('message', message => settle(message, true));
         worker.on('error', () => settle({ error: 'exec' }, false));
         worker.on('exit', () => settle({ error: 'exec' }, false));
 

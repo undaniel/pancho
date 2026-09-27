@@ -7,7 +7,7 @@ GIFs are the single biggest lever: most users decide from the visuals, not the t
 
 **Short description** (one line, shown next to the icon):
 
-> Clean, format and transform text like Notepad++ — **146 commands**, regex tester, pipelines and macros.
+> Clean, format and transform text like Notepad++ — **148 commands**, regex tester, pipelines and macros.
 
 **Categories:** `Formatters`, `Other`.
 **Keywords:** notepad, text, format, sort, lines, regex, case, base64, csv, json, macro, pipeline, whitespace.

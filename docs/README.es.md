@@ -28,13 +28,15 @@
 
 ## Características
 
-- **146 comandos** accesibles desde el menú contextual
+- **148 comandos** accesibles desde el menú contextual
 - **Hub de comandos** (`Pancho: Mostrar menú de comandos`) con categorías, atajos y usados recientemente
 - **Compatible con multi-cursor y multi-selección**: las transformaciones se aplican por cursor/selección
 - **Repetir último comando** (`Ctrl+Shift+.`)
 - **Vista previa (diff)** para comandos que eliminan o reordenan contenido (activa por defecto)
 - **Vista en la barra de actividad** con **Favoritos**, comandos **Recientes** y **Pipelines**
 - **Pipelines**: encadena transformaciones en orden, previsualiza el resultado y guárdalos o compártelos
+- **Funciona en el navegador** (`vscode.dev`), en el escritorio y en Remote/WSL/Containers
+- **Settings Sync** para favoritos, pipelines, regex guardadas y macros
 - **Acciones inteligentes**: un selector para el contenido bajo el cursor (JWT, JSON, CSV, color, Base64, timestamp)
 - **Hover contextual** con acciones de un clic
 - **Modo columna**: insertar / eliminar / copiar / pegar bloques de columna
@@ -90,7 +92,7 @@ Más ejemplos en [demos.md](./demos.md).
 
 ## Comandos
 
-Los **146 comandos** se agrupan en siete categorías para que el menú contextual sea corto: **Editar**, **Líneas**, **Texto y mayúsculas**, **Convertir**, **Escapar**, **Desarrollo** y **Macros y columnas**, más el **Hub de comandos**.
+Los **148 comandos** se agrupan en siete categorías para que el menú contextual sea corto: **Editar**, **Líneas**, **Texto y mayúsculas**, **Convertir**, **Escapar**, **Desarrollo** y **Macros y columnas**, más el **Hub de comandos**.
 
 Lista completa con descripciones: **[Comandos de Pancho](./commands.es.md)**.
 

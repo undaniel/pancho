@@ -182,6 +182,10 @@ const Manifest = {
 
     // Estado (solo Command Palette)
     SHOW_STATUS_INFO: { id: 'pancho.showStatusInfo', category: 'actions' },
+
+    // Soporte (solo Command Palette, pero listados en el menu para el guard de accesibilidad)
+    SHOW_LOGS: { id: 'pancho.showLogs', category: 'actions' },
+    REPORT_ISSUE: { id: 'pancho.reportIssue', category: 'actions' },
 } as const;
 
 export const Commands = Object.fromEntries(

@@ -27,6 +27,10 @@ export function initStatusBar(context: vscode.ExtensionContext): void {
     statusBarItem.tooltip = vscode.l10n.t('Pancho: click to open the command menu');
     statusBarItem.color = new vscode.ThemeColor('pancho.statusBarForeground');
     statusBarItem.backgroundColor = new vscode.ThemeColor('pancho.statusBarBackground');
+    statusBarItem.accessibilityInformation = {
+        label: vscode.l10n.t('Pancho status bar: open the command menu'),
+        role: 'button',
+    };
     statusBarItem.show();
     context.subscriptions.push(statusBarItem);
 
@@ -36,6 +40,7 @@ export function initStatusBar(context: vscode.ExtensionContext): void {
         countersItem.text = '';
         countersItem.tooltip = vscode.l10n.t('Pancho counters');
         countersItem.command = 'pancho.showStatusInfo';
+        countersItem.accessibilityInformation = { label: vscode.l10n.t('Pancho counters'), role: 'button' };
         countersItem.show();
         context.subscriptions.push(countersItem);
 
@@ -57,18 +62,21 @@ function scheduleUpdate(): void {
 
 function renderCounts(lines: number, words: number, chars: number, isSelection = false): void {
     if (!countersItem) return;
-    countersItem.text = isSelection
+    const text = isSelection
         ? vscode.l10n.t('Sel: {0} lines · {1} words · {2} chars', lines, words, chars)
         : vscode.l10n.t('{0} lines · {1} words · {2} chars', lines, words, chars);
+    countersItem.text = text;
     countersItem.tooltip = isSelection
         ? vscode.l10n.t('Pancho counters (selection)')
         : vscode.l10n.t('Pancho counters');
+    countersItem.accessibilityInformation = { label: text, role: 'button' };
 }
 
 function renderUnknownCounters(): void {
     if (!countersItem) return;
     countersItem.text = vscode.l10n.t('Counts unavailable');
     countersItem.tooltip = vscode.l10n.t('Document too large to count');
+    countersItem.accessibilityInformation = { label: vscode.l10n.t('Counts unavailable'), role: 'button' };
 }
 
 /** Detailed counts for the active editor/selection, shown from the status bar or the hub. */

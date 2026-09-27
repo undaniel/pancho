@@ -3,6 +3,7 @@ import { Commands } from './registry';
 import { macroRecorder, MacroStep } from '../macro/recorder';
 import { insertAtCursor } from '../utils/editor';
 import { registerCommand } from '../utils/register';
+import { utf8Encode, utf8Decode } from '../utils/bytes';
 
 const STORAGE_KEY = 'pancho.macros';
 
@@ -107,7 +108,7 @@ export function registerMacroCommands(context: vscode.ExtensionContext): void {
             filters: { JSON: ['json'] },
         });
         if (!target) return;
-        await vscode.workspace.fs.writeFile(target, Buffer.from(JSON.stringify(macros, null, 2), 'utf8'));
+        await vscode.workspace.fs.writeFile(target, utf8Encode(JSON.stringify(macros, null, 2)));
         vscode.window.showInformationMessage(vscode.l10n.t('Pancho: Exported {0} macro(s)', names.length));
     });
 
@@ -120,7 +121,7 @@ export function registerMacroCommands(context: vscode.ExtensionContext): void {
         if (!picked || picked.length === 0) return;
         try {
             const data = await vscode.workspace.fs.readFile(picked[0]);
-            const parsed = JSON.parse(Buffer.from(data).toString('utf8')) as Record<string, MacroStep[]>;
+            const parsed = JSON.parse(utf8Decode(data)) as Record<string, MacroStep[]>;
             const macros = getSavedMacros(context);
             let imported = 0;
             for (const [name, steps] of Object.entries(parsed)) {

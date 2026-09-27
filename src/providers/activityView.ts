@@ -51,15 +51,18 @@ class PanchoViewProvider implements vscode.TreeDataProvider<TreeNode> {
         if (node.type === 'info') {
             const item = new vscode.TreeItem(node.label, vscode.TreeItemCollapsibleState.None);
             item.contextValue = 'pancho.info';
+            item.accessibilityInformation = { label: node.label };
             return item;
         }
 
         if (node.type === 'pipeline') {
             const item = new vscode.TreeItem(node.name, vscode.TreeItemCollapsibleState.None);
-            item.description = t('{0} step(s)', String(node.steps));
+            const steps = t('{0} step(s)', String(node.steps));
+            item.description = steps;
             item.iconPath = new vscode.ThemeIcon('play');
             item.tooltip = t('Run pipeline');
             item.command = { command: Commands.RUN_PIPELINE, title: node.name, arguments: [node.name] };
+            item.accessibilityInformation = { label: `${node.name}, ${t('Run pipeline')}, ${steps}` };
             return item;
         }
 
@@ -67,6 +70,9 @@ class PanchoViewProvider implements vscode.TreeDataProvider<TreeNode> {
         if (node.description) item.description = node.description;
         item.iconPath = new vscode.ThemeIcon('symbol-method');
         item.command = { command: node.command, title: node.label };
+        item.accessibilityInformation = {
+            label: node.description ? `${node.label}, ${node.description}` : node.label,
+        };
         return item;
     }
 
