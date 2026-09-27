@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="Content-Security-Policy" content="{{csp}}" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="{{styleUri}}" />
+</head>
+<body>
+  <h2>{{label.pattern}}</h2>
+  <section>
+    <div class="row">
+      <div class="field">
+        <label for="pattern">{{label.pattern}}</label>
+        <input id="pattern" type="text" placeholder="\d+" spellcheck="false" />
+      </div>
+      <div class="flags">
+        <label for="flags">{{label.flags}}</label>
+        <input id="flags" type="text" value="g" spellcheck="false" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="history">{{label.history}}</label>
+        <select id="history"><option value="">—</option></select>
+      </div>
+      <div class="field">
+        <label for="saved">{{label.saved}}</label>
+        <select id="saved"><option value="">—</option></select>
+      </div>
+    </div>
+    <div class="row spaced">
+      <input id="saveName" type="text" placeholder="{{label.name}}" aria-label="{{label.name}}" />
+      <button id="save" class="secondary">{{label.save}}</button>
+      <button id="deleteSaved" class="secondary">{{label.delete}}</button>
+    </div>
+  </section>
+  <section>
+    <label for="text">{{label.testText}}</label>
+    <textarea id="text" spellcheck="false"></textarea>
+    <div id="result" class="muted" role="status" aria-live="polite"></div>
+    <div class="row toolbar">
+      <button id="previous" class="secondary" title="{{label.previous}}" aria-label="{{label.previous}}">↑</button>
+      <button id="next" class="secondary" title="{{label.next}}" aria-label="{{label.next}}">↓</button>
+      <button id="copy" class="secondary">{{label.copy}}</button>
+    </div>
+    <div id="highlights"></div>
+  </section>
+  <section>
+    <label for="replacement">{{label.replaceWith}}</label>
+    <input id="replacement" type="text" spellcheck="false" />
+    <div class="row spaced">
+      <button id="preview" class="secondary">{{label.preview}}</button>
+      <button id="apply" class="primary">{{label.apply}}</button>
+    </div>
+  </section>
+<script nonce="{{nonce}}">
+  const boot = {{bootJson}};
+  const ui = {{uiJson}};
+</script>
+<script nonce="{{nonce}}" src="{{scriptUri}}"></script>
+</body>
+</html>

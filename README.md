@@ -1,22 +1,32 @@
 # Pancho
 
-[![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.5.0-blue.svg)](./CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
 [![VSCode Engine](https://img.shields.io/badge/VSCode-%5E1.80.0-blue.svg)](https://code.visualstudio.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-%5E5.0.0-blue.svg)](https://www.typescriptlang.org/)
-[![Marketplace](https://img.shields.io/visual-studio-marketplace/v/undaniels.pancho-plus-plus)](https://marketplace.visualstudio.com/items?itemName=undaniels.pancho-plus-plus)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/undaniels.pancho-plus-plus)](https://marketplace.visualstudio.com/items?itemName=undaniels.pancho-plus-plus)
-[![Open VSX](https://img.shields.io/open-vsx/v/undaniels/pancho-plus-plus)](https://open-vsx.org/extension/undaniels/pancho-plus-plus)
 
 > Clean, format and transform text like Notepad++
 
-<img src="./pancho.webp" alt="Pancho" width="256" />
-
 **Language:** English · [Español](./docs/README.es.md)
 
-**Contents:** [Install](#install) · [Features](#features) · [Top 10](#top-10-commands) · [Why Pancho?](#why-pancho) · [Privacy](#privacy--security) · [How to use](#how-to-use) · [Commands](#commands) · [Demos](./docs/demos.md) · [Shortcuts](#keyboard-shortcuts) · [Settings](#settings) · [Contributing](#contributing)
+**Contents:** [Install](#install) · [Screenshots](#screenshots) · [Features](#features) · [Top 10](#top-10-commands) · [Why Pancho?](#why-pancho) · [Privacy](#privacy--security) · [How to use](#how-to-use) · [Commands](#commands) · [Demos](./docs/demos.md) · [Shortcuts](#keyboard-shortcuts) · [Settings](#settings) · [Contributing](#contributing)
 
 ---
+
+## Screenshots
+
+![Pancho command hub](./images/screenshot-command-hub.png)
+
+![Command hub in action](./images/demo-command-hub.gif)
+
+| | |
+|---|---|
+| ![Editor context menu with the Pancho submenu](./images/screenshot-context-menu.png) | ![Regex tester panel with live matches](./images/screenshot-regex-panel.png) |
+| ![Diff preview before a destructive command](./images/screenshot-sort-preview.png) | ![Activity Bar view with favorites and pipelines](./images/screenshot-activity-view.png) |
+
+![Comparing the clipboard with a selection](./images/screenshot-compare.png)
+
+_Regenerate these with `npm run capture` (see [scripts/capture](./scripts/capture))._
 
 ## Install
 
@@ -28,8 +38,9 @@
 
 ## Features
 
-- **148 commands** available from the context menu
+- **149 commands** available from the context menu
 - **Command hub** (`Pancho: Show command menu`) with categories, shortcuts and recently used
+- **Compare with Clipboard** (`Pancho: Compare with Clipboard`): editable side-by-side diff between the clipboard and the selection (or whole file)
 - **Multi-cursor & multi-selection** aware: transforms apply per cursor/selection
 - **Repeat last command** (`Ctrl+Shift+.`)
 - **Diff preview** for commands that delete or reorder content (on by default)
@@ -92,7 +103,7 @@ More examples in [docs/demos.md](./docs/demos.md).
 
 ## Commands
 
-The **148 commands** are grouped into seven categories so the context menu stays
+The **149 commands** are grouped into seven categories so the context menu stays
 short: **Edit**, **Lines**, **Text & Case**, **Convert**, **Escape**, **Dev tools** and
 **Macros & Columns**, plus the **Command hub**.
 
@@ -135,7 +146,7 @@ Some commands keep Pancho's menu entry and shortcut but **delegate to VS Code's 
 | `pancho.randomStringLength` | `16` | Random string length |
 | `pancho.regexTimeoutMs` | `2000` | Max time (ms) a regex may run before aborting |
 | `pancho.previewDestructive` | `true` | Show a diff preview before destructive commands |
-| `pancho.clipboardHistoryEnabled` | `true` | Record the clipboard in the background |
+| `pancho.clipboardHistoryEnabled` | `false` | Record the clipboard in the background (opt-in) |
 | `pancho.clipboardHistorySize` | `20` | Max clipboard entries to keep |
 
 ## Status bar counters

@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-09-27
+
+### Added
+
+- **Compare with Clipboard** (`pancho.compareWithClipboard`): opens an editable side-by-side diff between the clipboard and the current selection (or the whole file). Paste new text on either side and the differences update live.
+
+### Changed
+
+- **Clipboard history is now opt-in:** `pancho.clipboardHistoryEnabled` defaults to `false`. Enable it explicitly if you want copied text recorded locally. When enabled, the poll now skips reads while the window is unfocused and ignores entries larger than 256 KB.
+- Applying many per-selection edits is now single-pass (O(n + m)) instead of rebuilding the document once per edit, keeping large multi-cursor operations fast.
+- The regex tester webview is built from `media/regexPanel.{html,css,js}` instead of an inline template, and its CSP no longer allows inline styles.
+
+### Fixed
+
+- **Regex tester → Apply to document** now honours the file-size limit (`pancho.maxFileSizeKB`) and shows the destructive-change diff preview when `pancho.previewDestructive` is enabled, matching every other command.
+
+### Security
+
+- The regex panel escapes single quotes when composing its HTML, and its CSP is limited to the nonce-gated script and the webview stylesheet.
+
 ## [1.4.0] - 2026-09-26
 
 ### Added

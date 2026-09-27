@@ -1,6 +1,9 @@
 {
   "Pancho: No active editor": "Pancho: No hay editor activo",
   "Pancho: File too large ({0}KB). Max: {1}KB": "Pancho: Archivo demasiado grande ({0}KB). Máximo: {1}KB",
+  "Pancho: Open a file to compare.": "Pancho: Abre un archivo para comparar.",
+  "Pancho: Compare - Clipboard ↔ {0}": "Pancho: Comparar - Portapapeles ↔ {0}",
+  "Untitled": "Sin título",
   "Running {0}...": "Ejecutando {0}...",
   "Pancho: {0}": "Pancho: {0}",
   "Pancho counters": "Contadores de Pancho",
@@ -40,6 +43,7 @@
   "Character to align by": "Carácter para alinear",
   "Password": "Contraseña",
   "Regex pattern": "Patrón regex",
+  "Regex replace": "Reemplazo regex",
   "Flags": "Banderas",
   "Pattern too complex (possible catastrophic backtracking)": "Patrón demasiado complejo (posible backtracking catastrófico)",
   "Pattern took too long (possible catastrophic backtracking)": "El patrón tardó demasiado (posible backtracking catastrófico)",

@@ -43,6 +43,20 @@ describe('applyPlannedEdits', () => {
     expect(applyPlannedEdits('ab', [{ start: 1, end: 1, text: 'X' }])).toBe('aXb');
   });
 
+  it('applies edits regardless of the order they arrive in', () => {
+    expect(applyPlannedEdits('abc def', [
+      { start: 4, end: 7, text: 'Y' },
+      { start: 0, end: 3, text: 'X' },
+    ])).toBe('X Y');
+  });
+
+  it('keeps adjacent edits from losing characters', () => {
+    expect(applyPlannedEdits('abcd', [
+      { start: 0, end: 2, text: 'X' },
+      { start: 2, end: 4, text: 'Y' },
+    ])).toBe('XY');
+  });
+
   it('returns the text unchanged for no edits', () => {
     expect(applyPlannedEdits('abc', [])).toBe('abc');
   });

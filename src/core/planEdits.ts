@@ -50,13 +50,21 @@ function normalize(selections: SelectionRange[], textLength: number): SelectionR
     return merged;
 }
 
+/**
+ * Applies non-overlapping edits in a single left-to-right pass. `planSelectionEdits`
+ * already merges/sorts ranges, so this stays O(n + m) instead of rebuilding the
+ * whole string once per edit.
+ */
 export function applyPlannedEdits(text: string, edits: PlannedEdit[]): string {
-    const sorted = [...edits].sort((a, b) => b.start - a.start);
-    let result = text;
+    if (edits.length === 0) return text;
+    const sorted = [...edits].sort((a, b) => a.start - b.start);
+    let result = '';
+    let cursor = 0;
     for (const edit of sorted) {
-        result = result.slice(0, edit.start) + edit.text + result.slice(edit.end);
+        result += text.slice(cursor, edit.start) + edit.text;
+        cursor = edit.end;
     }
-    return result;
+    return result + text.slice(cursor);
 }
 
 export function lineStartAt(text: string, offset: number): number {

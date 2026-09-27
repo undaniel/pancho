@@ -8,6 +8,9 @@ import { registerCommand } from '../utils/register';
 const STORAGE_KEY = 'pancho.clipboardHistory';
 const POLL_INTERVAL_MS = 1200;
 const DETAIL_MAX_LINES = 20;
+// Clipboard contents are persisted to globalState (plain JSON on disk). Skip
+// oversized payloads so a huge paste never lands in memory or storage.
+const MAX_ENTRY_CHARS = 256_000;
 
 function preview(text: string): string {
     const firstLine = text.split('\n')[0];
@@ -40,8 +43,12 @@ export function registerClipboardCommands(context: vscode.ExtensionContext): voi
     const startPolling = (): void => {
         if (timer) return;
         timer = setInterval(async () => {
+            // Nothing can be copied while the window is in the background, so
+            // skip the read entirely to save CPU/battery (and reduce exposure).
+            if (!vscode.window.state.focused) return;
             try {
                 const text = await vscode.env.clipboard.readText();
+                if (text.length > MAX_ENTRY_CHARS) return;
                 if (history.push(text)) persist();
             } catch {
                 // Clipboard can be unavailable in some environments; ignore.
@@ -49,7 +56,7 @@ export function registerClipboardCommands(context: vscode.ExtensionContext): voi
         }, POLL_INTERVAL_MS);
     };
 
-    if (getConfig().get<boolean>('clipboardHistoryEnabled', true)) {
+    if (getConfig().get<boolean>('clipboardHistoryEnabled', false)) {
         startPolling();
     }
 
@@ -76,7 +83,7 @@ export function registerClipboardCommands(context: vscode.ExtensionContext): voi
         vscode.workspace.onDidChangeConfiguration(event => {
             if (!event.affectsConfiguration('pancho')) return;
             history.setMaxSize(getConfig().get<number>('clipboardHistorySize', 20));
-            if (getConfig().get<boolean>('clipboardHistoryEnabled', true)) startPolling();
+            if (getConfig().get<boolean>('clipboardHistoryEnabled', false)) startPolling();
             else if (timer) {
                 clearInterval(timer);
                 timer = undefined;

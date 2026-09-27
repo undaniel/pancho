@@ -1,22 +1,32 @@
 # Pancho
 
-[![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](../CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.5.0-blue.svg)](../CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](../LICENSE)
 [![VSCode Engine](https://img.shields.io/badge/VSCode-%5E1.80.0-blue.svg)](https://code.visualstudio.com/)
-
-[![Marketplace](https://img.shields.io/visual-studio-marketplace/v/undaniels.pancho-plus-plus)](https://marketplace.visualstudio.com/items?itemName=undaniels.pancho-plus-plus)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/undaniels.pancho-plus-plus)](https://marketplace.visualstudio.com/items?itemName=undaniels.pancho-plus-plus)
-[![Open VSX](https://img.shields.io/open-vsx/v/undaniels/pancho-plus-plus)](https://open-vsx.org/extension/undaniels/pancho-plus-plus)
+[![TypeScript](https://img.shields.io/badge/TypeScript-%5E5.0.0-blue.svg)](https://www.typescriptlang.org/)
 
 > Limpia, formatea y transforma texto como Notepad++
 
-<img src="../pancho.webp" alt="Pancho" width="256" />
-
 **Idioma:** [English](../README.md) · Español
 
-**Índice:** [Características](#características) · [Top 10](#top-10-comandos) · [Cómo usar](#cómo-usar) · [Comandos](#comandos) · [Demos](./demos.md) · [Atajos](#atajos-de-teclado) · [Configuración](#configuración)
+**Índice:** [Capturas](#capturas) · [Características](#características) · [Top 10](#top-10-comandos) · [Cómo usar](#cómo-usar) · [Comandos](#comandos) · [Demos](./demos.md) · [Atajos](#atajos-de-teclado) · [Configuración](#configuración)
 
 ---
+
+## Capturas
+
+![Command hub de Pancho](../images/screenshot-command-hub.png)
+
+![Command hub en acción](../images/demo-command-hub.gif)
+
+| | |
+|---|---|
+| ![Menú contextual con el submenú Pancho](../images/screenshot-context-menu.png) | ![Panel de regex con coincidencias en vivo](../images/screenshot-regex-panel.png) |
+| ![Vista previa (diff) antes de un comando destructivo](../images/screenshot-sort-preview.png) | ![Vista de la barra de actividad con favoritos y pipelines](../images/screenshot-activity-view.png) |
+
+![Comparar el portapapeles con una selección](../images/screenshot-compare.png)
+
+_Se regeneran con `npm run capture` (ver [scripts/capture](../scripts/capture))._
 
 ## Instalación
 
@@ -28,8 +38,9 @@
 
 ## Características
 
-- **148 comandos** accesibles desde el menú contextual
+- **149 comandos** accesibles desde el menú contextual
 - **Hub de comandos** (`Pancho: Mostrar menú de comandos`) con categorías, atajos y usados recientemente
+- **Comparar con el portapapeles** (`Pancho: Comparar con el portapapeles`): diff editable lado a lado entre el portapapeles y la selección (o el archivo completo)
 - **Compatible con multi-cursor y multi-selección**: las transformaciones se aplican por cursor/selección
 - **Repetir último comando** (`Ctrl+Shift+.`)
 - **Vista previa (diff)** para comandos que eliminan o reordenan contenido (activa por defecto)
@@ -92,7 +103,7 @@ Más ejemplos en [demos.md](./demos.md).
 
 ## Comandos
 
-Los **148 comandos** se agrupan en siete categorías para que el menú contextual sea corto: **Editar**, **Líneas**, **Texto y mayúsculas**, **Convertir**, **Escapar**, **Desarrollo** y **Macros y columnas**, más el **Hub de comandos**.
+Los **149 comandos** se agrupan en siete categorías para que el menú contextual sea corto: **Editar**, **Líneas**, **Texto y mayúsculas**, **Convertir**, **Escapar**, **Desarrollo** y **Macros y columnas**, más el **Hub de comandos**.
 
 Lista completa con descripciones: **[Comandos de Pancho](./commands.es.md)**.
 
@@ -133,7 +144,7 @@ Algunos comandos conservan su entrada de menú y atajo de Pancho pero **delegan 
 | `pancho.randomStringLength` | `16` | Longitud de string aleatorio |
 | `pancho.regexTimeoutMs` | `2000` | Tiempo máximo (ms) de una regex antes de abortar |
 | `pancho.previewDestructive` | `true` | Mostrar diff antes de comandos destructivos |
-| `pancho.clipboardHistoryEnabled` | `true` | Registra el portapapeles en segundo plano |
+| `pancho.clipboardHistoryEnabled` | `false` | Registra el portapapeles en segundo plano (opcional) |
 | `pancho.clipboardHistorySize` | `20` | Máximo de entradas del portapapeles |
 
 ## Contadores en barra de estado

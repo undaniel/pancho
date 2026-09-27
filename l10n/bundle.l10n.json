@@ -1,6 +1,9 @@
 {
   "Pancho: No active editor": "Pancho: No active editor",
   "Pancho: File too large ({0}KB). Max: {1}KB": "Pancho: File too large ({0}KB). Max: {1}KB",
+  "Pancho: Open a file to compare.": "Pancho: Open a file to compare.",
+  "Pancho: Compare - Clipboard ↔ {0}": "Pancho: Compare - Clipboard ↔ {0}",
+  "Untitled": "Untitled",
   "Running {0}...": "Running {0}...",
   "Pancho: {0}": "Pancho: {0}",
   "Pancho counters": "Pancho counters",
@@ -40,6 +43,7 @@
   "Character to align by": "Character to align by",
   "Password": "Password",
   "Regex pattern": "Regex pattern",
+  "Regex replace": "Regex replace",
   "Flags": "Flags",
   "Pattern too complex (possible catastrophic backtracking)": "Pattern too complex (possible catastrophic backtracking)",
   "Pattern took too long (possible catastrophic backtracking)": "Pattern took too long (possible catastrophic backtracking)",
