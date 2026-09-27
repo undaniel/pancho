@@ -32,7 +32,11 @@
 - **Command hub** (`Pancho: Show command menu`) with categories, shortcuts and recently used
 - **Multi-cursor & multi-selection** aware: transforms apply per cursor/selection
 - **Repeat last command** (`Ctrl+Shift+.`)
-- **Diff preview** for destructive commands (opt-in)
+- **Diff preview** for commands that delete or reorder content (on by default)
+- **Activity Bar view** with your **Favorites**, **Recent** commands and **Pipelines**
+- **Pipelines**: chain transforms in order, preview the result, save and share them
+- **Smart actions**: one picker for the content under the cursor (JWT, JSON, CSV, color, Base64, timestamp)
+- **Content-aware hover** with one-click actions
 - **Column mode**: insert / delete / copy / paste column blocks
 - **Macros**: record, replay, save and export/import command sequences
 - **Inline hover info**: decode JWTs, timestamps, colors and Base64 just by hovering

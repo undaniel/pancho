@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { CommandName, Commands } from '../commands/registry';
 import { t } from './i18n';
 import { registerCommand } from './register';
+import { fireCommandListsChanged } from './events';
 
 const LAST_COMMAND_KEY = 'pancho.lastCommand';
 
@@ -11,6 +12,7 @@ export async function recordLastCommand(context: vscode.ExtensionContext, comman
     if (NON_REPEATABLE.has(command)) return;
     try {
         await context.workspaceState.update(LAST_COMMAND_KEY, command);
+        fireCommandListsChanged();
     } catch {
         // History is best-effort; never block a command because of it.
     }

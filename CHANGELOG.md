@@ -35,12 +35,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Context-menu `when` clauses: column commands only appear with multiple selections; keep/remove-lines only with a selection.
 - `npm run l10n:check` and a unit test that fail when a runtime string is missing from `l10n/bundle.l10n.json`.
 - Macro guardrails: cannot start recording while playing, cannot play while recording/playing.
+- **Activity Bar view** with **Favorites**, **Recent** commands and **Pipelines** (`viewsContainers` + `views` + `viewsWelcome`), refreshed automatically when their data changes.
+- Settings now ship **`markdownDescription`** with examples, `enumDescriptions` for the EOL choice and an explicit display `order`.
+- Hover shows the matching command and **Smart actions** as clickable links, with theme icons.
+- `docs/marketplace.md` — Marketplace checklist (short description, categories, keywords, screenshot/GIF capture list).
 
 ### Changed
 
 - **Context menu consolidated:** 14 submenus collapsed into 7 groups — **Edit**, **Lines**, **Text & Case**, **Convert**, **Escape**, **Dev tools** and **Macros & Columns** — leaving 10 entries at the top level (categories grouped first, action commands at the bottom). Fixes a regression where 9 category definitions (62 commands) were missing from the menus; all 146 commands are back in the context menu and the hub.
 - **Native delegation:** 17 commands keep their Pancho menu entry and keyboard shortcut but now delegate to VS Code's own implementation (consistency + native multi-cursor): uppercase/lowercase/title case, comment & block comment, tabs↔spaces, indent/outdent, move / duplicate / insert line, sort A–Z / Z–A and join lines.
-- Status bar counters now show `Sel L:x P:y C:z` while there is a selection, and hide when there is no active editor.
+- Status bar counters now show `{lines} lines · {words} words · {chars} chars` (prefixed with `Sel:` while there is a selection), and hide when there is no active editor.
+- The Pancho status bar item now opens the **command hub**, uses the contributed brand colors and offers a clearer tooltip; the counters are clickable and show a detailed breakdown.
 - Counters are localized (`W` → `P` in Spanish), use `document.lineCount` for the free line count and debounce at 300 ms.
 - The regex worker starts lazily on first use instead of being pre-warmed on activation, and now supports **real cancellation**: aborting a job terminates its worker (the regex panel discards stale evaluations while typing) while an idle worker is reused for the next job.
 - Command hub is now a single Quick Pick (favorites, then recents, then the full catalogue).
@@ -51,12 +56,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `pancho.showStatusInfo` is declared in the manifest (usable from the palette).
 - Localized previously hardcoded error strings (`align`, `convert`, `jwt`, `timestamp`, `colorInfo`).
 - Removed the oversized `.vsix` binaries and `README_PANCHO.md` from the repository (use GitHub Releases); `.DS_Store` untracked.
+- Regex panel is now production-grade: accessible labels (`for`/`id`, `aria-live`), primary/secondary buttons, **copy**, **previous/next match** navigation, `Ctrl+Enter` to test, localized dynamic strings, dynamic `lang`, and state persistence via `getState`/`setState` (dropped `retainContextWhenHidden`).
+- Walkthrough: theme-neutral illustrations, localized `altText` and auto-open once on first install; the keyboard-shortcut step now lists the real shortcuts.
+- Code Actions mark the most likely action as **preferred**.
 
 ### Fixed
 
 - Onboarding walkthrough was contributed under the non-standard `markdownWalkthrough` key so it never appeared; it is now a valid `contributes.walkthroughs` with step ids and completion events.
 - `pancho.previewDestructive` only affects destructive commands again; non-destructive whole-document commands no longer ask for a diff.
 - `preview.ts` no longer leaks the full before/after document copies: the preview cache is released once the user decides and is bounded in size.
+- The `pancho.statusBarBackground` / `pancho.statusBarForeground` colors were contributed but never applied; they are now used (with high-contrast defaults).
+- The walkthrough keyboard-shortcuts step listed shortcuts that did not exist.
 
 ### Removed
 
@@ -66,7 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Testing
 
-- 292 unit tests.
+- 295 unit tests.
 
 ### Docs
 
@@ -77,6 +87,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `docs/demos.md` — hover, quick fixes, regex panel, columns, clipboard, sorting and macros examples.
 - README: install/why/top-10 sections, Marketplace & Open VSX badges, table of contents, contributing guide and keyboard-shortcut conflict notes; removed stale claims for deleted commands.
 - `.vscodeignore`: also ignore `**/*.vsix` and `.github/**`.
+- `docs/marketplace.md` — checklist to improve the Marketplace listing (copy, categories, keywords and the exact screenshot/GIF list).
 
 ## [1.3.0] - 2026-09-14
 

@@ -49,22 +49,44 @@
         "pancho.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "%setting.enabled.description%"
+          "order": 1,
+          "description": "%setting.enabled.description%",
+          "markdownDescription": "%setting.enabled.markdownDescription%"
+        },
+        "pancho.statusBarShowCounters": {
+          "type": "boolean",
+          "default": true,
+          "order": 2,
+          "description": "%setting.statusBarShowCounters.description%",
+          "markdownDescription": "%setting.statusBarShowCounters.markdownDescription%"
+        },
+        "pancho.previewDestructive": {
+          "type": "boolean",
+          "default": true,
+          "order": 3,
+          "description": "%setting.previewDestructive.description%",
+          "markdownDescription": "%setting.previewDestructive.markdownDescription%"
         },
         "pancho.previewAllChanges": {
           "type": "boolean",
           "default": false,
-          "description": "%setting.previewAllChanges.description%"
+          "order": 4,
+          "description": "%setting.previewAllChanges.description%",
+          "markdownDescription": "%setting.previewAllChanges.markdownDescription%"
         },
         "pancho.tabSize": {
           "type": "number",
           "default": 4,
-          "description": "%setting.tabSize.description%"
+          "order": 5,
+          "description": "%setting.tabSize.description%",
+          "markdownDescription": "%setting.tabSize.markdownDescription%"
         },
         "pancho.indentWithSpaces": {
           "type": "boolean",
           "default": true,
-          "description": "%setting.indentWithSpaces.description%"
+          "order": 6,
+          "description": "%setting.indentWithSpaces.description%",
+          "markdownDescription": "%setting.indentWithSpaces.markdownDescription%"
         },
         "pancho.defaultEOL": {
           "type": "string",
@@ -73,52 +95,61 @@
             "CRLF",
             "CR"
           ],
+          "enumDescriptions": [
+            "%setting.defaultEOL.enum.LF%",
+            "%setting.defaultEOL.enum.CRLF%",
+            "%setting.defaultEOL.enum.CR%"
+          ],
           "default": "LF",
-          "description": "%setting.defaultEOL.description%"
-        },
-        "pancho.statusBarShowCounters": {
-          "type": "boolean",
-          "default": true,
-          "description": "%setting.statusBarShowCounters.description%"
+          "order": 7,
+          "description": "%setting.defaultEOL.description%",
+          "markdownDescription": "%setting.defaultEOL.markdownDescription%"
         },
         "pancho.maxFileSizeKB": {
           "type": "number",
           "default": 5120,
-          "description": "%setting.maxFileSizeKB.description%"
-        },
-        "pancho.loremIpsumWordCount": {
-          "type": "number",
-          "default": 50,
-          "description": "%setting.loremIpsumWordCount.description%"
-        },
-        "pancho.randomStringLength": {
-          "type": "number",
-          "default": 16,
-          "description": "%setting.randomStringLength.description%"
+          "order": 8,
+          "description": "%setting.maxFileSizeKB.description%",
+          "markdownDescription": "%setting.maxFileSizeKB.markdownDescription%"
         },
         "pancho.regexTimeoutMs": {
           "type": "number",
           "default": 2000,
           "minimum": 50,
           "maximum": 30000,
-          "description": "%setting.regexTimeoutMs.description%"
-        },
-        "pancho.previewDestructive": {
-          "type": "boolean",
-          "default": true,
-          "description": "%setting.previewDestructive.description%"
+          "order": 9,
+          "description": "%setting.regexTimeoutMs.description%",
+          "markdownDescription": "%setting.regexTimeoutMs.markdownDescription%"
         },
         "pancho.clipboardHistoryEnabled": {
           "type": "boolean",
           "default": true,
-          "description": "%setting.clipboardHistoryEnabled.description%"
+          "order": 10,
+          "description": "%setting.clipboardHistoryEnabled.description%",
+          "markdownDescription": "%setting.clipboardHistoryEnabled.markdownDescription%"
         },
         "pancho.clipboardHistorySize": {
           "type": "number",
           "default": 20,
           "minimum": 5,
           "maximum": 100,
-          "description": "%setting.clipboardHistorySize.description%"
+          "order": 11,
+          "description": "%setting.clipboardHistorySize.description%",
+          "markdownDescription": "%setting.clipboardHistorySize.markdownDescription%"
+        },
+        "pancho.loremIpsumWordCount": {
+          "type": "number",
+          "default": 50,
+          "order": 12,
+          "description": "%setting.loremIpsumWordCount.description%",
+          "markdownDescription": "%setting.loremIpsumWordCount.markdownDescription%"
+        },
+        "pancho.randomStringLength": {
+          "type": "number",
+          "default": 16,
+          "order": 13,
+          "description": "%setting.randomStringLength.description%",
+          "markdownDescription": "%setting.randomStringLength.markdownDescription%"
         }
       }
     },
@@ -1650,7 +1681,8 @@
             "title": "%walkthrough.step.menu.title%",
             "description": "%walkthrough.step.menu.description%",
             "media": {
-              "svg": "media/walkthrough.svg"
+              "svg": "media/walkthrough.svg",
+              "altText": "%walkthrough.step.menu.altText%"
             },
             "completionEvents": [
               "onCommand:pancho.showMenu"
@@ -1661,7 +1693,8 @@
             "title": "%walkthrough.step.categories.title%",
             "description": "%walkthrough.step.categories.description%",
             "media": {
-              "svg": "media/categories.svg"
+              "svg": "media/categories.svg",
+              "altText": "%walkthrough.step.categories.altText%"
             },
             "completionEvents": [
               "onCommand:pancho.showFavorites"
@@ -1672,7 +1705,8 @@
             "title": "%walkthrough.step.keybindings.title%",
             "description": "%walkthrough.step.keybindings.description%",
             "media": {
-              "svg": "media/keybindings.svg"
+              "svg": "media/keybindings.svg",
+              "altText": "%walkthrough.step.keybindings.altText%"
             },
             "completionEvents": [
               "onCommand:pancho.toUpperCase"
@@ -1683,7 +1717,8 @@
             "title": "%walkthrough.step.settings.title%",
             "description": "%walkthrough.step.settings.description%",
             "media": {
-              "svg": "media/settings.svg"
+              "svg": "media/settings.svg",
+              "altText": "%walkthrough.step.settings.altText%"
             },
             "completionEvents": [
               "onCommand:pancho.showStatusInfo"
@@ -1698,7 +1733,9 @@
         "description": "%color.statusBarBackground.description%",
         "defaults": {
           "light": "#007acc",
-          "dark": "#007acc"
+          "dark": "#007acc",
+          "highContrast": "#000000",
+          "highContrastLight": "#ffffff"
         }
       },
       {
@@ -1706,8 +1743,49 @@
         "description": "%color.statusBarForeground.description%",
         "defaults": {
           "light": "#ffffff",
-          "dark": "#ffffff"
+          "dark": "#ffffff",
+          "highContrast": "#ffffff",
+          "highContrastLight": "#000000"
         }
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "pancho",
+          "title": "%view.container.title%",
+          "icon": "media/pancho-view.svg"
+        }
+      ]
+    },
+    "views": {
+      "pancho": [
+        {
+          "id": "pancho.favorites",
+          "name": "%view.favorites.name%"
+        },
+        {
+          "id": "pancho.recent",
+          "name": "%view.recent.name%"
+        },
+        {
+          "id": "pancho.pipelines",
+          "name": "%view.pipelines.name%"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "pancho.favorites",
+        "contents": "%view.favorites.welcome%"
+      },
+      {
+        "view": "pancho.recent",
+        "contents": "%view.recent.welcome%"
+      },
+      {
+        "view": "pancho.pipelines",
+        "contents": "%view.pipelines.welcome%"
       }
     ]
   },

@@ -56,9 +56,11 @@ export function registerCodeActionsProvider(context: vscode.ExtensionContext): v
             const specs = smartActionsFor(document.getText(range));
             if (specs.length === 0) return undefined;
 
-            return specs.map(spec => {
+            return specs.map((spec, index) => {
                 const action = new vscode.CodeAction(spec.title, vscode.CodeActionKind.Refactor);
                 action.command = { command: spec.command, title: spec.title };
+                // Hint the most likely action so it shows up as the preferred fix.
+                if (index === 0) action.isPreferred = true;
                 return action;
             });
         },

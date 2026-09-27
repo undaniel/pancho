@@ -32,7 +32,11 @@
 - **Hub de comandos** (`Pancho: Mostrar menú de comandos`) con categorías, atajos y usados recientemente
 - **Compatible con multi-cursor y multi-selección**: las transformaciones se aplican por cursor/selección
 - **Repetir último comando** (`Ctrl+Shift+.`)
-- **Vista previa (diff)** para comandos destructivos (opcional)
+- **Vista previa (diff)** para comandos que eliminan o reordenan contenido (activa por defecto)
+- **Vista en la barra de actividad** con **Favoritos**, comandos **Recientes** y **Pipelines**
+- **Pipelines**: encadena transformaciones en orden, previsualiza el resultado y guárdalos o compártelos
+- **Acciones inteligentes**: un selector para el contenido bajo el cursor (JWT, JSON, CSV, color, Base64, timestamp)
+- **Hover contextual** con acciones de un clic
 - **Modo columna**: insertar / eliminar / copiar / pegar bloques de columna
 - **Macros**: grabar, reproducir, guardar y exportar/importar secuencias de comandos
 - **Información al pasar el mouse**: decodifica JWT, timestamps, colores y Base64 solo con el hover

@@ -85,3 +85,29 @@ describe('command manifest (single source)', () => {
     expect(missingEs).toEqual([]);
   });
 });
+
+describe('documentation assets', () => {
+  const raw = require('../../package.json') as {
+    contributes: {
+      walkthroughs?: Array<{ steps?: Array<{ id?: string; media?: { altText?: string } }> }>;
+      views?: Record<string, Array<{ id: string; name: string }>>;
+      viewsContainers?: Record<string, Array<{ id: string }>>;
+    };
+  };
+
+  it('gives every walkthrough step media an altText', () => {
+    const missing: string[] = [];
+    for (const walkthrough of raw.contributes.walkthroughs ?? []) {
+      for (const step of walkthrough.steps ?? []) {
+        if (!step.media?.altText) missing.push(step.id ?? '(unnamed step)');
+      }
+    }
+    expect(missing).toEqual([]);
+  });
+
+  it('declares every view inside a declared container', () => {
+    const containers = new Set((raw.contributes.viewsContainers?.activitybar ?? []).map(c => c.id));
+    const orphanViews = Object.keys(raw.contributes.views ?? {}).filter(id => !containers.has(id));
+    expect(orphanViews).toEqual([]);
+  });
+});

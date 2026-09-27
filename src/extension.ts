@@ -4,7 +4,7 @@ import { registerMenuCommands } from './commands/menu';
 import { registerColumnCommands } from './commands/column';
 import { registerMacroCommands } from './commands/macro';
 import { registerFilterCommands } from './commands/filter';
-import { initStatusBar, updateCounters, showInfo } from './utils/statusBar';
+import { initStatusBar, updateCounters, showCountsInfo } from './utils/statusBar';
 import { disposeRegexWorker } from './utils/safeRegex';
 import { registerPreviewProvider } from './utils/preview';
 import { registerClipboardCommands } from './commands/clipboard';
@@ -13,7 +13,24 @@ import { registerCodeActionsProvider } from './providers/codeActions';
 import { registerRegexPanel } from './providers/regexPanel';
 import { registerSmartActions } from './commands/smartActions';
 import { registerPipelineCommands } from './commands/pipeline';
+import { registerActivityView } from './providers/activityView';
 import { registerCommand } from './utils/register';
+
+const WALKTHROUGH_SHOWN_KEY = 'pancho.walkthroughShown';
+
+/** Opens the walkthrough once, on first activation. */
+function maybeOpenWalkthrough(context: vscode.ExtensionContext): void {
+    if (context.globalState.get<boolean>(WALKTHROUGH_SHOWN_KEY)) return;
+    void context.globalState.update(WALKTHROUGH_SHOWN_KEY, true);
+    const extensionId = context.extension?.id ?? 'undaniels.pancho-plus-plus';
+    setTimeout(() => {
+        void vscode.commands.executeCommand(
+            'workbench.action.openWalkthrough',
+            `${extensionId}#pancho.walkthrough`,
+            false
+        );
+    }, 1500);
+}
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log('[Pancho] Extension activating...');
@@ -30,9 +47,10 @@ export function activate(context: vscode.ExtensionContext): void {
     registerRegexPanel(context);
     registerSmartActions(context);
     registerPipelineCommands(context);
+    registerActivityView(context);
 
     registerCommand(context, 'pancho.showStatusInfo', () => {
-        showInfo(vscode.l10n.t('Pancho - Clean and format text like Notepad++'));
+        showCountsInfo();
     });
 
     context.subscriptions.push(
@@ -44,6 +62,8 @@ export function activate(context: vscode.ExtensionContext): void {
     );
 
     context.subscriptions.push({ dispose: disposeRegexWorker });
+
+    maybeOpenWalkthrough(context);
 
     console.log('[Pancho] Extension activated successfully!');
 }

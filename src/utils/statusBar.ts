@@ -22,9 +22,11 @@ const COUNTER_DEBOUNCE_MS = 300;
 
 export function initStatusBar(context: vscode.ExtensionContext): void {
     statusBarItem = vscode.window.createStatusBarItem('pancho.status', vscode.StatusBarAlignment.Right, 100);
-    statusBarItem.command = 'pancho.showStatusInfo';
+    statusBarItem.command = 'pancho.showMenu';
     statusBarItem.text = `${STATUSBAR_ICON} Pancho`;
-    statusBarItem.tooltip = vscode.l10n.t('Text formatting extension');
+    statusBarItem.tooltip = vscode.l10n.t('Pancho: click to open the command menu');
+    statusBarItem.color = new vscode.ThemeColor('pancho.statusBarForeground');
+    statusBarItem.backgroundColor = new vscode.ThemeColor('pancho.statusBarBackground');
     statusBarItem.show();
     context.subscriptions.push(statusBarItem);
 
@@ -33,6 +35,7 @@ export function initStatusBar(context: vscode.ExtensionContext): void {
         countersItem = vscode.window.createStatusBarItem('pancho.counters', vscode.StatusBarAlignment.Left, 101);
         countersItem.text = '';
         countersItem.tooltip = vscode.l10n.t('Pancho counters');
+        countersItem.command = 'pancho.showStatusInfo';
         countersItem.show();
         context.subscriptions.push(countersItem);
 
@@ -55,8 +58,8 @@ function scheduleUpdate(): void {
 function renderCounts(lines: number, words: number, chars: number, isSelection = false): void {
     if (!countersItem) return;
     countersItem.text = isSelection
-        ? vscode.l10n.t('Sel L:{0} W:{1} C:{2}', lines, words, chars)
-        : vscode.l10n.t('L:{0} W:{1} C:{2}', lines, words, chars);
+        ? vscode.l10n.t('Sel: {0} lines · {1} words · {2} chars', lines, words, chars)
+        : vscode.l10n.t('{0} lines · {1} words · {2} chars', lines, words, chars);
     countersItem.tooltip = isSelection
         ? vscode.l10n.t('Pancho counters (selection)')
         : vscode.l10n.t('Pancho counters');
@@ -64,8 +67,31 @@ function renderCounts(lines: number, words: number, chars: number, isSelection =
 
 function renderUnknownCounters(): void {
     if (!countersItem) return;
-    countersItem.text = vscode.l10n.t('L:? W:? C:?');
+    countersItem.text = vscode.l10n.t('Counts unavailable');
     countersItem.tooltip = vscode.l10n.t('Document too large to count');
+}
+
+/** Detailed counts for the active editor/selection, shown from the status bar or the hub. */
+export function showCountsInfo(): void {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+        vscode.window.showInformationMessage(vscode.l10n.t('Pancho: No active editor'));
+        return;
+    }
+    const selectionText = editor.document.getText(editor.selection);
+    const source = selectionText.length > 0 ? selectionText : editor.document.getText();
+    const scope = selectionText.length > 0
+        ? vscode.l10n.t('selection')
+        : vscode.l10n.t('document');
+    vscode.window.showInformationMessage(
+        vscode.l10n.t(
+            'Pancho - {0}: {1} lines · {2} words · {3} characters',
+            scope,
+            countLines(source),
+            countWords(source),
+            countCharacters(source)
+        )
+    );
 }
 
 export function updateCounters(): void {

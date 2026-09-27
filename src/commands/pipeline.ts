@@ -6,6 +6,7 @@ import { confirmWithPreview } from '../utils/preview';
 import { replaceDocumentText } from '../utils/editor';
 import { PIPELINE_STEPS, PipelineStep, pipelineStep, runPipelineSteps } from '../pipelines/catalog';
 import { readPipelines, writePipelines, parsePipelines, SavedPipeline } from '../pipelines/store';
+import { fireCommandListsChanged } from '../utils/events';
 
 interface StepItem extends vscode.QuickPickItem {
     command?: string;
@@ -73,7 +74,7 @@ async function applyPipeline(editor: vscode.TextEditor, stepIds: string[]): Prom
 }
 
 export function registerPipelineCommands(context: vscode.ExtensionContext): void {
-    registerCommand(context, Commands.RUN_PIPELINE, async () => {
+    registerCommand(context, Commands.RUN_PIPELINE, async (arg?: unknown) => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
             vscode.window.showWarningMessage(t('Pancho: No active editor'));
@@ -81,6 +82,15 @@ export function registerPipelineCommands(context: vscode.ExtensionContext): void
         }
 
         const saved = readPipelines(context);
+
+        // Direct run from the Activity Bar view.
+        if (typeof arg === 'string') {
+            const target = saved.find(pipeline => pipeline.name === arg);
+            if (target) {
+                await applyPipeline(editor, target.steps);
+                return;
+            }
+        }
         const items: StepItem[] = [
             { label: `$(add) ${t('New pipeline...')}` },
             ...saved.map(pipeline => ({
@@ -105,6 +115,7 @@ export function registerPipelineCommands(context: vscode.ExtensionContext): void
                 const pipelines = saved.filter(pipeline => pipeline.name !== name);
                 pipelines.push({ name, steps: stepIds });
                 await writePipelines(context, pipelines);
+                fireCommandListsChanged();
             }
         }
 
@@ -145,12 +156,14 @@ export function registerPipelineCommands(context: vscode.ExtensionContext): void
                 else merged.push(pipeline);
             }
             await writePipelines(context, merged);
+            fireCommandListsChanged();
             vscode.window.showInformationMessage(t('{0} pipeline(s) imported', String(parsed.length)));
             return;
         }
 
         if (picked.action === 'delete' && picked.savedPipeline) {
             await writePipelines(context, saved.filter(item => item.name !== picked.savedPipeline!.name));
+            fireCommandListsChanged();
         }
     });
 }

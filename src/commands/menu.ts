@@ -5,6 +5,7 @@ import { Commands } from './registry';
 import { registerRepeatCommand } from '../utils/history';
 import { registerCommand } from '../utils/register';
 import { t } from '../utils/i18n';
+import { fireCommandListsChanged } from '../utils/events';
 
 interface CatalogEntry {
     command: string;
@@ -129,6 +130,23 @@ export function buildCategories(manifest: Manifest | undefined, nls: Record<stri
     return categories;
 }
 
+export interface CatalogCommand {
+    command: string;
+    title: string;
+    categoryLabel: string;
+    keybinding?: string;
+}
+
+/** Flat list of the commands shown in the menu, for the Activity Bar views. */
+export function buildCommandCatalog(context: vscode.ExtensionContext): CatalogCommand[] {
+    return flatten(buildCategories(findManifest(), readNls(context))).map(entry => ({
+        command: entry.command,
+        title: entry.title,
+        categoryLabel: entry.categoryLabel,
+        keybinding: entry.keybinding,
+    }));
+}
+
 interface MenuEntry extends CatalogEntry {
     categoryLabel: string;
 }
@@ -206,6 +224,7 @@ async function showMenu(context: vscode.ExtensionContext): Promise<void> {
     await context.globalState.update(RECENT_KEY, nextRecents);
 
     await vscode.commands.executeCommand(pick.command);
+    fireCommandListsChanged();
 }
 
 async function showFavorites(context: vscode.ExtensionContext): Promise<void> {
@@ -241,6 +260,7 @@ async function toggleFavorites(context: vscode.ExtensionContext): Promise<void> 
     );
     if (!picks) return;
     await context.globalState.update(FAVORITES_KEY, picks.map(p => p.command));
+    fireCommandListsChanged();
     void vscode.window.showInformationMessage(
         t('Pancho: {0} favorite(s) saved', picks.length)
     );

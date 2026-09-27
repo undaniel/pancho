@@ -1,4 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
-  <rect fill="#007acc" width="400" height="200" rx="10"/>
-  <text x="200" y="100" text-anchor="middle" fill="white" font-size="16">Categorías de comandos</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 256" width="400" height="256" role="img" aria-label="Pancho command categories">
+  <g fill="#007acc" fill-opacity="0.1" stroke="#8b8b8b" stroke-opacity="0.45" stroke-width="2">
+    <rect x="52" y="52" width="140" height="60" rx="10"/>
+    <rect x="208" y="52" width="140" height="60" rx="10"/>
+    <rect x="52" y="128" width="140" height="60" rx="10"/>
+    <rect x="208" y="128" width="140" height="60" rx="10"/>
+  </g>
+  <g fill="#8b8b8b" fill-opacity="0.55">
+    <rect x="72" y="72" width="70" height="8" rx="4"/>
+    <rect x="228" y="72" width="70" height="8" rx="4"/>
+    <rect x="72" y="148" width="70" height="8" rx="4"/>
+    <rect x="228" y="148" width="70" height="8" rx="4"/>
+  </g>
+  <g fill="#007acc">
+    <circle cx="72" cy="94" r="6"/>
+    <circle cx="228" cy="94" r="6"/>
+    <circle cx="72" cy="170" r="6"/>
+    <circle cx="228" cy="170" r="6"/>
+  </g>
 </svg>
