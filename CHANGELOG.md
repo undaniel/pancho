@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-09-27
+
 ### Added
 
 - **Compare with Clipboard** (`pancho.compareWithClipboard`): opens an editable side-by-side diff between the clipboard and the current selection (or the whole file). Paste new text on either side and the differences update live.
