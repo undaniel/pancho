@@ -53,6 +53,8 @@ export function registerAllCommands(context: vscode.ExtensionContext): void {
     registerDelegateCommand(context, { command: Commands.SORT_ASCENDING, target: 'editor.action.sortLinesAscending' });
     registerDelegateCommand(context, { command: Commands.SORT_DESCENDING, target: 'editor.action.sortLinesDescending' });
     registerDelegateCommand(context, { command: Commands.JOIN_LINES, target: 'editor.action.joinLines' });
+    registerDelegateCommand(context, { command: Commands.FORMAT_DOCUMENT, target: 'editor.action.formatDocument' });
+    registerDelegateCommand(context, { command: Commands.FORMAT_SELECTION, target: 'editor.action.formatSelection' });
 
     // ===== Own transformations =====
     registerTextCommand(context, { command: Commands.CLEAN_WHITESPACE, transform: (text) => cleanWhitespace(text) });

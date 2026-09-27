@@ -32,7 +32,7 @@ export async function testRegex(pattern: string, flags: string, text: string, ti
             mode: 'exec',
             maxMatches: 10000,
         },
-        timeoutMs
+        { timeoutMs }
     );
     if (result.error) return { matches: [], error: describeError(result.error) };
     return { matches: result.matches ?? [] };

@@ -1,4 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
-  <rect fill="#007acc" width="400" height="200" rx="10"/>
-  <text x="200" y="100" text-anchor="middle" fill="white" font-size="16">Configuración de Pancho</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 256" width="400" height="256" role="img" aria-label="Pancho settings">
+  <g fill="none" stroke="#8b8b8b" stroke-opacity="0.5" stroke-width="3">
+    <circle cx="96" cy="128" r="34"/>
+  </g>
+  <circle cx="96" cy="128" r="14" fill="#007acc"/>
+  <g stroke="#007acc" stroke-width="6" stroke-linecap="round">
+    <path d="M96 76 v-10 M96 190 v-10 M148 128 h10 M44 128 h10 M133 91 l7 -7 M59 172 l7 -7 M133 165 l7 7 M59 84 l7 7"/>
+  </g>
+  <g fill="#8b8b8b" fill-opacity="0.45">
+    <rect x="196" y="84" width="150" height="10" rx="5"/>
+    <rect x="196" y="124" width="150" height="10" rx="5"/>
+    <rect x="196" y="164" width="150" height="10" rx="5"/>
+  </g>
+  <g>
+    <rect x="306" y="72" width="40" height="22" rx="11" fill="#007acc"/>
+    <circle cx="336" cy="83" r="8" fill="#ffffff"/>
+    <rect x="306" y="112" width="40" height="22" rx="11" fill="#8b8b8b" fill-opacity="0.4"/>
+    <circle cx="316" cy="123" r="8" fill="#ffffff"/>
+    <rect x="306" y="152" width="40" height="22" rx="11" fill="#007acc"/>
+    <circle cx="336" cy="163" r="8" fill="#ffffff"/>
+  </g>
 </svg>

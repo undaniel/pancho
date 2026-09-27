@@ -10,6 +10,7 @@ Antes de escribir código:
 ## Comandos útiles
 
 - `npm run compile` - Compilar TypeScript
+- `npm run commands:sync` - Regenerar `contributes.commands` desde `src/commands/registry.ts`
 - `npm test` - Ejecutar tests
 - `npm run package` - Empaquetar extensión
 

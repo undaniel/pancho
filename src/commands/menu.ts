@@ -1,8 +1,12 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
-import * as path from 'path';
 import { Commands } from './registry';
 import { registerRepeatCommand } from '../utils/history';
+import { registerCommand } from '../utils/register';
+import { t } from '../utils/i18n';
+import { fireCommandListsChanged } from '../utils/events';
+import { createAndRunPipeline } from './pipeline';
+
+const NEW_PIPELINE_ACTION = '__pancho_new_pipeline__';
 
 interface CatalogEntry {
     command: string;
@@ -35,9 +39,9 @@ interface Manifest {
 
 export function registerMenuCommands(context: vscode.ExtensionContext): void {
     registerRepeatCommand(context);
-    context.subscriptions.push(
-        vscode.commands.registerCommand(Commands.SHOW_MENU, () => showMenu(context))
-    );
+    registerCommand(context, Commands.SHOW_MENU, () => showMenu(context));
+    registerCommand(context, Commands.FAVORITES_SHOW, () => showFavorites(context));
+    registerCommand(context, Commands.FAVORITE_TOGGLE, () => toggleFavorites(context));
 }
 
 function findManifest(): Manifest | undefined {
@@ -46,24 +50,34 @@ function findManifest(): Manifest | undefined {
     return extension?.packageJSON as Manifest | undefined;
 }
 
-function readNls(context: vscode.ExtensionContext): Record<string, string> {
+let cachedNls: Record<string, string> = {};
+
+/**
+ * Loads `package.nls*.json` through the VS Code file system so it works on the
+ * desktop and on the web (where Node's `fs` is unavailable). Called once on
+ * activation, before any menu is built.
+ */
+export async function initNls(context: vscode.ExtensionContext): Promise<void> {
     const language = vscode.env.language || 'en';
-    const candidates = [`package.nls.${language}.json`];
     const base = language.split('-')[0];
+    const candidates = [`package.nls.${language}.json`];
     if (base !== language) candidates.push(`package.nls.${base}.json`);
     candidates.push('package.nls.json');
 
     for (const candidate of candidates) {
         try {
-            const fullPath = path.join(context.extensionPath, candidate);
-            if (fs.existsSync(fullPath)) {
-                return JSON.parse(fs.readFileSync(fullPath, 'utf8'));
-            }
+            const bytes = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, candidate));
+            cachedNls = JSON.parse(new TextDecoder().decode(bytes)) as Record<string, string>;
+            return;
         } catch {
             // Try the next candidate.
         }
     }
-    return {};
+    cachedNls = {};
+}
+
+function readNls(): Record<string, string> {
+    return cachedNls;
 }
 
 function localize(value: string | undefined, nls: Record<string, string>): string {
@@ -72,6 +86,7 @@ function localize(value: string | undefined, nls: Record<string, string>): strin
 }
 
 const RECENT_KEY = 'pancho.recentCommands';
+const FAVORITES_KEY = 'pancho.favoriteCommands';
 const MAX_RECENTS = 5;
 
 export function collectTitles(manifest: Manifest | undefined, nls: Record<string, string>): Map<string, string> {
@@ -118,47 +133,145 @@ export function buildCategories(manifest: Manifest | undefined, nls: Record<stri
     return categories;
 }
 
+export interface CatalogCommand {
+    command: string;
+    title: string;
+    categoryLabel: string;
+    keybinding?: string;
+}
+
+/** Flat list of the commands shown in the menu, for the Activity Bar views. */
+export function buildCommandCatalog(context: vscode.ExtensionContext): CatalogCommand[] {
+    return flatten(buildCategories(findManifest(), readNls())).map(entry => ({
+        command: entry.command,
+        title: entry.title,
+        categoryLabel: entry.categoryLabel,
+        keybinding: entry.keybinding,
+    }));
+}
+
+interface MenuEntry extends CatalogEntry {
+    categoryLabel: string;
+}
+
+function flatten(categories: Category[]): MenuEntry[] {
+    return categories.flatMap(category =>
+        category.entries.map(entry => ({ ...entry, categoryLabel: category.label }))
+    );
+}
+
+function toPickItem(entry: MenuEntry, recents: Set<string>, favorites: Set<string>): vscode.QuickPickItem & { command: string } {
+    const tags: string[] = [];
+    if (favorites.has(entry.command)) tags.push('★');
+    if (recents.has(entry.command)) tags.push('↺');
+    const description = [entry.categoryLabel, entry.keybinding].filter(Boolean).join('  ·  ');
+    return {
+        label: tags.length ? `${tags.join(' ')} ${entry.title}` : entry.title,
+        description,
+        command: entry.command,
+    };
+}
+
+function readCommandSet(context: vscode.ExtensionContext, key: string, max = Number.MAX_SAFE_INTEGER): Set<string> {
+    const values = context.globalState.get<string[]>(key, []).slice(0, max);
+    return new Set(values);
+}
+
+async function executePick(
+    entries: MenuEntry[],
+    title: string,
+    placeholder: string,
+    recents: Set<string>,
+    favorites: Set<string>
+): Promise<void> {
+    if (entries.length === 0) {
+        vscode.window.showWarningMessage(t('Pancho: No commands available'));
+        return;
+    }
+    const pick = await vscode.window.showQuickPick(
+        entries.map(entry => toPickItem(entry, recents, favorites)),
+        { placeHolder: placeholder, title, matchOnDescription: true }
+    );
+    if (!pick) return;
+    await vscode.commands.executeCommand(pick.command);
+}
+
 async function showMenu(context: vscode.ExtensionContext): Promise<void> {
     const manifest = findManifest();
-    const nls = readNls(context);
+    const nls = readNls();
     const categories = buildCategories(manifest, nls);
     if (categories.length === 0) {
-        vscode.window.showWarningMessage(vscode.l10n.t('Pancho: No commands available'));
+        vscode.window.showWarningMessage(t('Pancho: No commands available'));
         return;
     }
 
-    const titles = collectTitles(manifest, nls);
-    const recents = context.globalState.get<string[]>(RECENT_KEY, []);
-    const recentEntries = recents
-        .filter(command => titles.has(command))
-        .map(command => ({ command, title: titles.get(command)! }));
-    if (recentEntries.length > 0) {
-        categories.unshift({ id: 'recent', label: vscode.l10n.t('Pancho: Recently used'), entries: recentEntries });
+    const all = flatten(categories);
+    const favorites = readCommandSet(context, FAVORITES_KEY);
+    const recents = readCommandSet(context, RECENT_KEY, MAX_RECENTS);
+
+    // Favourites and recents float to the top, then the full catalogue.
+    const prioritized = [
+        ...all.filter(entry => favorites.has(entry.command)),
+        ...all.filter(entry => !favorites.has(entry.command) && recents.has(entry.command)),
+        ...all.filter(entry => !favorites.has(entry.command) && !recents.has(entry.command)),
+    ];
+
+    const pick = await vscode.window.showQuickPick(
+        [
+            { label: `$(add) ${t('New pipeline from selected commands...')}`, command: NEW_PIPELINE_ACTION },
+            ...prioritized.map(entry => toPickItem(entry, recents, favorites)),
+        ],
+        { placeHolder: t('Pancho: Choose a command'), matchOnDescription: true }
+    );
+    if (!pick) return;
+    if (pick.command === NEW_PIPELINE_ACTION) {
+        await createAndRunPipeline(context);
+        return;
     }
 
-    const categoryPick = await vscode.window.showQuickPick(
-        categories.map(category => ({
-            label: category.label,
-            description: `${category.entries.length}`,
-            category,
-        })),
-        { placeHolder: vscode.l10n.t('Pancho: Choose a category') }
-    );
-    if (!categoryPick) return;
-
-    const commandPick = await vscode.window.showQuickPick(
-        categoryPick.category.entries.map(entry => ({
-            label: entry.title,
-            description: entry.keybinding,
-            command: entry.command,
-        })),
-        { placeHolder: categoryPick.category.label, matchOnDescription: true }
-    );
-    if (!commandPick) return;
-
-    const nextRecents = [commandPick.command, ...recents.filter(command => command !== commandPick.command)]
+    const nextRecents = [pick.command, ...context.globalState.get<string[]>(RECENT_KEY, []).filter(c => c !== pick.command)]
         .slice(0, MAX_RECENTS);
     await context.globalState.update(RECENT_KEY, nextRecents);
 
-    await vscode.commands.executeCommand(commandPick.command);
+    await vscode.commands.executeCommand(pick.command);
+    fireCommandListsChanged();
+}
+
+async function showFavorites(context: vscode.ExtensionContext): Promise<void> {
+    const manifest = findManifest();
+    const nls = readNls();
+    const categories = buildCategories(manifest, nls);
+    const favorites = readCommandSet(context, FAVORITES_KEY);
+    const recents = readCommandSet(context, RECENT_KEY, MAX_RECENTS);
+    const entries = flatten(categories).filter(entry => favorites.has(entry.command));
+
+    if (entries.length === 0) {
+        vscode.window.showWarningMessage(t('Pancho: No favorites yet. Use "Pancho: Edit favorites".'));
+        return;
+    }
+    await executePick(entries, t('Pancho: Favorites'), t('Pancho: Choose a favorite'), recents, favorites);
+}
+
+async function toggleFavorites(context: vscode.ExtensionContext): Promise<void> {
+    const manifest = findManifest();
+    const nls = readNls();
+    const categories = buildCategories(manifest, nls);
+    const entries = flatten(categories);
+    const current = readCommandSet(context, FAVORITES_KEY);
+
+    const picks = await vscode.window.showQuickPick(
+        entries.map(entry => ({
+            label: entry.title,
+            description: entry.categoryLabel,
+            picked: current.has(entry.command),
+            command: entry.command,
+        })),
+        { canPickMany: true, placeHolder: t('Pancho: Choose favorites'), matchOnDescription: true }
+    );
+    if (!picks) return;
+    await context.globalState.update(FAVORITES_KEY, picks.map(p => p.command));
+    fireCommandListsChanged();
+    void vscode.window.showInformationMessage(
+        t('Pancho: {0} favorite(s) saved', picks.length)
+    );
 }

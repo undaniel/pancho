@@ -1,4 +1,5 @@
 import { t } from '../utils/i18n';
+import { base64ToUtf8 } from '../utils/bytes';
 
 export function decodeJWT(token: string): { result: string; error?: string } {
     const parts = token.trim().split('.');
@@ -9,7 +10,7 @@ export function decodeJWT(token: string): { result: string; error?: string } {
         const decode = (part: string): unknown => {
             let base64 = part.replace(/-/g, '+').replace(/_/g, '/');
             while (base64.length % 4) base64 += '=';
-            return JSON.parse(Buffer.from(base64, 'base64').toString('utf-8'));
+            return JSON.parse(base64ToUtf8(base64));
         };
         const header = decode(parts[0]);
         const payload = decode(parts[1]);

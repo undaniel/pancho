@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { byteLength } from './bytes';
 
 export interface TextEdit {
     range: vscode.Range;
@@ -54,10 +55,6 @@ export function formatFileTooLargeMessage(text: string): string {
         Math.round(byteLength(text) / 1024),
         Math.round(max / 1024)
     );
-}
-
-function byteLength(text: string): number {
-    return Buffer.byteLength(text, 'utf8');
 }
 
 export async function applyEdits(editor: vscode.TextEditor, edits: TextEdit[]): Promise<boolean> {

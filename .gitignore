@@ -2,7 +2,7 @@ node_modules/
 dist/
 dist-tests/
 coverage/
-.vscode/
 *.tsbuildinfo
 *.vsix
 .DS_Store
+.vscode-test/

@@ -1,4 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
-  <rect fill="#007acc" width="400" height="200" rx="10"/>
-  <text x="200" y="100" text-anchor="middle" fill="white" font-size="16">Menú contextual de Pancho</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 256" width="400" height="256" role="img" aria-label="Pancho command menu">
+  <rect x="48" y="36" width="304" height="184" rx="10" fill="#007acc" fill-opacity="0.07" stroke="#8b8b8b" stroke-opacity="0.45" stroke-width="2"/>
+  <rect x="72" y="64" width="96" height="10" rx="5" fill="#8b8b8b" fill-opacity="0.55"/>
+  <rect x="72" y="96" width="256" height="20" rx="6" fill="#007acc" fill-opacity="0.22"/>
+  <rect x="84" y="102" width="110" height="8" rx="4" fill="#007acc"/>
+  <rect x="72" y="132" width="200" height="10" rx="5" fill="#8b8b8b" fill-opacity="0.45"/>
+  <rect x="72" y="160" width="224" height="10" rx="5" fill="#8b8b8b" fill-opacity="0.45"/>
+  <rect x="72" y="188" width="168" height="10" rx="5" fill="#8b8b8b" fill-opacity="0.45"/>
+  <path d="M300 176 l34 -34 a6 6 0 0 1 9 0 l9 9 a6 6 0 0 1 0 9 l-34 34 z" fill="#007acc"/>
+  <path d="M300 176 l10 10 -14 4 z" fill="#004a7a"/>
 </svg>

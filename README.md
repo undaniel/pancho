@@ -1,6 +1,6 @@
 # Pancho
 
-[![Version](https://img.shields.io/badge/version-1.3.0-blue.svg)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](./CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
 [![VSCode Engine](https://img.shields.io/badge/VSCode-%5E1.80.0-blue.svg)](https://code.visualstudio.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-%5E5.0.0-blue.svg)](https://www.typescriptlang.org/)
@@ -28,11 +28,17 @@
 
 ## Features
 
-- **138 commands** available from the context menu
+- **148 commands** available from the context menu
 - **Command hub** (`Pancho: Show command menu`) with categories, shortcuts and recently used
 - **Multi-cursor & multi-selection** aware: transforms apply per cursor/selection
 - **Repeat last command** (`Ctrl+Shift+.`)
-- **Diff preview** for destructive commands (opt-in)
+- **Diff preview** for commands that delete or reorder content (on by default)
+- **Activity Bar view** with your **Favorites**, **Recent** commands and **Pipelines**
+- **Pipelines**: chain transforms in order, preview the result, save and share them
+- **Works in the browser** (`vscode.dev`), on the desktop and on Remote/WSL/Containers
+- **Settings Sync** for favorites, pipelines, saved regex and macros
+- **Smart actions**: one picker for the content under the cursor (JWT, JSON, CSV, color, Base64, timestamp)
+- **Content-aware hover** with one-click actions
 - **Column mode**: insert / delete / copy / paste column blocks
 - **Macros**: record, replay, save and export/import command sequences
 - **Inline hover info**: decode JWTs, timestamps, colors and Base64 just by hovering
@@ -53,7 +59,7 @@ New here? These are the ones people reach for the most:
 |---------|--------------|----------|
 | Show command menu | Searchable hub of everything Pancho can do | — |
 | Sort by column... | Sort CSV/TSV rows by a chosen column | — |
-| Remove duplicate lines | De-duplicate a list in one shot | `Ctrl+Shift+D` |
+| Remove duplicate lines | De-duplicate a list in one shot | `Ctrl+Alt+D` |
 | Regex tester panel | Live matches, groups and replace preview | `Ctrl+Alt+R` |
 | Clipboard history... | Re-paste anything you copied recently | `Ctrl+Alt+V` |
 | Decode JWT | Decode a token (also available as hover / quick fix) | — |
@@ -86,7 +92,7 @@ More examples in [docs/demos.md](./docs/demos.md).
 
 ## Commands
 
-The **138 commands** are grouped into seven categories so the context menu stays
+The **148 commands** are grouped into seven categories so the context menu stays
 short: **Edit**, **Lines**, **Text & Case**, **Convert**, **Escape**, **Dev tools** and
 **Macros & Columns**, plus the **Command hub**.
 
@@ -102,20 +108,20 @@ Some commands keep Pancho's menu entry and shortcut but **delegate to VS Code's 
 | Win/Linux | Mac | Command |
 |-------|-------|---------|
 | `Ctrl+Shift+U` | `Cmd+Shift+U` | Uppercase |
-| `Ctrl+Shift+L` | `Cmd+Alt+L` | Lowercase |
-| `Ctrl+Shift+T` | `Cmd+Alt+T` | Trim lines |
-| `Ctrl+Shift+W` | `Cmd+Alt+W` | Count words |
 | `Ctrl+Shift+C` | `Cmd+Alt+C` | Count characters |
-| `Ctrl+Shift+N` | `Cmd+Alt+N` | Count lines |
-| `Ctrl+Shift+S` | `Cmd+Alt+S` | Sort A-Z |
-| `Ctrl+Shift+D` | `Cmd+Alt+D` | Remove duplicates |
+| `Ctrl+Alt+D` | `Cmd+Alt+D` | Remove duplicate lines |
 | `Ctrl+Shift+.` | `Cmd+Shift+.` | Repeat last command |
 | `Ctrl+Alt+V` | `Cmd+Alt+V` | Clipboard history |
 | `Ctrl+Alt+R` | `Cmd+Alt+R` | Regex tester panel |
 
-> Mac shortcuts use `Cmd+Alt+...` to avoid clashing with native VS Code shortcuts (`Cmd+Shift+W` closes the window, etc.).
+> These are the only shortcuts Pancho binds by default. Everything else is two
+> clicks away in the context menu or the command hub, so Pancho does not shadow
+> VS Code's own keys (`Ctrl+Shift+D` is *Show Run and Debug*, `Ctrl+Shift+S` is
+> *Save As*, `Ctrl+Shift+L/T/W/N` are editor/sorting commands, …).
 >
-> Some defaults collide with OS or editor shortcuts on certain platforms (`Ctrl+Shift+U` is "insert Unicode" on Linux, `Ctrl+Shift+S` is "Save As" in some editors). If that bothers you, remap them in **Keyboard Shortcuts** (`Ctrl+K Ctrl+S`) by searching for `pancho`.
+> A couple still collide at the OS level on some platforms (`Ctrl+Shift+U` is
+> "insert Unicode" on Linux). If that bothers you, remap them in **Keyboard
+> Shortcuts** (`Ctrl+K Ctrl+S`) by searching for `pancho`.
 
 ## Settings
 
@@ -128,7 +134,7 @@ Some commands keep Pancho's menu entry and shortcut but **delegate to VS Code's 
 | `pancho.loremIpsumWordCount` | `50` | Lorem Ipsum word count |
 | `pancho.randomStringLength` | `16` | Random string length |
 | `pancho.regexTimeoutMs` | `2000` | Max time (ms) a regex may run before aborting |
-| `pancho.previewDestructive` | `false` | Show a diff preview before destructive commands |
+| `pancho.previewDestructive` | `true` | Show a diff preview before destructive commands |
 | `pancho.clipboardHistoryEnabled` | `true` | Record the clipboard in the background |
 | `pancho.clipboardHistorySize` | `20` | Max clipboard entries to keep |
 

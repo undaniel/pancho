@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+env:
+  # Populated from repository secrets. Empty values simply skip that publisher
+  # so the job still produces a VSIX and a GitHub Release without them.
+  VSCE_PAT: ${{ secrets.VSCE_PAT }}
+  OVSX_PAT: ${{ secrets.OVSX_PAT }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22.x
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run l10n:check
+      - run: npm test
+
+      # `vsce package` runs `vscode:prepublish` -> `bundle:production` first.
+      - name: Package VSIX
+        run: npx vsce package --out "pancho-${GITHUB_REF_NAME}.vsix"
+
+      - name: Publish to VS Code Marketplace
+        if: env.VSCE_PAT != ''
+        run: npx vsce publish --packagePath "pancho-${GITHUB_REF_NAME}.vsix" -p "$VSCE_PAT"
+
+      - name: Publish to Open VSX
+        if: env.OVSX_PAT != ''
+        run: npx --yes ovsx@latest publish "pancho-${GITHUB_REF_NAME}.vsix" -p "$OVSX_PAT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: pancho-*.vsix
+          generate_release_notes: true

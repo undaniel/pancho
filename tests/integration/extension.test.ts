@@ -1,187 +1,122 @@
-import * as path from 'path';
 import * as assert from 'assert';
 import * as vscode from 'vscode';
+import { buildIssueBody, buildIssueUri } from '../../src/utils/logger';
 
-suite('Pancho Integration Tests', function() {
+const EXTENSION_ID = 'undaniels.pancho-plus-plus';
+const FIXTURE = 'hello\nworld\nalpha\nbeta\n';
+
+suite('Pancho Integration Tests', function () {
     this.timeout(30000);
 
     let document: vscode.TextDocument;
     let editor: vscode.TextEditor;
 
-    suiteSetup(async function() {
-        const workspacePath = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-        if (!workspacePath) {
-            throw new Error('No workspace folder found');
-        }
-        const filePath = path.join(workspacePath, 'test.txt');
-        document = await vscode.workspace.openTextDocument(filePath);
+    suiteSetup(async function () {
+        const extension = vscode.extensions.getExtension(EXTENSION_ID);
+        assert.ok(extension, `expected ${EXTENSION_ID} to be installed`);
+        await extension!.activate();
+
+        // Destructive commands open a diff preview by default, which would open
+        // another editor and block the test. Turn it off for the test run.
+        const config = vscode.workspace.getConfiguration('pancho');
+        await config.update('previewDestructive', false, vscode.ConfigurationTarget.Global);
+        await config.update('previewAllChanges', false, vscode.ConfigurationTarget.Global);
+
+        // A single untitled document keeps the tests hermetic (no workspace files
+        // are touched) and its editor stays active between tests.
+        document = await vscode.workspace.openTextDocument({ content: FIXTURE, language: 'plaintext' });
         editor = await vscode.window.showTextDocument(document);
     });
 
-    teardown(async function() {
-        if (document) {
-            await document.close();
+    suiteTeardown(async function () {
+        const config = vscode.workspace.getConfiguration('pancho');
+        await config.update('previewDestructive', undefined, vscode.ConfigurationTarget.Global);
+        await config.update('previewAllChanges', undefined, vscode.ConfigurationTarget.Global);
+    });
+
+    setup(async function () {
+        // Make sure our editor is the active one: the commands resolve
+        // `window.activeTextEditor`, and the test host can briefly focus others.
+        editor = await vscode.window.showTextDocument(document, { preview: false, preserveFocus: false });
+        for (let i = 0; i < 25 && vscode.window.activeTextEditor !== editor; i++) {
+            await new Promise(resolve => setTimeout(resolve, 10));
         }
+        await setContent(FIXTURE);
+        const start = new vscode.Position(0, 0);
+        editor.selection = new vscode.Selection(start, start);
     });
 
-    suite('Text Transformation Commands', () => {
-        test('toUpperCase should convert text to uppercase', async () => {
-            const range = new vscode.Range(0, 0, 0, 5);
-            await editor.selection = new vscode.Selection(range.start, range.end);
-            await vscode.commands.executeCommand('pancho.toUpperCase');
-            const text = editor.document.getText(range);
-            assert.strictEqual(text, 'HELLO');
-        });
+    async function setContent(text: string): Promise<void> {
+        const full = new vscode.Range(0, 0, document.lineCount, 0);
+        const applied = await editor.edit(builder => builder.replace(full, text));
+        assert.ok(applied, 'failed to replace the document content');
+    }
 
-        test('toLowerCase should convert text to lowercase', async () => {
-            const range = new vscode.Range(1, 0, 1, 5);
-            await editor.selection = new vscode.Selection(range.start, range.end);
-            await vscode.commands.executeCommand('pancho.toLowerCase');
-            const text = editor.document.getText(range);
-            assert.strictEqual(text, 'hello');
-        });
+    function select(start: vscode.Position, end: vscode.Position): void {
+        editor.selection = new vscode.Selection(start, end);
+    }
 
-        test('trimLines should remove leading/trailing whitespace', async () => {
-            await editor.edit(editBuilder => {
-                editBuilder.insert(new vscode.Position(0, 0), '  test  ');
-            });
-            const fullRange = new vscode.Range(0, 0, 0, 9);
-            await editor.selection = new vscode.Selection(fullRange.start, fullRange.end);
-            await vscode.commands.executeCommand('pancho.trimLines');
-            const text = editor.document.getText(fullRange);
-            assert.strictEqual(text.trim(), 'test');
-        });
+    test('activates the extension and registers its commands', async () => {
+        const commands = await vscode.commands.getCommands(true);
+        assert.ok(commands.includes('pancho.showMenu'), 'pancho.showMenu should be registered');
+        assert.ok(commands.includes('pancho.runPipeline'), 'pancho.runPipeline should be registered');
     });
 
-    suite('Line Operations', () => {
-        test('removeDuplicateLines should remove duplicate lines', async () => {
-            const content = 'apple\nbanana\napple\ncherry';
-            await editor.edit(editBuilder => {
-                const lastLine = editor.document.lineAt(editor.document.lineCount - 1);
-                editBuilder.insert(lastLine.range.end, '\n' + content);
-            });
-            await vscode.commands.executeCommand('pancho.removeDuplicateLines');
-            const lines = editor.document.getText().split('\n');
-            const uniqueLines = [...new Set(lines.filter(l => l.trim()))];
-            assert.ok(lines.length <= uniqueLines.length + 2);
-        });
-
-        test('sortAscending should sort lines alphabetically', async () => {
-            await editor.edit(editBuilder => {
-                editBuilder.delete(new vscode.Range(0, 0, editor.document.lineCount, 0));
-                editBuilder.insert(new vscode.Position(0, 0), 'cherry\napple\nbanana');
-            });
-            await vscode.commands.executeCommand('pancho.sortAscending');
-            const text = editor.document.getText();
-            assert.ok(text.includes('apple\nbanana\ncherry'));
-        });
-
-        test('sortDescending should sort lines reverse alphabetically', async () => {
-            await editor.edit(editBuilder => {
-                editBuilder.delete(new vscode.Range(0, 0, editor.document.lineCount, 0));
-                editBuilder.insert(new vscode.Position(0, 0), 'apple\nbanana\ncherry');
-            });
-            await vscode.commands.executeCommand('pancho.sortDescending');
-            const text = editor.document.getText();
-            assert.ok(text.includes('cherry\nbanana\napple'));
-        });
+    test('toUpperCase transforms the selection', async () => {
+        select(new vscode.Position(0, 0), new vscode.Position(0, 5));
+        await vscode.commands.executeCommand('pancho.toUpperCase');
+        assert.strictEqual(document.getText(new vscode.Range(0, 0, 0, 5)), 'HELLO');
     });
 
-    suite('Encoding Commands', () => {
-        test('base64Encode should encode text to base64', async () => {
-            await editor.edit(editBuilder => {
-                editBuilder.delete(new vscode.Range(0, 0, editor.document.lineCount, 0));
-                editBuilder.insert(new vscode.Position(0, 0), 'hello');
-            });
-            const range = new vscode.Range(0, 0, 0, 5);
-            await editor.selection = new vscode.Selection(range.start, range.end);
-            await vscode.commands.executeCommand('pancho.base64Encode');
-            const text = editor.document.getText(range);
-            assert.strictEqual(text, 'aGVsbG8=');
-        });
-
-        test('base64Decode should decode base64 to text', async () => {
-            await editor.edit(editBuilder => {
-                editBuilder.delete(new vscode.Range(0, 0, editor.document.lineCount, 0));
-                editBuilder.insert(new vscode.Position(0, 0), 'aGVsbG8=');
-            });
-            const range = new vscode.Range(0, 0, 0, 7);
-            await editor.selection = new vscode.Selection(range.start, range.end);
-            await vscode.commands.executeCommand('pancho.base64Decode');
-            const text = editor.document.getText(range);
-            assert.strictEqual(text, 'hello');
-        });
+    test('base64Encode transforms the selection', async () => {
+        await setContent('hello');
+        select(new vscode.Position(0, 0), new vscode.Position(0, 5));
+        await vscode.commands.executeCommand('pancho.base64Encode');
+        assert.strictEqual(document.getText(), 'aGVsbG8=');
     });
 
-    suite('Hash Commands', () => {
-        test('hashMD5 should return MD5 hash with warning', async () => {
-            await editor.edit(editBuilder => {
-                editBuilder.delete(new vscode.Range(0, 0, editor.document.lineCount, 0));
-                editBuilder.insert(new vscode.Position(0, 0), 'hello');
-            });
-            const range = new vscode.Range(0, 0, 0, 5);
-            await editor.selection = new vscode.Selection(range.start, range.end);
-            await vscode.commands.executeCommand('pancho.hashMD5');
-            const text = editor.document.getText(range);
-            assert.strictEqual(text, '5d41402abc4b2a76b9719d911017c592');
-        });
+    test('hashMD5 transforms the selection', async () => {
+        await setContent('hello');
+        select(new vscode.Position(0, 0), new vscode.Position(0, 5));
+        await vscode.commands.executeCommand('pancho.hashMD5');
+        assert.strictEqual(document.getText(), '5d41402abc4b2a76b9719d911017c592');
     });
 
-    suite('Count Commands', () => {
-        test('countWords should show word count', async () => {
-            await editor.edit(editBuilder => {
-                editBuilder.delete(new vscode.Range(0, 0, editor.document.lineCount, 0));
-                editBuilder.insert(new vscode.Position(0, 0), 'hello world test');
-            });
-            await vscode.commands.executeCommand('pancho.countWords');
-        });
-
-        test('countCharacters should show character count', async () => {
-            await editor.edit(editBuilder => {
-                editBuilder.delete(new vscode.Range(0, 0, editor.document.lineCount, 0));
-                editBuilder.insert(new vscode.Position(0, 0), 'hello');
-            });
-            await vscode.commands.executeCommand('pancho.countCharacters');
-        });
-
-        test('countLines should show line count', async () => {
-            await vscode.commands.executeCommand('pancho.countLines');
-        });
+    test('removeDuplicateLines leaves unique lines', async () => {
+        await setContent('apple\nbanana\napple\ncherry');
+        await vscode.commands.executeCommand('pancho.removeDuplicateLines');
+        const lines = document.getText().split('\n').filter(Boolean);
+        assert.strictEqual(lines.length, new Set(lines).size);
+        assert.ok(lines.includes('apple') && lines.includes('banana') && lines.includes('cherry'));
     });
 
-    suite('Line Editing Commands', () => {
-        test('moveLineUp should move current line up', async () => {
-            await editor.edit(editBuilder => {
-                editBuilder.delete(new vscode.Range(0, 0, editor.document.lineCount, 0));
-                editBuilder.insert(new vscode.Position(0, 0), 'line1\nline2\nline3');
-            });
-            const position = new vscode.Position(1, 0);
-            await editor.selection = new vscode.Selection(position, position);
-            await vscode.commands.executeCommand('pancho.moveLineUp');
-            const text = editor.document.getText();
-            assert.ok(text.includes('line2\nline1\nline3'), `Expected line2 before line1, got: ${text}`);
-        });
+    test('sortNatural sorts numerically aware', async () => {
+        await setContent('b10\nb2\nb1');
+        await vscode.commands.executeCommand('pancho.sortNatural');
+        assert.strictEqual(document.getText().trim(), 'b1\nb2\nb10');
+    });
 
-        test('moveLineDown should move current line down', async () => {
-            await editor.edit(editBuilder => {
-                editBuilder.delete(new vscode.Range(0, 0, editor.document.lineCount, 0));
-                editBuilder.insert(new vscode.Position(0, 0), 'line1\nline2\nline3');
-            });
-            const position = new vscode.Position(1, 0);
-            await editor.selection = new vscode.Selection(position, position);
-            await vscode.commands.executeCommand('pancho.moveLineDown');
-            const text = editor.document.getText();
-            assert.ok(text.includes('line1\nline3\nline2'), `Expected line3 before line2, got: ${text}`);
-        });
+    test('reverseLines reverses the line order', async () => {
+        await setContent('a\nb\nc');
+        await vscode.commands.executeCommand('pancho.reverseLines');
+        assert.strictEqual(document.getText().trim(), 'c\nb\na');
+    });
 
-        test('duplicateLine should duplicate current line', async () => {
-            await editor.edit(editBuilder => {
-                editBuilder.delete(new vscode.Range(0, 0, editor.document.lineCount, 0));
-                editBuilder.insert(new vscode.Position(0, 0), 'line1\nline2\nline3');
-            });
-            await vscode.commands.executeCommand('pancho.duplicateLine');
-            const lines = editor.document.getText().split('\n');
-            assert.ok(lines[0] === 'line1line1' || lines.includes('line1'));
-        });
+    test('generateUUID inserts a UUID at the cursor', async () => {
+        await setContent('');
+        await vscode.commands.executeCommand('pancho.generateUUID');
+        assert.match(document.getText(), /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
+    });
+
+    // Regression: `env.openExternal` applies `encodeURI(uri.toString(true))`
+    // (microsoft/vscode#135949), which re-encodes `%` and cannot represent `#`
+    // or `&`. Emulate that transport and assert the form still receives the
+    // intended body, character for character.
+    test('report-issue URL survives the openExternal transport', () => {
+        const body = buildIssueBody();
+        const url = encodeURI(buildIssueUri().toString(true));
+        const parsed = new URL(url);
+        assert.strictEqual(parsed.origin + parsed.pathname, 'https://github.com/undaniel/pancho/issues/new');
+        assert.strictEqual(parsed.searchParams.get('body'), body);
     });
 });

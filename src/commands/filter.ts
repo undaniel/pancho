@@ -13,7 +13,7 @@ function describeError(code: RegexErrorCode | undefined): string {
 async function matchingLineIndices(text: string, pattern: string): Promise<{ lines?: Set<number>; error?: string }> {
     const result = await runRegexJob(
         { pattern, flags: 'gi', text, mode: 'exec', maxMatches: 1000000 },
-        getRegexTimeoutMs()
+        { timeoutMs: getRegexTimeoutMs() }
     );
     if (result.error) return { error: describeError(result.error) };
 

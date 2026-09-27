@@ -2,6 +2,7 @@ import { t } from '../utils/i18n';
 import { decodeJWT } from './jwt';
 import { parseColor } from './colorInfo';
 import { timestampToISO } from './timestamp';
+import { base64ToBytes, utf8Decode } from '../utils/bytes';
 
 export interface HoverCandidate {
     token: string;
@@ -50,9 +51,9 @@ export function tryDecodeBase64(token: string): string | null {
     if (token.length % 4 === 1) return null;
     try {
         const normalized = token.replace(/-/g, '+').replace(/_/g, '/');
-        const buffer = Buffer.from(normalized, 'base64');
-        if (buffer.length === 0) return null;
-        const text = buffer.toString('utf-8');
+        const bytes = base64ToBytes(normalized);
+        if (bytes.length === 0) return null;
+        const text = utf8Decode(bytes);
         if (text.length === 0) return null;
         if (text.includes('\uFFFD')) return null;
         let printable = 0;

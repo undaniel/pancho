@@ -103,7 +103,7 @@ describe('command factory contracts', () => {
     await mock.__getCommandHandler('pancho.test.insert')!();
 
     expect(editor.operations).toHaveLength(0);
-    expect(mock.window.showWarningMessage).toHaveBeenCalledWith(expect.stringContaining('boom'));
+    expect(mock.window.showErrorMessage).toHaveBeenCalledWith(expect.stringContaining('boom'));
   });
 
   it('shows the error (not the warning) when both are present and does not edit', async () => {
@@ -116,7 +116,7 @@ describe('command factory contracts', () => {
 
     await mock.__getCommandHandler('pancho.test.text')!();
 
-    expect(mock.window.showWarningMessage).toHaveBeenCalledWith(expect.stringContaining('ERR'));
+    expect(mock.window.showErrorMessage).toHaveBeenCalledWith(expect.stringContaining('ERR'));
     expect(mock.window.showWarningMessage).not.toHaveBeenCalledWith(expect.stringContaining('WARN'));
     expect(editor.operations).toHaveLength(0);
   });
