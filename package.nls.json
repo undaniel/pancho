@@ -122,7 +122,7 @@
   "walkthrough.step.categories.title": "Available categories",
   "walkthrough.step.categories.description": "- **Edit**: Clean spaces and line breaks\n- **Lines**: Sort, reverse, remove duplicates\n- **Case**: Convert text\n- **Indentation**: Convert between tabs and spaces\n- **Encoding**: Base64, URL, HTML entities\n- **Formatting**: JSON, HTML, CSS, JS, SQL, XML\n- **Hash & binary**: MD5, SHA-256, conversions",
   "walkthrough.step.keybindings.title": "Keyboard shortcuts",
-  "walkthrough.step.keybindings.description": "Pancho ships shortcuts for the most common operations:\n- `Ctrl+Shift+U`: Uppercase\n- `Ctrl+Shift+C`: Count characters\n- `Ctrl+Shift+D`: Remove duplicate lines\n- `Ctrl+Shift+.`: Repeat last command\n- `Ctrl+Alt+V`: Clipboard history\n- `Ctrl+Alt+R`: Regex tester\n\nYou can change them in **Keyboard Shortcuts**.",
+  "walkthrough.step.keybindings.description": "Pancho ships shortcuts for the most common operations:\n- `Ctrl+Shift+U`: Uppercase\n- `Ctrl+Shift+C`: Count characters\n- `Ctrl+Alt+D`: Remove duplicate lines\n- `Ctrl+Shift+.`: Repeat last command\n- `Ctrl+Alt+V`: Clipboard history\n- `Ctrl+Alt+R`: Regex tester\n\nYou can change them in **Keyboard Shortcuts**.",
   "walkthrough.step.settings.title": "Settings",
   "walkthrough.step.settings.description": "Tune Pancho in **Settings › Extensions › Pancho**:\n- Preview destructive changes\n- Tab size and default end of line\n- Status bar counters\n- Regex timeout and clipboard history",
   "walkthrough.step.menu.altText": "Illustration of the Pancho context menu",

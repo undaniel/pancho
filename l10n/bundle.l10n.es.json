@@ -157,5 +157,6 @@
   "Title to URL slug": "Título a slug de URL",
   "CSV to pretty JSON": "CSV a JSON formateado",
   "Normalise sentences": "Normalizar frases",
-  "Minify JSON then Base64": "Minificar JSON y luego Base64"
+  "Minify JSON then Base64": "Minificar JSON y luego Base64",
+  "Pancho: the issue details were copied to the clipboard — paste them into the description.": "Pancho: los datos del informe se copiaron al portapapeles — pégalos en la descripción."
 }

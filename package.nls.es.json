@@ -122,7 +122,7 @@
   "walkthrough.step.categories.title": "Categorías disponibles",
   "walkthrough.step.categories.description": "- **Edición**: Limpiar espacios y saltos de línea\n- **Líneas**: Ordenar, invertir, eliminar duplicados\n- **Mayúsculas y minúsculas**: Convertir texto\n- **Tabulaciones**: Convertir entre tabs y espacios\n- **Codificación**: Base64, URL, HTML entities\n- **Formateo**: JSON, HTML, CSS, JS, SQL, XML\n- **Hash y binario**: MD5, SHA-256, conversiones",
   "walkthrough.step.keybindings.title": "Atajos de teclado",
-  "walkthrough.step.keybindings.description": "Pancho incluye atajos para las operaciones más comunes:\n- `Ctrl+Shift+U`: Mayúsculas\n- `Ctrl+Shift+C`: Contar caracteres\n- `Ctrl+Shift+D`: Eliminar líneas duplicadas\n- `Ctrl+Shift+.`: Repetir último comando\n- `Ctrl+Alt+V`: Historial del portapapeles\n- `Ctrl+Alt+R`: Probador de regex\n\nPuedes cambiarlos en **Atajos de teclado**.",
+  "walkthrough.step.keybindings.description": "Pancho incluye atajos para las operaciones más comunes:\n- `Ctrl+Shift+U`: Mayúsculas\n- `Ctrl+Shift+C`: Contar caracteres\n- `Ctrl+Alt+D`: Eliminar líneas duplicadas\n- `Ctrl+Shift+.`: Repetir último comando\n- `Ctrl+Alt+V`: Historial del portapapeles\n- `Ctrl+Alt+R`: Probador de regex\n\nPuedes cambiarlos en **Atajos de teclado**.",
   "walkthrough.step.settings.title": "Configuración",
   "walkthrough.step.settings.description": "Ajusta Pancho en **Configuración › Extensiones › Pancho**:\n- Vista previa de cambios destructivos\n- Tamaño de tabulación y fin de línea\n- Contadores en la barra de estado\n- Tiempo de regex e historial del portapapeles",
   "walkthrough.step.menu.altText": "Ilustración del menú contextual de Pancho",

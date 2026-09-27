@@ -59,7 +59,7 @@ New here? These are the ones people reach for the most:
 |---------|--------------|----------|
 | Show command menu | Searchable hub of everything Pancho can do | — |
 | Sort by column... | Sort CSV/TSV rows by a chosen column | — |
-| Remove duplicate lines | De-duplicate a list in one shot | `Ctrl+Shift+D` |
+| Remove duplicate lines | De-duplicate a list in one shot | `Ctrl+Alt+D` |
 | Regex tester panel | Live matches, groups and replace preview | `Ctrl+Alt+R` |
 | Clipboard history... | Re-paste anything you copied recently | `Ctrl+Alt+V` |
 | Decode JWT | Decode a token (also available as hover / quick fix) | — |
@@ -108,20 +108,20 @@ Some commands keep Pancho's menu entry and shortcut but **delegate to VS Code's 
 | Win/Linux | Mac | Command |
 |-------|-------|---------|
 | `Ctrl+Shift+U` | `Cmd+Shift+U` | Uppercase |
-| `Ctrl+Shift+L` | `Cmd+Alt+L` | Lowercase |
-| `Ctrl+Shift+T` | `Cmd+Alt+T` | Trim lines |
-| `Ctrl+Shift+W` | `Cmd+Alt+W` | Count words |
 | `Ctrl+Shift+C` | `Cmd+Alt+C` | Count characters |
-| `Ctrl+Shift+N` | `Cmd+Alt+N` | Count lines |
-| `Ctrl+Shift+S` | `Cmd+Alt+S` | Sort A-Z |
-| `Ctrl+Shift+D` | `Cmd+Alt+D` | Remove duplicates |
+| `Ctrl+Alt+D` | `Cmd+Alt+D` | Remove duplicate lines |
 | `Ctrl+Shift+.` | `Cmd+Shift+.` | Repeat last command |
 | `Ctrl+Alt+V` | `Cmd+Alt+V` | Clipboard history |
 | `Ctrl+Alt+R` | `Cmd+Alt+R` | Regex tester panel |
 
-> Mac shortcuts use `Cmd+Alt+...` to avoid clashing with native VS Code shortcuts (`Cmd+Shift+W` closes the window, etc.).
+> These are the only shortcuts Pancho binds by default. Everything else is two
+> clicks away in the context menu or the command hub, so Pancho does not shadow
+> VS Code's own keys (`Ctrl+Shift+D` is *Show Run and Debug*, `Ctrl+Shift+S` is
+> *Save As*, `Ctrl+Shift+L/T/W/N` are editor/sorting commands, …).
 >
-> Some defaults collide with OS or editor shortcuts on certain platforms (`Ctrl+Shift+U` is "insert Unicode" on Linux, `Ctrl+Shift+S` is "Save As" in some editors). If that bothers you, remap them in **Keyboard Shortcuts** (`Ctrl+K Ctrl+S`) by searching for `pancho`.
+> A couple still collide at the OS level on some platforms (`Ctrl+Shift+U` is
+> "insert Unicode" on Linux). If that bothers you, remap them in **Keyboard
+> Shortcuts** (`Ctrl+K Ctrl+S`) by searching for `pancho`.
 
 ## Settings
 

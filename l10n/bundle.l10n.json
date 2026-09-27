@@ -157,5 +157,6 @@
   "Title to URL slug": "Title to URL slug",
   "CSV to pretty JSON": "CSV to pretty JSON",
   "Normalise sentences": "Normalise sentences",
-  "Minify JSON then Base64": "Minify JSON then Base64"
+  "Minify JSON then Base64": "Minify JSON then Base64",
+  "Pancho: the issue details were copied to the clipboard — paste them into the description.": "Pancho: the issue details were copied to the clipboard — paste them into the description."
 }

@@ -59,7 +59,7 @@
 |---------|----------|-------|
 | Mostrar menú de comandos | Hub con buscador de todo lo que hace Pancho | — |
 | Ordenar por columna... | Ordena filas CSV/TSV por una columna | — |
-| Eliminar líneas duplicadas | Quita duplicados de una lista | `Ctrl+Shift+D` |
+| Eliminar líneas duplicadas | Quita duplicados de una lista | `Ctrl+Alt+D` |
 | Panel de test de regex | Coincidencias en vivo, grupos y reemplazo | `Ctrl+Alt+R` |
 | Historial de portapapeles... | Re-pega algo que copiaste hace poco | `Ctrl+Alt+V` |
 | Decodificar JWT | Decodifica un token (también hover / quick fix) | — |
@@ -105,20 +105,21 @@ Algunos comandos conservan su entrada de menú y atajo de Pancho pero **delegan 
 | Atajo (Win/Linux) | Atajo (Mac) | Comando |
 |-------|-------|---------|
 | `Ctrl+Shift+U` | `Cmd+Shift+U` | Mayúsculas |
-| `Ctrl+Shift+L` | `Cmd+Alt+L` | Minúsculas |
-| `Ctrl+Shift+T` | `Cmd+Alt+T` | Recortar líneas |
-| `Ctrl+Shift+W` | `Cmd+Alt+W` | Contar palabras |
 | `Ctrl+Shift+C` | `Cmd+Alt+C` | Contar caracteres |
-| `Ctrl+Shift+N` | `Cmd+Alt+N` | Contar líneas |
-| `Ctrl+Shift+S` | `Cmd+Alt+S` | Ordenar A-Z |
-| `Ctrl+Shift+D` | `Cmd+Alt+D` | Eliminar duplicados |
+| `Ctrl+Alt+D` | `Cmd+Alt+D` | Eliminar duplicados |
 | `Ctrl+Shift+.` | `Cmd+Shift+.` | Repetir último comando |
 | `Ctrl+Alt+V` | `Cmd+Alt+V` | Historial de portapapeles |
 | `Ctrl+Alt+R` | `Cmd+Alt+R` | Panel de test de regex |
 
-> Los atajos en Mac usan `Cmd+Alt+...` para evitar chocar con los nativos de VS Code (`Cmd+Shift+W` cierra ventana, etc.).
+> Estos son los únicos atajos que Pancho asigna por defecto. El resto está a dos
+> clics en el menú contextual o en el hub de comandos, de modo que Pancho no
+> pisa los atajos propios de VS Code (`Ctrl+Shift+D` es *Show Run and Debug*,
+> `Ctrl+Shift+S` es *Guardar como*, `Ctrl+Shift+L/T/W/N` son comandos del
+> editor/ordenación, …).
 >
-> Algunos atajos chocan con los del sistema en ciertas plataformas (`Ctrl+Shift+U` es "insertar Unicode" en Linux, `Ctrl+Shift+S` es "Guardar como" en algunos editores). Si te molesta, reasígnalos en **Atajos de teclado** (`Ctrl+K Ctrl+S`) buscando `pancho`.
+> Alguno sigue chocando a nivel de sistema en ciertas plataformas
+> (`Ctrl+Shift+U` es "insertar Unicode" en Linux). Si te molesta, reasígnalos en
+> **Atajos de teclado** (`Ctrl+K Ctrl+S`) buscando `pancho`.
 
 ## Configuración
 

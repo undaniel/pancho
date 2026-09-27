@@ -1,5 +1,6 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
+import { buildIssueBody, buildIssueUri } from '../../src/utils/logger';
 
 const EXTENSION_ID = 'undaniels.pancho-plus-plus';
 const FIXTURE = 'hello\nworld\nalpha\nbeta\n';
@@ -105,5 +106,17 @@ suite('Pancho Integration Tests', function () {
         await setContent('');
         await vscode.commands.executeCommand('pancho.generateUUID');
         assert.match(document.getText(), /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
+    });
+
+    // Regression: `env.openExternal` applies `encodeURI(uri.toString(true))`
+    // (microsoft/vscode#135949), which re-encodes `%` and cannot represent `#`
+    // or `&`. Emulate that transport and assert the form still receives the
+    // intended body, character for character.
+    test('report-issue URL survives the openExternal transport', () => {
+        const body = buildIssueBody();
+        const url = encodeURI(buildIssueUri().toString(true));
+        const parsed = new URL(url);
+        assert.strictEqual(parsed.origin + parsed.pathname, 'https://github.com/undaniel/pancho/issues/new');
+        assert.strictEqual(parsed.searchParams.get('body'), body);
     });
 });

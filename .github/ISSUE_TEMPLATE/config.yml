@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/undaniel/pancho/security/advisories/new
+    about: Please report security issues privately, not as a public issue.
+  - name: Question or idea
+    url: https://github.com/undaniel/pancho/discussions
+    about: Ask questions and discuss ideas with the community.
+  - name: Pancho on the Marketplace
+    url: https://marketplace.visualstudio.com/items?itemName=undaniels.pancho-plus-plus
+    about: Reviews, ratings and install.

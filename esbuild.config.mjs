@@ -41,6 +41,8 @@ const webCtx = await esbuild.context({
         'vscode',
         'worker_threads',
         'node:worker_threads',
+        'crypto',
+        'node:crypto',
         'fs',
         'node:fs',
         'path',

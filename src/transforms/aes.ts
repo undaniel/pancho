@@ -1,5 +1,6 @@
 import { t } from '../utils/i18n';
 import { utf8Encode, utf8Decode, bytesToBase64, base64ToBytes, hexToBytes, concatBytes, bufferSource } from '../utils/bytes';
+import { getRandomValues, getSubtle } from '../utils/webcrypto';
 
 const V2_PREFIX = 'PANCHO-AES2:';
 const V2_ITERATIONS = 210000;
@@ -20,15 +21,13 @@ const KEY_LENGTH = 32;
  */
 
 function subtle(): SubtleCrypto {
-    const value = globalThis.crypto?.subtle;
+    const value = getSubtle();
     if (!value) throw new Error('WebCrypto is not available');
     return value;
 }
 
 function randomBytes(length: number): Uint8Array {
-    const bytes = new Uint8Array(length);
-    globalThis.crypto.getRandomValues(bytes);
-    return bytes;
+    return getRandomValues(new Uint8Array(length));
 }
 
 async function deriveGcmKey(password: string, salt: Uint8Array): Promise<CryptoKey> {

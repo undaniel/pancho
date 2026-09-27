@@ -23,11 +23,19 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
+      - name: Coverage ratchet
+        if: matrix.os == 'ubuntu-latest'
+        run: npm run test:coverage
       - run: npm run l10n:check
       - run: npm run bundle
 
   integration:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Validate the declared engine floor and the current stable release.
+        vscode-version: ['1.80.0', 'stable']
     steps:
       - uses: actions/checkout@v5
       - name: Use Node.js 22.x
@@ -41,3 +49,5 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y xvfb
       - name: Run integration tests (headless)
         run: xvfb-run -a npm run test:integration
+        env:
+          VSCODE_VERSION: ${{ matrix.vscode-version }}

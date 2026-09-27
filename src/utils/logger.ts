@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { t } from './i18n';
 
 const EXTENSION_ID = 'undaniels.pancho-plus-plus';
 
@@ -33,19 +34,33 @@ export function extensionVersion(): string {
     return vscode.extensions.getExtension(EXTENSION_ID)?.packageJSON?.version ?? 'unknown';
 }
 
-/** Opens a prefilled GitHub issue with the environment details we always ask for. */
-export async function reportIssue(): Promise<void> {
-    const body = [
-        '### What happened?',
+const ISSUE_URL = 'https://github.com/undaniel/pancho/issues/new';
+
+/**
+ * Markdown for the prefilled issue body.
+ *
+ * Deliberately avoids `#`, `&`, `?` and `+`. `vscode.env.openExternal` runs
+ * `encodeURI(uri.toString(true))` over the URL (microsoft/vscode#135949), which
+ * re-encodes `%`; VS Code additionally escapes `?` when serialising the query.
+ * The net effect is that `#`, `&`, `?` and `+` cannot be represented reliably
+ * (`#` starts a URL fragment, `&` splits the query, `?`/`+` end up
+ * double-encoded or decoded as a space). Everything else the body uses
+ * (spaces, newlines, `:`, quotes, `*`, `_`, `-`) survives and is decoded by
+ * GitHub, so the body reaches the form intact. `reportIssue` guards the
+ * invariant and falls back to the clipboard if it is ever broken.
+ */
+export function buildIssueBody(): string {
+    return [
+        '**What happened**',
         '',
         '',
-        '### Expected behavior',
+        '**Expected behavior**',
         '',
         '',
-        '### Steps to reproduce',
+        '**Steps to reproduce**',
         '1. ',
         '',
-        '### Environment',
+        '**Environment**',
         `- Pancho: ${extensionVersion()}`,
         `- VS Code: ${vscode.version}`,
         `- Host: ${uiKind()}`,
@@ -53,9 +68,26 @@ export async function reportIssue(): Promise<void> {
         '',
         '_Tip: run "Pancho: Show logs" and paste any relevant lines above._',
     ].join('\n');
+}
 
-    const url = `https://github.com/undaniel/pancho/issues/new?body=${encodeURIComponent(body)}`;
-    await vscode.env.openExternal(vscode.Uri.parse(url));
+export function buildIssueUri(): vscode.Uri {
+    return vscode.Uri.parse(ISSUE_URL).with({ query: `body=${buildIssueBody()}` });
+}
+
+/** Opens a prefilled GitHub issue with the environment details we always ask for. */
+export async function reportIssue(): Promise<void> {
+    const body = buildIssueBody();
+    if (/[#&?+]/.test(body)) {
+        // Should never happen (see buildIssueBody); the URL transport cannot
+        // carry these, so hand the body over through the clipboard instead.
+        await vscode.env.clipboard.writeText(body);
+        await vscode.env.openExternal(vscode.Uri.parse(`${ISSUE_URL}?template=bug_report.yml`));
+        void vscode.window.showInformationMessage(
+            t('Pancho: the issue details were copied to the clipboard — paste them into the description.')
+        );
+        return;
+    }
+    await vscode.env.openExternal(buildIssueUri());
 }
 
 function uiKind(): string {

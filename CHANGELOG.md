@@ -47,6 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Declared `capabilities.virtualWorkspaces` and `extensionKind` for virtual workspaces and Remote/WSL/Containers.
 - **Accessibility:** `accessibilityInformation` (label + role) on the status bar items and the Activity Bar tree items.
 - **Integration tests** now run for real (`@vscode/test-cli` + `@vscode/test-electron`), plus an **OS matrix** (Ubuntu/Windows/macOS) in CI.
+- **Release automation** (`.github/workflows/release.yml`): pushing a `v*` tag builds the VSIX, publishes to the **VS Code Marketplace** and **Open VSX** (when the `VSCE_PAT` / `OVSX_PAT` secrets are set) and attaches the VSIX to a GitHub Release.
+- **Community health files:** `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, issue forms, a pull-request template and Dependabot for npm and GitHub Actions.
 
 ### Changed
 
@@ -61,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `pancho.previewDestructive` now defaults to `true`, but only for commands that delete or reorder content (dedupe, sort, delete/keep lines, transposes, randomize); plain conversions no longer ask for a diff.
 - Whole-document and prompt commands now run inside a cancellable progress notification on large inputs, like text commands.
 - Dropped five default keybindings that shadowed VS Code core commands (`Ctrl+Shift+L/T/W/N/S`).
+- Moved **Remove duplicate lines** from `Ctrl+Shift+D` to `Ctrl+Alt+D`; the old chord shadowed VS Code's *Show Run and Debug*. The README (EN/ES) shortcut tables now list only the six shortcuts the extension actually binds.
 - `pancho.showStatusInfo` is declared in the manifest (usable from the palette).
 - Localized previously hardcoded error strings (`align`, `convert`, `jwt`, `timestamp`, `colorInfo`).
 - Removed the oversized `.vsix` binaries and `README_PANCHO.md` from the repository (use GitHub Releases); `.DS_Store` untracked.
@@ -76,6 +79,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The `pancho.statusBarBackground` / `pancho.statusBarForeground` colors were contributed but never applied; they are now used (with high-contrast defaults).
 - The walkthrough keyboard-shortcuts step listed shortcuts that did not exist.
 - `npm run generate:readme` rewrote `README.md` from an obsolete Spanish template with unresolved `%...%` placeholders (it would have destroyed the curated README). It now only syncs the command count across the docs, is idempotent, and never overwrites prose; the stale template was removed.
+- **Older VS Code (1.80 and the Node 16 extension host):** AES encryption/decryption and the UUID / random-string commands depended on `globalThis.crypto`, which does not exist there, so they silently did nothing. They now go through a portable WebCrypto layer (`src/utils/webcrypto.ts`) that falls back to `node:crypto`. Caught by running the integration suite on `1.80.0`, not just stable.
+- `pancho.reportIssue` prefilled the GitHub issue with mangled text (`### ` showed up as `%23%23%23`, `?` as `%3F`): `vscode.env.openExternal` runs `encodeURI()` over the URI ([microsoft/vscode#135949](https://github.com/microsoft/vscode/issues/135949)), so a pre-encoded query is escaped twice and `#`, `&`, `?` and `+` cannot survive it at all. The body now avoids those characters and is passed raw (letting `openExternal` do the single encoding), with a clipboard fallback if the invariant is ever broken. Covered by an integration test that emulates the `openExternal` transport.
 
 ### Removed
 
@@ -85,7 +90,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Testing
 
-- 295 unit tests.
+- 308 unit tests.
+- Integration tests run in CI against **both** the declared engine floor (`1.80.0`) and current stable.
+- `npm run test:coverage` now reports over all of `src/` and enforces a coverage floor so it cannot silently regress.
+- A dedicated `webcrypto` suite covers the `globalThis.crypto` path and the `node:crypto` fallback.
 
 ### Docs
 

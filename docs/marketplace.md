@@ -10,11 +10,11 @@ GIFs are the single biggest lever: most users decide from the visuals, not the t
 > Clean, format and transform text like Notepad++ — **148 commands**, regex tester, pipelines and macros.
 
 **Categories:** `Formatters`, `Other`.
-**Keywords:** notepad, text, format, sort, lines, regex, case, base64, csv, json, macro, pipeline, whitespace.
+**Keywords:** notepad, notepad-plus-plus, text, text-transform, format, sort, lines, regex, case, base64, csv, json, macro, pipeline, whitespace, developer-tools, jwt, uuid.
 
 **Suggested highlights (first paragraph of the listing):**
 
-- 146 one-click text operations, organized by category.
+- 148 one-click text operations, organized by category.
 - Works on the selection or the whole document, multi-cursor aware.
 - Diff preview before destructive changes.
 - Pipelines: chain transforms, preview and save them.
