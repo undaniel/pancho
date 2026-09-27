@@ -3,14 +3,9 @@
 [![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](../CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](../LICENSE)
 [![VSCode Engine](https://img.shields.io/badge/VSCode-%5E1.80.0-blue.svg)](https://code.visualstudio.com/)
-
-[![Marketplace](https://img.shields.io/visual-studio-marketplace/v/undaniels.pancho-plus-plus)](https://marketplace.visualstudio.com/items?itemName=undaniels.pancho-plus-plus)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/undaniels.pancho-plus-plus)](https://marketplace.visualstudio.com/items?itemName=undaniels.pancho-plus-plus)
-[![Open VSX](https://img.shields.io/open-vsx/v/undaniels/pancho-plus-plus)](https://open-vsx.org/extension/undaniels/pancho-plus-plus)
+[![TypeScript](https://img.shields.io/badge/TypeScript-%5E5.0.0-blue.svg)](https://www.typescriptlang.org/)
 
 > Limpia, formatea y transforma texto como Notepad++
-
-<img src="../pancho.png" alt="Pancho" width="256" />
 
 **Idioma:** [English](../README.md) · Español
 
