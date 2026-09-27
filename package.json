@@ -1874,14 +1874,14 @@
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
-    "@types/node": "^20.0.0",
-    "@types/vscode": "^1.80.0",
-    "@vscode/test-cli": "^0.0.12",
-    "@vscode/test-electron": "^2.5.2",
-    "@vscode/vsce": "^3.2.0",
-    "esbuild": "^0.28.1",
-    "jest": "^30.4.2",
-    "ts-jest": "^29.4.11",
-    "typescript": "^5.0.0"
+    "@types/node": "^26.6.2",
+    "@types/vscode": "^1.138.0",
+    "@vscode/test-cli": "^0.0.15",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^4.0.0",
+    "esbuild": "^0.28.2",
+    "jest": "^30.5.2",
+    "ts-jest": "^29.4.13",
+    "typescript": "^7.0.2"
   }
 }
