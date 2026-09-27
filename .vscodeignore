@@ -25,9 +25,11 @@ dist/utils/**
 dist/test/**
 images/README.md
 images/icon-large.png
+images/screenshot-*.png
+images/demo-*.gif
 coverage/**
 *.webp
-!pancho.webp
+pancho.png
 **/*.vsix
 .github/**
 dist-tests/**
