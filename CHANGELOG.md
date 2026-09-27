@@ -67,6 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `preview.ts` no longer leaks the full before/after document copies: the preview cache is released once the user decides and is bounded in size.
 - The `pancho.statusBarBackground` / `pancho.statusBarForeground` colors were contributed but never applied; they are now used (with high-contrast defaults).
 - The walkthrough keyboard-shortcuts step listed shortcuts that did not exist.
+- `npm run generate:readme` rewrote `README.md` from an obsolete Spanish template with unresolved `%...%` placeholders (it would have destroyed the curated README). It now only syncs the command count across the docs, is idempotent, and never overwrites prose; the stale template was removed.
 
 ### Removed
 

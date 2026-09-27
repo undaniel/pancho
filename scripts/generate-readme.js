@@ -1,82 +1,55 @@
+'use strict';
+
+/*
+ * Keeps the "N commands" total in the docs in sync with the manifest.
+ *
+ * The README and the command reference are hand-maintained, so this script does
+ * NOT regenerate them: it only updates the bolded command count in place and
+ * never overwrites prose. Idempotent and safe to run any time.
+ *
+ *   npm run generate:readme
+ */
+
 const fs = require('fs');
 const path = require('path');
+
 const projectRoot = path.join(__dirname, '..');
 
-function extractPackageJson() {
-    const pkgPath = path.join(projectRoot, 'package.json');
-    const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+const pkg = JSON.parse(fs.readFileSync(path.join(projectRoot, 'package.json'), 'utf-8'));
+const count = pkg.contributes.commands.length;
 
-    const commandTitles = {};
-    for (const cmd of pkg.contributes.commands) {
-        commandTitles[cmd.command] = cmd.title;
-    }
+// Docs that state the total command count as `**N commands**` / `**N comandos**`.
+const DOCS = [
+    'README.md',
+    'docs/README.es.md',
+    'docs/commands.md',
+    'docs/commands.es.md',
+    'docs/marketplace.md',
+];
 
-    const submenus = {};
-    for (const submenu of pkg.contributes.submenus) {
-        if (submenu.id !== 'panchoMenu') {
-            submenus[submenu.id] = {
-                name: submenu.label,
-                commands: []
-            };
+const COUNT_PATTERN = /\*\*(\d+)( (?:commands|comandos))\*\*/g;
+
+function syncCounts() {
+    let changed = 0;
+    for (const relative of DOCS) {
+        const file = path.join(projectRoot, relative);
+        if (!fs.existsSync(file)) continue;
+
+        const before = fs.readFileSync(file, 'utf-8');
+        const after = before.replace(COUNT_PATTERN, `**${count}$2**`);
+
+        if (after !== before) {
+            fs.writeFileSync(file, after);
+            changed++;
+            console.log(`Updated ${relative}`);
         }
     }
-
-    const menus = pkg.contributes.menus;
-    for (const [menuId, items] of Object.entries(menus)) {
-        if (menuId !== 'editor/context' && menuId !== 'panchoMenu' && submenus[menuId]) {
-            for (const item of items) {
-                if (item.command) {
-                    submenus[menuId].commands.push(item.command);
-                }
-            }
-        }
-    }
-
-    return { commandTitles, submenus };
-}
-
-function generateTableOfContents(submenus) {
-    let toc = '';
-    let index = 1;
-    for (const submenu of Object.values(submenus)) {
-        const anchor = submenu.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        toc += `${index}. [${submenu.name}](#${anchor})\n`;
-        index++;
-    }
-    return toc;
-}
-
-function generateCommandsContent(commandTitles, submenus) {
-    let content = '';
-    let index = 1;
-    for (const submenu of Object.values(submenus)) {
-        const anchor = submenu.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        content += `## ${index}. ${submenu.name}\n`;
-        content += '<details>\n<summary>Ver comandos</summary>\n\n';
-        content += '| Comando | Función |\n|---------|----------|\n';
-
-        for (const cmd of submenu.commands) {
-            const title = commandTitles[cmd] || cmd;
-            content += '| `' + cmd + '` | ' + title + ' |\n';
-        }
-
-        content += '\n</details>\n\n---\n\n';
-        index++;
-    }
-    return content;
+    return changed;
 }
 
 function main() {
-    const { commandTitles, submenus } = extractPackageJson();
-
-    const templatePath = path.join(__dirname, 'templates', 'README.md');
-    let template = fs.readFileSync(templatePath, 'utf-8');
-
-    template = template.replace('{{TABLE_OF_CONTENTS}}', generateTableOfContents(submenus));
-    template = template.replace('{{COMMANDS_CONTENT}}', generateCommandsContent(commandTitles, submenus));
-
-    fs.writeFileSync(path.join(projectRoot, 'README.md'), template);
-    console.log('README.md generado correctamente');
+    const changed = syncCounts();
+    console.log(`Command count: ${count}. Updated ${changed} file(s).`);
 }
 
 main();
